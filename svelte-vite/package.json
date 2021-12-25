@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "latest",
+    "daisyui": "latest",
+    "postcss": "latest",
+    "svelte": "3.44.0",
+    "tailwindcss": "latest",
+    "vite": "latest"
+  },
+  "dependencies": {
+    "svelte-spa-router": "^3.2.0"
+  }
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Mariage d'Hélène & Philippe</title>
+		<script type="module" src="/src/main.js"></script>
+		<script src='/dist/qr_packed.js'></script>
+
+		<script>
+
+			// -------------- qrcode reader ---------------------------
+			let scanning = false;
+		
+			window.qrcode.callback = (res) => {
+			  if (res) {
+				console.log(res);
+				/*const match = res.match(/mari.*c=([a-z0-9]{5})([a-z0-9]{5})/);*/
+		
+				console.log(res);
+				stopQRScan();
+			  window.QRreturn(res);
+		
+			  }
+			};
+		
+		function stopQRScan() {
+		   scanning = false;
+		   const video = document.getElementById('qr-video');
+		   video.srcObject.getTracks().forEach((track) => { track.stop(); });
+		   var el = document.getElementById('qrDiv');
+			  el.style.display = 'none';
+		}
+		
+		window.startQRScan = function() {
+		  navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(
+			  function(stream) {
+			  scanning = true;
+		
+			  var el = document.getElementById('qrDiv');
+			  el.style.display = 'block';
+		
+		
+			  const video = document.getElementById('qr-video');
+			  video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+			  video.srcObject = stream;
+			  video.play();
+			  initCanvas(640,480);
+			});
+		};
+		
+		function initCanvas(w,h)
+		{
+			const gCanvas = document.getElementById("qr-canvas");
+			gCanvas.style.width = w + "px";
+			gCanvas.style.height = h + "px";
+			gCanvas.width = w;
+			gCanvas.height = h;
+			const gCtx = gCanvas.getContext("2d");
+			gCtx.clearRect(0, 0, w, h);
+			tick();
+		}
+		
+		function tick() {
+		  const canvasElement = document.getElementById("qr-canvas");
+		  const canvas = canvasElement.getContext("2d");
+		  const video = document.getElementById('qr-video');
+		  if (scanning) {
+			 try{
+				 canvas.drawImage(video,0,0);
+				 try{
+					 qrcode.decode();
+				 }
+				 catch(e){       
+					 console.log(e);
+					 setTimeout(tick, 400);
+				 };
+			 } catch(e) {       
+					 console.log(e);
+					 setTimeout(tick, 500);
+			 };
+		  }
+		}
+		
+		</script>
+	
+	</head>
+
+	<body>
+    
+		<div id="svelteContainer"></div>
+
+		<div id="qrDiv" style="position: fixed; top: 0px; left: 0px; width: 100%; height: 600px; background-color: rgba(0,0,0,0.66); text-align: center; display: none; z-index: 1000;">
+			<h3 style="color: #fff">Filmez le QR-code d'invitation...</h3>
+			<video id="qr-video" style="width: 640px; height: 480px;"></video>
+			<canvas id="qr-canvas" style="width: 640px; height: 480px; background: #000; display: none;"></canvas><br>
+			<input id="qrAbortBtn" type="button" value="Annuler la capture" onclick="stopQRScan()">
+		</div>
+	
+	</body>
+
+</html>
