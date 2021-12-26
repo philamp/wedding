@@ -10,3 +10,8 @@ create trigger privateschema.timestamps_tg
   after insert or update on privateschema.families
   for each row
   execute procedure privateschema.tg_update_timestamps();
+
+create trigger privateschema.timestamps_tg
+  after insert or update on privateschema.bookings
+  for each row
+  execute procedure privateschema.tg_update_timestamps();

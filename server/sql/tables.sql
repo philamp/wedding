@@ -57,7 +57,7 @@ CREATE TABLE privateschema.bookings (
     room_id INTEGER REFERENCES privateschema.rooms (room_id),
     family_id INTEGER REFERENCES privateschema.families (family_id),
     booking_state varchar(32) NOT NULL DEFAULT 'pending' CHECK (booking_state IN ('pending', 'option', 'accepted', 'refused')),
-    entry_date timestamp
+    updated_at timestamp not null default now()
 )
 
 

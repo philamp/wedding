@@ -1,3 +1,5 @@
+-- SERIAL PASSWORD CREATOR
+
 CREATE FUNCTION privateschema.make_pass_word() RETURNS text AS $$
 DECLARE
     new_uid text;
@@ -10,4 +12,17 @@ BEGIN
     END LOOP;
     RETURN new_uid;
 END;
+$$ LANGUAGE PLPGSQL VOLATILE;
+
+-- AUTH FUNCTION FOR COOKIE
+
+CREATE FUNCTION public.get_auth(
+    password_submitted text
+) RETURNS privateschema.families AS $$
+DECLARE 
+    account privateschema.families;
+BEGIN
+    SELECT * into account FROM privateschema.families WHERE LOWER(pass_word) = LOWER(password_submitted);
+    RETURN account
+END
 $$ LANGUAGE PLPGSQL VOLATILE;

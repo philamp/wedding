@@ -12,7 +12,7 @@ const app = express();
 app.use(
   postgraphile(
     `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
-    process.env.DB_SCHEMA,
+    "public",
     {
       watchPg: true,
       graphiql: true,
@@ -30,19 +30,20 @@ async function getAuth(req, res) {
   try{
   const runner = await makeQueryRunner(
     `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
-    process.env.DB_SCHEMA
+    "public"
   );
 
   const result = await runner.query(
-    `query MyCookieQuery ($password: String!) {
-      allFamilies(condition: {passWord: $password}) {
-        nodes {
+    `
+    mutation MyCookieQuery ($password: String!){
+      getAuth(input: {passwordSubmitted: $password}) {
+        family {
           familyId
+          passWord
         }
       }
-    }`
-    
-    
+    }
+    `
     ,
     { password: req.QRValueSvelte }
   );
@@ -51,11 +52,14 @@ async function getAuth(req, res) {
 console.log(JSON.stringify(result, null, 2));
 
 await runner.release();
-  result.jwt = jwt.sign({ family_id: result.data.allFamilies.nodes[0].familyId}, process.env.HASH, {})
+  
 
 /* enlever jwt de l'object result !!! y'en a pas besoin il est dans le cookie*/
 
-if(result.data.allFamilies.nodes){
+/* rendre le cookie secure !!! SSL */
+
+if(result.data.getAuth.family.familyId){
+  result.jwt = jwt.sign({ family_id: result.data.getAuth.family.familyId, pass_word: result.data.getAuth.family.passWord}, process.env.HASH, {})
   res.cookie("jwt", result.jwt, {maxAge: 90000000, httpOnly: false, secure: false})
   res.json(result)
 }else{
