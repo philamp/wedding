@@ -6,13 +6,13 @@
 
 	//routes definition
 	// Components
-import Subscribe from './routes/Subscribe.svelte';
+	import Subscribe from './routes/Subscribe.svelte';
 
-// Export the route definition object
-let routes = {
+	// Export the route definition object
+	let routes = {
     // Exact path
     '/': Subscribe
-}
+	}
 
 
 </script>
