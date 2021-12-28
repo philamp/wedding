@@ -198,8 +198,10 @@
 
 <!-- PUT PAGE CONTENT HERE-->
 <Router {routes} />
-<!-- END PUT PAGE CONTENT HERE -->
-  
+<!-- END PUT PAGE CONTENT HERE !!! spacer below -->
+
+<div style="height: 800px"></div>
+
 	</main>
   
 	<div class="drawer-side" ><label for="main-menu" class="drawer-overlay"></label> 
@@ -374,4 +376,5 @@
 			background-color: #ffffff99;
 			backdrop-filter: blur(1ex)
 		}
+
   </style>

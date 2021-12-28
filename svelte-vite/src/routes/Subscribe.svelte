@@ -1,6 +1,7 @@
 <script>
 import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import init from "/dist/birds-animated-small.js";
 
 //	export let name;
 
@@ -16,7 +17,9 @@ onMount(() => {
 
 	let currentStep = 1;
 
-	let displayStep2Popin = false
+	let displayStep2Popin = false;
+
+	let phoneinput = "";
 
 	let QRValueSvelte;
 
@@ -105,14 +108,19 @@ onMount(() => {
 	}
 	
 	const pushFamilyData = async () => {
-
+		let actualSentPhone;
+		let actualSentFormValues;
 		/*empecher valeur absurdes tel que cocktail false et diner true !!! */
-		
+		if(currentStep == 4){
+			actualSentPhone = window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).getNumber();
+		}else{actualSentPhone = formValues.phone}
+
+		actualSentFormValues = {...formValues, phone: actualSentPhone}
 
 		loading = true
 		const res = await fetch('/api/pushfamilydata', {
 			method: 'POST',
-			body: JSON.stringify(formValues),
+			body: JSON.stringify(actualSentFormValues),
 			headers: {
     			'Accept': 'application/json',
     			'Content-Type': 'application/json'
@@ -154,11 +162,32 @@ onMount(() => {
 	$: displayAddButton = (attendingPeopleCount === formValues?.peopleByFamilyId?.nodes?.length) ? false : true
 	$: displayDeleteButton = (attendingPeopleCount <= 1) ? false : true /* n'est plus utilisé !!! */
 
+$: if(currentStep == 4){		
+	if(!window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput"))){
+	window.intlTelInput(document.getElementById("phoneinput"), {
+		separateDialCode: false,	// any initialisation options go here
+		utilsScript: "/dist/intl-tel/js/utils.js"
+	});
 
+	}
+	//phoneinput = formValues.phone;
+	// window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber(formValues.phone); !!!
+		
+}
+
+$: if(currentStep == 6){
+
+			init("#scene-275138496");
+}
 
 </script>
 
-<div id="formtabs" class="max-w-2xl">
+{#if currentStep >= 5}
+<figure id="scene-275138496" style="height: 50px; width: 50px; position: absolute; z-index: 10000"></figure>
+{/if}
+
+<div id="formtabs" class="max-w-2xl" style="">
+	
 <!-- BEGIN TAB 1 / QR CODE -->
 
 <div tabindex="0" class="collapse border rounded-box bg-base-100 border-base-300 m-2 shadow-lg" class:bg-accent={currentStep > 1} class:collapse-open={currentStep === 1} class:collapse-close={currentStep !== 1} on:click={() => currentStep >= 1 ? currentStep = 1 : currentStep}> 
@@ -363,28 +392,19 @@ onMount(() => {
 		<form on:submit|preventDefault={pushFamilyData}>
   <div class="form-control my-2">
 	<label class="label">
-	  <span class="label-text">Adresse e-mail (pour vours prévenir des aléas COVID)</span>
+	  <span class="label-text">Adresse e-mail, facultatif (pour vours prévenir des aléas COVID)</span>
 	</label> 
-	<input type="text" placeholder="françois@hollande.fr" class="input input-primary input-bordered" bind:value={formValues.emailAddress} required pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+	<input type="text" placeholder="françois@hollande.fr" class="input input-primary input-bordered" bind:value={formValues.emailAddress} pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
   </div> 
   
 	<label class="label">
-	  <span class="label-text">Numero de téléphone (facultatif)</span>
+	  <span class="label-text">Numero de téléphone, facultatif (pour vours prévenir des aléas COVID)</span>
    </label> 
   
   
-  <div class="form-control float-left">
-  <select class="select select-bordered w-full max-w-xs " bind:value={formValues.phoneCountryCode}>
-	<option disabled="disabled" selected="selected" value="+33">-Indicatif-</option> 
-	<option value="+33">+33 - France</option> 
-	<option value="+41">+41 - Suisse</option> 
-	<option value="+78">+78 - Espagne</option>
-  </select>
-  </div> 
-  
   <div class="form-control">
   
-	<input type="text" placeholder="076 548 454 654" class="input input-primary input-bordered" bind:value={formValues.phone}>
+	<input type="tel" id="phoneinput" class="input input-primary input-bordered" bind:value={formValues.phone}>
   </div> 
   
    
@@ -399,67 +419,55 @@ onMount(() => {
 
 <!-- END TAB 4 / CONTACT -->
   
-<!-- BEGIN TAB 5 / BOOKING -->
+<!-- BEGIN TAB 5 / TEMPlogement -->
   
-  <div tabindex="0" class="collapse border rounded-box border-base-300 collapse-open m-2 bg-base-100 shadow-lg"> 
+<div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 5} class:collapse-open={currentStep === 5} class:collapse-close={currentStep !== 5} on:click={() => currentStep >= 5 ? currentStep = 5 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
-	  Logement(s)
+	  Logement
 	</div> 
 	<div class="collapse-content"> 
+
+		<form on:submit|preventDefault={pushFamilyData}>
+  <div class="form-control my-2">
+	<label class="label">
+	  <span class="label-text">Adresse e-mail, facultatif (pour vours prévenir des aléas COVID)</span>
+	</label> 
+	<input type="text" placeholder="françois@hollande.fr" class="input input-primary input-bordered" pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+  </div> 
   
-  <div class="overflow-x-auto">
-	<table class="table w-full">
-	  <thead>
-		<tr>
-		   
-		  <th colspan="2">Nous vous proposons les logements suivants :</th> 
-		  
-		</tr>
-	  </thead> 
-	  <tbody>
-		<tr class="">
-		   
-		  <td>Lit double + 2 enfants</td> 
+	<label class="label">
+	  <span class="label-text">Numero de téléphone, facultatif (pour vours prévenir des aléas COVID)</span>
+   </label> 
   
-		   <td><select class="select select-bordered w-full max-w-xs ">
-	<option disabled="disabled" selected="selected" value="+33">-Indicatif-</option>
-	<option value="+33">+33 - France</option> 
-	<option value="+41">+41 - Suisse</option> 
-	<option value="+78">+78 - Espagne</option>
-  </select></td>
-		  
-		</tr>
-		<tr class="">
-		  
-		  <td>Lit double + 3 enfants</td> 
   
-		  <td><select class="select select-bordered w-full max-w-xs ">
-	<option disabled="disabled" selected="selected">-Indicatif-</option> 
-	<option>+33 - France</option> 
-	<option>+41 - Suisse</option> 
-	<option>+78 - Espagne</option>
-  </select></td>
-		  
-	  </tbody>
-	</table>
-  </div>
+  <div class="form-control">
+  
+	<input type="tel" id="phontgteinput" class="input input-primary input-bordered">
+  </div> 
+  
+   
   
   
   
   
-  
-  
-  
+  <button type="submit" class="btn btn-secondary float-right" class:loading={loading}>Valider</button>
+  </form>
+	</div>
 	</div>
 
-
-	
-
-  </div>
-
-<!-- END TAB 5 / BOOKING -->
+<!-- END TAB 5 / LOGEMENT -->
 
   {/if}
 <!-- END SHOW BLOCKS AFTER QRCODE SUCCESS -->
 
 </div>
+
+
+
+<style global lang="postcss">
+/*
+	#formtabs{
+		height:800px;
+	}
+	*/
+  </style>

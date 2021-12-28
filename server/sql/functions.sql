@@ -7,7 +7,7 @@ DECLARE
 BEGIN
     done := false;
     WHILE NOT done LOOP
-        new_uid := upper(substr(replace(replace(md5(''||now()::text||random()::text), '0', 'G'),'1' ,'L' ), 1, 10));
+        new_uid := substr(replace(replace(md5(''||now()::text||random()::text), '0', 'G'),'1' ,'L' ), 1, 10);
         done := NOT exists(SELECT 1 FROM families WHERE pass_word=new_uid);
     END LOOP;
     RETURN new_uid;

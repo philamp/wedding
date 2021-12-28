@@ -161,7 +161,8 @@ async function pushFamilyData(req, res) {
     `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
     process.env.DB_SCHEMA,
   );
-
+  // take the intl-tel-version of phone number
+  // familyData.phone = familyData.hiddenphone; !!!
 
   /* constrain postgre à faire pour empecher un dinerAttending true si guestlevel < 2  !!!! */
   const result = await runner.query(
@@ -171,7 +172,6 @@ async function pushFamilyData(req, res) {
       $dinerAttending: Boolean!
       $emailAddress: String
       $phone: String
-      $phoneCountryCode: String
       $familyid: Int!
     )
     {
@@ -182,7 +182,6 @@ async function pushFamilyData(req, res) {
             dinerAttending: $dinerAttending
             emailAddress: $emailAddress
             phone: $phone
-            phoneCountryCode: $phoneCountryCode
           }
           familyId: $familyid
         }

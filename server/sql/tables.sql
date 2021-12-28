@@ -23,7 +23,6 @@ CREATE TABLE privateschema.families (
     email_address text check(length(email_address) <= 255),
     signing_img_url varchar(255),
     phone character varying(32) COLLATE pg_catalog."default",
-    phone_country_code character varying(6) COLLATE pg_catalog."default",
     signing text,
     booking_priority INTEGER DEFAULT 0 CHECK (booking_priority IN (0, 1, 2))
 )
