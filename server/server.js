@@ -12,7 +12,7 @@ const app = express();
 app.use(
   postgraphile(
     `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
-    "public",
+    "privateschema",
     {
       watchPg: true,
       graphiql: true,
@@ -101,6 +101,8 @@ catch(e){
             phone
             phoneCountryCode
             guestLevel
+            formStep
+            
             peopleByFamilyId {
               nodes {
                 reverseCocktailAttending
@@ -112,6 +114,28 @@ catch(e){
                 ageRange
                 firstName
                 attending
+              }
+            }
+
+            bookingsByFamilyId {
+              nodes {
+                roomByRoomId {
+                  bedsizes
+                  buildingName
+                  capacity
+                  categoryDescription
+                  equipement
+                  etage
+                  nodeId
+                  roomId
+                  roomNumber
+                }
+                bookingId
+                bookingState
+                familyId
+                roomId
+                nodeId
+                updatedAt
               }
             }
             
@@ -129,10 +153,18 @@ catch(e){
   
   await runner.release();
   
-  
+  // encode the DB identifier for people
   for(let i = 0; i < result.data.allFamilies.nodes[0].peopleByFamilyId.nodes.length; i++ ){
     result.data.allFamilies.nodes[0].peopleByFamilyId.nodes[i].nodeId = jwt.sign(result.data.allFamilies.nodes[0].peopleByFamilyId.nodes[i].nodeId, process.env.HASH, {})
   }
+
+  //encode the DB identifier for bookings and remove the refused ones
+  for(let i = 0; i < result.data.allFamilies.nodes[0].bookingsByFamilyId.nodes.length; i++ ){
+    result.data.allFamilies.nodes[0].bookingsByFamilyId.nodes[i].nodeId = jwt.sign(result.data.allFamilies.nodes[0].bookingsByFamilyId.nodes[i].nodeId, process.env.HASH, {})
+  }
+  //remove refused ones
+  result.data.allFamilies.nodes[0].bookingsByFamilyId.nodes = result.data.allFamilies.nodes[0].bookingsByFamilyId.nodes.filter((current) => {return current.bookingState != "refused";})
+  
 
   res.json(result)
   
@@ -173,6 +205,7 @@ async function pushFamilyData(req, res) {
       $emailAddress: String
       $phone: String
       $familyid: Int!
+      $formStep: Int
     )
     {
       updateFamilyByFamilyId(
@@ -182,6 +215,7 @@ async function pushFamilyData(req, res) {
             dinerAttending: $dinerAttending
             emailAddress: $emailAddress
             phone: $phone
+            formStep: $formStep
           }
           familyId: $familyid
         }
@@ -200,11 +234,10 @@ async function pushFamilyData(req, res) {
   console.log(JSON.stringify(result, null, 2));
 
 
-    /* boucler sur les nodes */
-    // sur le front rendre les champs non nullables !!!!
+    /* boucler sur les nodes people*/
 
   for(let i = 0; i < familyData.peopleByFamilyId.nodes.length; i++){
-    personData = familyData.peopleByFamilyId.nodes[i]
+    let personData = familyData.peopleByFamilyId.nodes[i]
     
     let resultPerson = await runner.query(
       `
@@ -242,6 +275,42 @@ async function pushFamilyData(req, res) {
     )
 
     console.log(JSON.stringify(resultPerson, null, 2));
+  }
+
+
+  // boucler sur les bookings
+
+  for(let i = 0; i < familyData.bookingsByFamilyId.nodes.length; i++){
+    let bookingData = familyData.bookingsByFamilyId.nodes[i]
+    
+    let resultBooking = await runner.query(
+      `
+      mutation MyBookingMutation(
+        $nodeId: ID!
+        $bookingState: String!
+      ) {
+        updateBooking(
+          input: { 
+            nodeId: $nodeId, 
+            bookingPatch: { 
+              bookingState: $bookingState
+            } 
+          }
+        ) 
+        {
+          clientMutationId
+        }
+      }
+      
+      
+      `,
+      {
+        ...bookingData,
+        nodeId: jwt.verify(bookingData.nodeId, process.env.HASH) 
+      }
+    )
+
+    console.log(JSON.stringify(resultBooking, null, 2));
   }
 
 

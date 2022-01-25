@@ -2,18 +2,47 @@
 import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import init from "/dist/birds-animated-small.js";
+	import { connectionStatus } from './../store.js';
+
+	//spa router params
+	export let params = {}
+
+	let htmlLoaded = false;
+	let familyDataLoaded = false;
 
 //	export let name;
 
-// !!! une rpeonse family attending false implique un booking refusé
+// !!! une rpeonse family attending false implique un booking refusé -->> utiliser les pg trigers
 
 // une personne aux champs nom prenom vide puis supprimer pourrait faire planter l'insertion en base
 
 onMount(() => {
-		if(document.cookie){
+
+ 
+
+	if(params.urlQrCode){
+		QRValueSvelte = params.urlQrCode;
+		authenticate()
+		}else if(document.cookie){
 			familyData()
 		}
-	})
+
+
+
+	const triggered = () => {if(!window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput"))){
+		window.intlTelInput(document.getElementById("phoneinput"), {
+			separateDialCode: false,	// any initialisation options go here
+			utilsScript: "/dist/intl-tel/js/utils.js"
+		});
+
+	}}	
+
+	triggered();
+
+	htmlLoaded = true;
+
+
+})
 
 	let currentStep = 1;
 
@@ -23,7 +52,27 @@ onMount(() => {
 
 	let QRValueSvelte;
 
-	let formValues;
+	let contribution = 0;
+
+	let capacityOptedFor = 0;
+
+	let formValues = {
+               "familyId": 0,
+               "familyName":"",
+               "cocktailAttending":true,
+               "dinerAttending":false,
+               "emailAddress":"",
+               "phone":"",
+               "guestLevel":1,
+               "formStep":2,
+               "peopleByFamilyId":{
+                  "nodes":[]
+               },
+               "bookingsByFamilyId":{
+                  "nodes":[]
+               }
+            }
+ 
 
 	let loading = false;
 
@@ -57,11 +106,14 @@ onMount(() => {
 		
 		const json = await res.json()
 
-		if(json.error){console.log(json.error);loading = false;return}
+		if(json.error){console.log(json.error);loading = false;$connectionStatus = false;return}
+		
 
 		familyData()
 
 		/*result = JSON.stringify(json)*/ 
+
+
 
 
 	}
@@ -76,10 +128,17 @@ onMount(() => {
 		const json = await res.json()
 		loading = false
 		if(json.error){return}
+		//set global connectionstatus
+		$connectionStatus = true;
 		formValues = json.data.allFamilies.nodes[0]
 		/*result = JSON.stringify(json)*/ 
-		currentStep = 2;
-		console.log(formValues)
+
+		// !!! attention JS intltel bad init if direct load field calling it
+		if(formValues.formStep > 2){currentStep = formValues.formStep + 1}else{currentStep = 2;}
+		familyDataLoaded = true;
+		console.log(formValues);
+
+		
 
 
 	}
@@ -115,7 +174,7 @@ onMount(() => {
 			actualSentPhone = window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).getNumber();
 		}else{actualSentPhone = formValues.phone}
 
-		actualSentFormValues = {...formValues, phone: actualSentPhone}
+		actualSentFormValues = {...formValues, phone: actualSentPhone, formStep: currentStep}
 
 		loading = true
 		const res = await fetch('/api/pushfamilydata', {
@@ -131,8 +190,12 @@ onMount(() => {
 		const json = await res.json()
 		
 		if(!json.error){
-		currentStep += 1
+		if(!formValues.cocktailAttending && currentStep == 2){currentStep = 6
+		// !!! booking refused à la fonfirmation du step 6 !!!
+		
+		}else{currentStep += 1}
 		loading = false
+		document.querySelector('main').scrollTo(0, 0); // reboot scroll after each response
 		}
 	}
 
@@ -162,22 +225,27 @@ onMount(() => {
 	$: displayAddButton = (attendingPeopleCount === formValues?.peopleByFamilyId?.nodes?.length) ? false : true
 	$: displayDeleteButton = (attendingPeopleCount <= 1) ? false : true /* n'est plus utilisé !!! */
 
-$: if(currentStep == 4){		
-	if(!window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput"))){
-	window.intlTelInput(document.getElementById("phoneinput"), {
-		separateDialCode: false,	// any initialisation options go here
-		utilsScript: "/dist/intl-tel/js/utils.js"
-	});
 
-	}
-	//phoneinput = formValues.phone;
-	// window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber(formValues.phone); !!!
-		
-}
-
-$: if(currentStep == 6){
+$: if(currentStep == 7){
 
 			init("#scene-275138496");
+}
+
+
+$: if(currentStep >= 4){
+	let count = 0;
+	for(let i = 0; i < formValues.bookingsByFamilyId.nodes.length; i++ ){
+		if(formValues.bookingsByFamilyId.nodes[i].bookingState == "accepted"){
+			count += formValues.bookingsByFamilyId.nodes[i].roomByRoomId.capacity
+		}
+	}
+	contribution = count * 30;
+	capacityOptedFor = count;
+}
+
+
+$: if(htmlLoaded && familyDataLoaded){
+	window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber(formValues.phone);
 }
 
 </script>
@@ -198,22 +266,24 @@ $: if(currentStep == 6){
   
 
   
-  <button class="btn btn-lg btn-primary" on:click={triggerQR}>
+  <button class="btn btn-primary" on:click={triggerQR}>
   
-  <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-12 h-12 mr-2 stroke-current" viewBox="0 0 45 45" fill="none" x="0px" y="0px"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 12C9 10.3431 10.3431 9 12 9H13.6129C14.1652 9 14.6129 9.44772 14.6129 10C14.6129 10.5523 14.1652 11 13.6129 11H12C11.4477 11 11 11.4477 11 12V14.1481C11 14.7004 10.5523 15.1481 10 15.1481C9.44772 15.1481 9 14.7004 9 14.1481V12Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9 36C9 37.6569 10.3431 39 12 39H13.6129C14.1652 39 14.6129 38.5523 14.6129 38C14.6129 37.4477 14.1652 37 13.6129 37H12C11.4477 37 11 36.5523 11 36V33.8519C11 33.2996 10.5523 32.8519 10 32.8519C9.44772 32.8519 9 33.2996 9 33.8519V36Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39 12C39 10.3431 37.6569 9 36 9H34.3871C33.8348 9 33.3871 9.44772 33.3871 10C33.3871 10.5523 33.8348 11 34.3871 11H36C36.5523 11 37 11.4477 37 12V14.1481C37 14.7004 37.4477 15.1481 38 15.1481C38.5523 15.1481 39 14.7004 39 14.1481V12Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39 36C39 37.6569 37.6569 39 36 39H34.3871C33.8348 39 33.3871 38.5523 33.3871 38C33.3871 37.4477 33.8348 37 34.3871 37H36C36.5523 37 37 36.5523 37 36V33.8519C37 33.2996 37.4477 32.8519 38 32.8519C38.5523 32.8519 39 33.2996 39 33.8519V36Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M14 16C14 14.8954 14.8954 14 16 14H18.5C19.6046 14 20.5 14.8954 20.5 16V18.5C20.5 19.6046 19.6046 20.5 18.5 20.5H16C14.8954 20.5 14 19.6046 14 18.5V16ZM18.5 16H16V18.5H18.5V16Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M14 29.5C14 28.3954 14.8954 27.5 16 27.5H18.5C19.6046 27.5 20.5 28.3954 20.5 29.5V32C20.5 33.1046 19.6046 34 18.5 34H16C14.8954 34 14 33.1046 14 32V29.5ZM18.5 29.5H16V32H18.5V29.5Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.5 16C27.5 14.8954 28.3954 14 29.5 14H32C33.1046 14 34 14.8954 34 16V18.5C34 19.6046 33.1046 20.5 32 20.5H29.5C28.3954 20.5 27.5 19.6046 27.5 18.5V16ZM32 16H29.5V18.5H32V16Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.5263 15C22.5263 14.4477 22.974 14 23.5263 14H24.9474C25.4997 14 25.9474 14.4477 25.9474 15V19.5C25.9474 20.0523 25.4997 20.5 24.9474 20.5H22.5789C22.0267 20.5 21.5789 20.0523 21.5789 19.5C21.5789 18.9477 22.0267 18.5 22.5789 18.5H23.9474V16H23.5263C22.974 16 22.5263 15.5523 22.5263 15ZM19.5 22C20.0523 22 20.5 22.4477 20.5 23V25.25C20.5 25.8023 20.0523 26.25 19.5 26.25H15C14.4477 26.25 14 25.8023 14 25.25C14 24.6977 14.4477 24.25 15 24.25H18.5V23C18.5 22.4477 18.9477 22 19.5 22ZM22.5789 22C23.1312 22 23.5789 22.4477 23.5789 23V25.25C23.5789 25.8023 23.1312 26.25 22.5789 26.25C22.0267 26.25 21.5789 25.8023 21.5789 25.25V23C21.5789 22.4477 22.0267 22 22.5789 22ZM28 23C28 22.4477 28.4477 22 29 22H33C33.5523 22 34 22.4477 34 23C34 23.5523 33.5523 24 33 24H29C28.4477 24 28 23.5523 28 23ZM22.5789 27.5C23.1312 27.5 23.5789 27.9477 23.5789 28.5V33C23.5789 33.5523 23.1312 34 22.5789 34C22.0267 34 21.5789 33.5523 21.5789 33V28.5C21.5789 27.9477 22.0267 27.5 22.5789 27.5Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M25.2929 25.9987C25.4804 25.8112 25.7348 25.7059 26 25.7059L33 25.7059C33.5523 25.7059 34 26.1536 34 26.7059C34 27.2582 33.5523 27.7059 33 27.7059L27 27.7059V33C27 33.5523 26.5523 34 26 34C25.4477 34 25 33.5523 25 33V26.7059C25 26.4406 25.1054 26.1863 25.2929 25.9987Z" fill="black"/><path d="M30.5 29.9C30.5 30.4523 30.0523 30.9 29.5 30.9C28.9477 30.9 28.5 30.4523 28.5 29.9C28.5 29.3477 28.9477 28.9 29.5 28.9C30.0523 28.9 30.5 29.3477 30.5 29.9Z" fill="black"/><path d="M27 23C27 23.5523 26.5523 24 26 24C25.4477 24 25 23.5523 25 23C25 22.4477 25.4477 22 26 22C26.5523 22 27 22.4477 27 23Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M33 29C33.5523 29 34 29.4477 34 30V33C34 33.5523 33.5523 34 33 34H29C28.4477 34 28 33.5523 28 33C28 32.4477 28.4477 32 29 32H32V30C32 29.4477 32.4477 29 33 29Z" fill="black"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-8 h-8 stroke-current" viewBox="10 10 30 30" fill="none" x="0px" y="0px"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 12C9 10.3431 10.3431 9 12 9H13.6129C14.1652 9 14.6129 9.44772 14.6129 10C14.6129 10.5523 14.1652 11 13.6129 11H12C11.4477 11 11 11.4477 11 12V14.1481C11 14.7004 10.5523 15.1481 10 15.1481C9.44772 15.1481 9 14.7004 9 14.1481V12Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9 36C9 37.6569 10.3431 39 12 39H13.6129C14.1652 39 14.6129 38.5523 14.6129 38C14.6129 37.4477 14.1652 37 13.6129 37H12C11.4477 37 11 36.5523 11 36V33.8519C11 33.2996 10.5523 32.8519 10 32.8519C9.44772 32.8519 9 33.2996 9 33.8519V36Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39 12C39 10.3431 37.6569 9 36 9H34.3871C33.8348 9 33.3871 9.44772 33.3871 10C33.3871 10.5523 33.8348 11 34.3871 11H36C36.5523 11 37 11.4477 37 12V14.1481C37 14.7004 37.4477 15.1481 38 15.1481C38.5523 15.1481 39 14.7004 39 14.1481V12Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39 36C39 37.6569 37.6569 39 36 39H34.3871C33.8348 39 33.3871 38.5523 33.3871 38C33.3871 37.4477 33.8348 37 34.3871 37H36C36.5523 37 37 36.5523 37 36V33.8519C37 33.2996 37.4477 32.8519 38 32.8519C38.5523 32.8519 39 33.2996 39 33.8519V36Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M14 16C14 14.8954 14.8954 14 16 14H18.5C19.6046 14 20.5 14.8954 20.5 16V18.5C20.5 19.6046 19.6046 20.5 18.5 20.5H16C14.8954 20.5 14 19.6046 14 18.5V16ZM18.5 16H16V18.5H18.5V16Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M14 29.5C14 28.3954 14.8954 27.5 16 27.5H18.5C19.6046 27.5 20.5 28.3954 20.5 29.5V32C20.5 33.1046 19.6046 34 18.5 34H16C14.8954 34 14 33.1046 14 32V29.5ZM18.5 29.5H16V32H18.5V29.5Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.5 16C27.5 14.8954 28.3954 14 29.5 14H32C33.1046 14 34 14.8954 34 16V18.5C34 19.6046 33.1046 20.5 32 20.5H29.5C28.3954 20.5 27.5 19.6046 27.5 18.5V16ZM32 16H29.5V18.5H32V16Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.5263 15C22.5263 14.4477 22.974 14 23.5263 14H24.9474C25.4997 14 25.9474 14.4477 25.9474 15V19.5C25.9474 20.0523 25.4997 20.5 24.9474 20.5H22.5789C22.0267 20.5 21.5789 20.0523 21.5789 19.5C21.5789 18.9477 22.0267 18.5 22.5789 18.5H23.9474V16H23.5263C22.974 16 22.5263 15.5523 22.5263 15ZM19.5 22C20.0523 22 20.5 22.4477 20.5 23V25.25C20.5 25.8023 20.0523 26.25 19.5 26.25H15C14.4477 26.25 14 25.8023 14 25.25C14 24.6977 14.4477 24.25 15 24.25H18.5V23C18.5 22.4477 18.9477 22 19.5 22ZM22.5789 22C23.1312 22 23.5789 22.4477 23.5789 23V25.25C23.5789 25.8023 23.1312 26.25 22.5789 26.25C22.0267 26.25 21.5789 25.8023 21.5789 25.25V23C21.5789 22.4477 22.0267 22 22.5789 22ZM28 23C28 22.4477 28.4477 22 29 22H33C33.5523 22 34 22.4477 34 23C34 23.5523 33.5523 24 33 24H29C28.4477 24 28 23.5523 28 23ZM22.5789 27.5C23.1312 27.5 23.5789 27.9477 23.5789 28.5V33C23.5789 33.5523 23.1312 34 22.5789 34C22.0267 34 21.5789 33.5523 21.5789 33V28.5C21.5789 27.9477 22.0267 27.5 22.5789 27.5Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M25.2929 25.9987C25.4804 25.8112 25.7348 25.7059 26 25.7059L33 25.7059C33.5523 25.7059 34 26.1536 34 26.7059C34 27.2582 33.5523 27.7059 33 27.7059L27 27.7059V33C27 33.5523 26.5523 34 26 34C25.4477 34 25 33.5523 25 33V26.7059C25 26.4406 25.1054 26.1863 25.2929 25.9987Z" fill="black"/><path d="M30.5 29.9C30.5 30.4523 30.0523 30.9 29.5 30.9C28.9477 30.9 28.5 30.4523 28.5 29.9C28.5 29.3477 28.9477 28.9 29.5 28.9C30.0523 28.9 30.5 29.3477 30.5 29.9Z" fill="black"/><path d="M27 23C27 23.5523 26.5523 24 26 24C25.4477 24 25 23.5523 25 23C25 22.4477 25.4477 22 26 22C26.5523 22 27 22.4477 27 23Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M33 29C33.5523 29 34 29.4477 34 30V33C34 33.5523 33.5523 34 33 34H29C28.4477 34 28 33.5523 28 33C28 32.4477 28.4477 32 29 32H32V30C32 29.4477 32.4477 29 33 29Z" fill="black"/></svg>
   
 		Scanner le QR-CODE
 	  
   </button> 
   
   <form on:submit|preventDefault={authenticate}>
+
+
 	 <div class="form-control"> 
 	<label for="code-input" class="label">
 	  <span class="label-text">Ou saisissez le code dans le champ ci-dessous:</span>
 	</label> 
 	<div class="relative">
-	  <input type="text" id="code-input" placeholder="XXXXX-XXXXX" bind:value={QRValueSvelte} class="w-full pr-16 input input-primary input-bordered" required> 
-	  <button type="submit" class="absolute top-0 right-0 rounded-l-none btn btn-secondary" class:loading={loading} value="Valider">Valider</button>
+	  <input type="text" id="code-input" placeholder="XXXXXXXXXX" style="text-transform: uppercase" bind:value={QRValueSvelte} class="w-full pr-16 input input-primary input-bordered" required> 
+	  <button type="submit" class="absolute top-0 right-0 rounded-l-none btn btn-primary" class:loading={loading} value="Valider">Valider</button>
 	</div>
    </div> 
   </form>
@@ -223,8 +293,7 @@ $: if(currentStep == 6){
 
 <!-- END TAB 1 / QR CODE -->
 
-  <!-- BEGIN SHOW BLOCKS AFTER QRCODE SUCCESS -->
-  {#if formValues}
+
 
 
 <!-- BEGIN TAB 2 / ANSWER + PEOPLE V2-->
@@ -242,7 +311,7 @@ $: if(currentStep == 6){
 	<p>êtes vous certain(e)(s) de ne pas venir ? Vous allez nous manquer :(</p> 
 	<div class="modal-action">
 	  <label for="my-modal-2" class="btn btn-primary" on:click={pushFamilyData}>Oui, je suis certain</label> 
-	  <label for="my-modal-2" class="btn">Attendez, je reflechis encore</label>
+	  <label for="my-modal-2" class="btn">Non, attends !</label>
 	</div>
   </div>
 </div>
@@ -260,10 +329,10 @@ $: if(currentStep == 6){
 <!-- Votre réponse -->
 <fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-lg p-2 my-4">
 <legend>Votre réponse:</legend>
-	<label class="cursor-pointer label"><span class="label-text">Nous venons avec plaisir:</span> <input type="checkbox" bind:checked={formValues.cocktailAttending} on:change={tangledCheckboxes} class="toggle toggle-secondary"></label>
+	<label class="cursor-pointer label"><span class="label-text">Nous venons avec plaisir : </span> <input type="checkbox" bind:checked={formValues.cocktailAttending} on:change={tangledCheckboxes} class="toggle toggle-secondary"></label>
 	{#if formValues.cocktailAttending}
 	{#if formValues.guestLevel >= 2}
-	  <label class="cursor-pointer label"><span class="label-text">Nous venons aussi au diner (avec plaisir aussi):</span> <input type="checkbox" bind:checked={formValues.dinerAttending} class="toggle toggle-secondary"></label>
+	  <label class="cursor-pointer label"><span class="label-text">Nous venons aussi au diner : </span> <input type="checkbox" bind:checked={formValues.dinerAttending} class="toggle toggle-secondary"></label>
 	{/if}
 	{/if}
 </fieldset>
@@ -274,8 +343,72 @@ $: if(currentStep == 6){
 <!-- Boucle sur les membres-->
 {#each formValues.peopleByFamilyId.nodes as person,i}
 {#if person.attending}
-<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-lg p-2 my-4" transition:fly={{ x: -200, duration: 500 }}>
+<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-lg p-2 my-4 relative" transition:fly={{ x: -200, duration: 500 }}>
 	<legend>{person.firstName} {person.lastName}</legend>
+
+		<button class="btn btn-secondary btn-sm absolute persondelete" on:click|preventDefault={() => deletePerson(i)}>
+		  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 stroke-current">   
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+			                 
+		  </svg>
+
+
+		  <svg
+		  class="inline-block w-4 h-4 stroke-current"
+		  viewBox="0 0 197.55701 197.55743"
+		  version="1.1"
+		  id="svg5"
+		  inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+		  sodipodi:docname="remove.svg"
+		  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+		  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+		  xmlns="http://www.w3.org/2000/svg"
+		  xmlns:svg="http://www.w3.org/2000/svg">
+		 <sodipodi:namedview
+			id="namedview7"
+			pagecolor="#ffffff"
+			bordercolor="#666666"
+			borderopacity="1.0"
+			inkscape:pageshadow="2"
+			inkscape:pageopacity="0.0"
+			inkscape:pagecheckerboard="0"
+			inkscape:document-units="mm"
+			showgrid="false"
+			inkscape:zoom="0.77771465"
+			inkscape:cx="396.03215"
+			inkscape:cy="449.39362"
+			inkscape:window-width="1927"
+			inkscape:window-height="1131"
+			inkscape:window-x="3331"
+			inkscape:window-y="673"
+			inkscape:window-maximized="0"
+			inkscape:current-layer="layer1" />
+		 <defs
+			id="defs2" />
+		 <g
+			inkscape:label="Calque 1"
+			inkscape:groupmode="layer"
+			id="layer1"
+			transform="translate(-0.22149821,0.11891948)">
+		   <g
+			  fill-rule="evenodd"
+			  id="g13"
+			  transform="matrix(0.35277778,0,0,0.35277778,-24.4715,-0.11891948)">
+			 <path
+				d="M 258.43,44.145 C 277.977,16.149 308.817,0 350,0 c 41.183,0 72.023,16.148 91.57,44.145 18.598,26.633 25.098,61.281 25.098,95.855 0,34.574 -6.5,69.223 -25.098,95.852 -2.9609,4.2461 -6.1875,8.2188 -9.6641,11.902 21.922,3.6836 43.652,8.8555 65.031,15.516 12.305,3.8359 19.172,16.914 15.34,29.219 -3.832,12.305 -16.914,19.172 -29.215,15.336 -119.9,-37.352 -251.89,-22.988 -362.48,43.078 -2.4297,1.4492 -3.918,4.0742 -3.918,6.9023 v 132.2 c 0,12.887 10.445,23.332 23.332,23.332 h 233.33 c 12.887,0 23.336,10.449 23.336,23.336 0,12.887 -10.449,23.332 -23.336,23.332 h -233.33 c -38.66,0 -70,-31.34 -70,-70 v -132.2 c 0,-19.254 10.121,-37.094 26.652,-46.969 53.633,-32.039 111.82,-53.066 171.44,-63.082 -3.4766,-3.6836 -6.6992,-7.6562 -9.6641,-11.902 -18.598,-26.629 -25.098,-61.277 -25.098,-95.852 0,-34.575 6.5,-69.223 25.098,-95.855 z m 38.262,26.719 c -10.887,15.59 -16.691,39.277 -16.691,69.137 0,29.86 5.8047,53.547 16.691,69.137 9.9375,14.23 25.762,24.195 53.309,24.195 27.547,0 43.371,-9.9648 53.309,-24.195 10.887,-15.59 16.691,-39.277 16.691,-69.137 0,-29.86 -5.8047,-53.547 -16.691,-69.137 -9.9375,-14.23 -25.762,-24.195 -53.309,-24.195 -27.547,0 -43.371,9.9648 -53.309,24.195 z"
+				id="path9"
+				style="fill:#f9f9f9" />
+			 <path
+				d="M 630,443.33 C 630,507.764 577.766,560 513.33,560 448.9,560 396.67,507.766 396.67,443.33 c 0,-64.43 52.234,-116.66 116.66,-116.66 64.434,0 116.67,52.234 116.67,116.66 z m -46.668,0 c 0,12.887 -10.445,23.336 -23.332,23.336 h -93.332 c -12.887,0 -23.336,-10.449 -23.336,-23.336 0,-12.887 10.449,-23.332 23.336,-23.332 H 560 c 12.887,0 23.332,10.445 23.332,23.332 z"
+				id="path11"
+				style="fill:#f9f9f9" />
+		   </g>
+		 </g>
+	   </svg>
+
+
+		</button> 
+
 <label class="cursor-pointer label">
 <input type="text" placeholder="Prénom" class="input input-sm input-bordered" bind:value={person.firstName} required>
 </label>
@@ -292,17 +425,11 @@ $: if(currentStep == 6){
 </label>
 
 
-<label class="label">
-<button class="btn btn-secondary btn-sm" on:click|preventDefault={() => deletePerson(i)}>
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 mr-2 stroke-current">   
-	<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>                       
-  </svg>
-	Suppr.
-</button> 
-</label>
+
 
 
 </fieldset>
+
 {/if}
 {/each}
 
@@ -310,7 +437,7 @@ $: if(currentStep == 6){
 
 <!--Bouton dajout-->
 {#if displayAddButton}
-<button class="btn btn-secondary float-left" on:click|preventDefault={restorePerson}>
+<button class="btn btn-secondary btn-sm float-left" on:click|preventDefault={restorePerson}>
 	Ajouter une personne
 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 ml-2 stroke-current">  
   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>                        
@@ -327,7 +454,7 @@ $: if(currentStep == 6){
   
 <br/>
 
-<button type="submit" class="btn btn-secondary float-right" class:loading={loading}>Valider</button> 
+<button type="submit" class="btn btn-primary float-right" class:loading={loading}>Valider</button> 
 
 
   </form>
@@ -367,14 +494,14 @@ $: if(currentStep == 6){
 	<label class="label">
 	  <span class="label-text">Remarques concernant {person.firstName} {person.lastName} (facultatif)</span>
 	</label> 
-	<textarea class="textarea h-24 textarea-bordered textarea-secondary" placeholder="Example : Kevin est allergique à la viande de mamouth" bind:value={person.foodRemarks}></textarea>
+	<textarea class="textarea h-24 textarea-bordered textarea-secondary" placeholder="Exemple : {person.firstName} est allergique à la viande de mammouth" bind:value={person.foodRemarks}></textarea>
   </div> 
 
   {/if}
   {/each}
   
   
-  <button type="submit" class="btn btn-secondary float-right" class:loading={loading}>Valider</button>
+  <button type="submit" class="btn btn-primary float-right" class:loading={loading}>Valider</button>
 </form>
   </div>
   </div>
@@ -404,15 +531,13 @@ $: if(currentStep == 6){
   
   <div class="form-control">
   
-	<input type="tel" id="phoneinput" class="input input-primary input-bordered" bind:value={formValues.phone}>
+	<input type="tel" id="phoneinput" class="input input-primary input-bordered">
   </div> 
   
-   
+  <!-- bind:value={formValues.phone}  -->
   
   
-  
-  
-  <button type="submit" class="btn btn-secondary float-right" class:loading={loading}>Valider</button>
+  <button type="submit" class="btn btn-primary float-right" class:loading={loading}>Valider</button>
   </form>
 	</div>
 	</div>
@@ -428,46 +553,118 @@ $: if(currentStep == 6){
 	<div class="collapse-content"> 
 
 		<form on:submit|preventDefault={pushFamilyData}>
-  <div class="form-control my-2">
-	<label class="label">
-	  <span class="label-text">Adresse e-mail, facultatif (pour vours prévenir des aléas COVID)</span>
-	</label> 
-	<input type="text" placeholder="françois@hollande.fr" class="input input-primary input-bordered" pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
-  </div> 
+			{#if formValues.bookingsByFamilyId.nodes.length > 0}
+			<div class="alert my-2 alert-sm">
+			<div class="flex-1">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+				  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+				</svg> 
+				<label>Nous avons le plaisir de vous proposer les logements suivants sur le domaine du chateau:</label>
+			  </div>
+			</div>
+			{#each formValues.bookingsByFamilyId.nodes as booking,i}
+			<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-lg p-2 my-4 relative">
+				<legend><strong>Batiment:</strong> {booking.roomByRoomId.buildingName} / <strong>Etage:</strong> {booking.roomByRoomId.etage} / <strong>Chambre:</strong> {booking.roomByRoomId.roomNumber}</legend>
+
+				<span class="badge badge-outline badge-sm"><strong>Catégorie: </strong> {booking.roomByRoomId.categoryDescription}</span>
+				<span class="badge badge-outline badge-sm"><strong>Equipement: </strong> {booking.roomByRoomId.equipement}</span>
+				<span class="badge badge-outline badge-sm"><strong>Taille lit(s): </strong> {booking.roomByRoomId.bedsizes}</span>
+				<span class="badge badge-outline badge-sm"><strong>Capacité: </strong> {booking.roomByRoomId.capacity} personne(s)</span>
+	
+			<label class="cursor-pointer label">
+			<select class="select select-bordered select-sm w-full max-w-xs" bind:value={booking.bookingState}>
+			  <option value="pending" disabled>Votre réponse</option> 
+			  <option value="accepted" >J'accepte</option> 
+			  <option value="refused" >Je refuse</option>
+			</select> 
+			</label>
+			
+			</fieldset>
+			{/each}
+			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
+			<div class="alert my-2 alert-sm">
+			<div class="flex-1">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+				  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+				</svg> 
+				<label>Si vous validez ce choix, nous vous demandons une contribution de : {contribution} € pour ces {formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length} logements que vous avez accepté</label>
+			  </div>
+			</div>
+			<div class="alert my-2 alert-sm">
+				<div class="flex-1">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+					  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+					</svg> 
+					<label>Avec ce choix vous logez théoriquement {capacityOptedFor} des {attendingPeopleCount} personne(s) qui viennent.</label>
+				  </div>
+				</div>
+			{/if}
+			{:else}
+afficher les hotels
+			{/if}
   
-	<label class="label">
-	  <span class="label-text">Numero de téléphone, facultatif (pour vours prévenir des aléas COVID)</span>
-   </label> 
   
   
-  <div class="form-control">
-  
-	<input type="tel" id="phontgteinput" class="input input-primary input-bordered">
-  </div> 
-  
-   
-  
-  
-  
-  
-  <button type="submit" class="btn btn-secondary float-right" class:loading={loading}>Valider</button>
+  <button type="submit" class="btn btn-primary float-right" class:loading={loading}>Valider</button>
   </form>
 	</div>
 	</div>
 
 <!-- END TAB 5 / LOGEMENT -->
 
-  {/if}
-<!-- END SHOW BLOCKS AFTER QRCODE SUCCESS -->
+<!-- TAB 6 / RECAP -->
+<div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 7} class:collapse-open={currentStep === 6 || currentStep === 7} class:collapse-close={currentStep !== 6 && currentStep !== 7}> 
+	<div class="collapse-title text-xl font-medium">
+	  Recapitulatif
+	</div> 
+	<div class="collapse-content"> 
+<ul>
+	{#if formValues.cocktailAttending}
+<li>Nous sommes réjouis de vous retrouver samedi 20 aout 2022</li>
+	<li>
+	Vous venez au cocktail{#if formValues.dinerAttending} et au dîner{/if}
+</li>
+{:else}
+<li>
+	Vous ne pouvez pas venir, vous pourrez toutefois nous laisser un message et accéder aux photos
+</li>
+{/if}
+
+{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
+<li>
+	Nous vous demandons une contribution de {contribution} € pour ces {formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length} logements que vous avez accepté(s)
+</li>
+{/if}
+
+
+</ul>
+		
+<div class="alert my-2 alert-sm">
+	<div class="flex-1">
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+		  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+		</svg> 
+		<label>En confirmant cette dernière étape votre réponse est définitive. Si toutefois il y avait un problème, n'hésitez pas à nous contacter.</label>
+	  </div>
+</div>
+		<form on:submit|preventDefault={pushFamilyData}>
+  
+  <button type="submit" class="btn btn-primary float-right" class:loading={loading}>{#if formValues.formStep != 6}Je confirme{:else}Revoir l'animation{/if}</button>
+  
+  </form>
+	</div>
+	</div>
+<!-- END TAB 6 / RECAP-->
+
 
 </div>
 
 
 
 <style global lang="postcss">
-/*
-	#formtabs{
-		height:800px;
+
+	.persondelete{
+		top: -13px;
+		right: -2px;
 	}
-	*/
   </style>

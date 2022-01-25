@@ -24,7 +24,8 @@ CREATE TABLE privateschema.families (
     signing_img_url varchar(255),
     phone character varying(32) COLLATE pg_catalog."default",
     signing text,
-    booking_priority INTEGER DEFAULT 0 CHECK (booking_priority IN (0, 1, 2))
+    booking_priority INTEGER DEFAULT 0 CHECK (booking_priority IN (0, 1, 2)),
+    formStep integer DEFAULT 0
 )
 ;
 CREATE TABLE privateschema.persons (
