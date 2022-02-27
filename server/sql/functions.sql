@@ -65,7 +65,6 @@ CREATE OR REPLACE VIEW privateschema.view_available_tools
            FROM privateschema.tool_bookings
           WHERE tool_bookings.booking_state::text <> 'open'::text
           GROUP BY tool_bookings.tool_id) toolbk ON toolbk.tool_id = tools.tool_id
-  WHERE tools.quantity - COALESCE(toolbk.counter, 0::bigint) > 0;
 
 ----- VIEW FOR MAILING
 DROP VIEW privateschema.view_mailings;

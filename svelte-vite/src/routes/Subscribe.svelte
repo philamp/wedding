@@ -2,7 +2,7 @@
 import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import init from "/dist/birds-animated-small.js";
-	import { connectionStatus, alert } from './../store.js';
+	import { connectionStatus, alert, alertFailure } from './../store.js';
 
 	//spa router params
 	export let params = {}
@@ -203,7 +203,13 @@ onMount(() => {
 		}
 	}
 	
-	const pushFamilyData = async () => {
+	const pushFamilyData = async (confirmNeeded = true) => {
+
+		// simplification popin, default ask confirmaiton in listed cases
+		if(!formValues.cocktailAttending && confirmNeeded){
+		displayStep2Popin = true;return;
+		}	
+
 		let actualSentPhone;
 		let actualSentDayOfArrival;
 		let actualSentFormValues;
@@ -241,7 +247,7 @@ onMount(() => {
 			// !!! + faire booking refused à la fonfirmation du step 6 !!!
 		}else{
 			currentStep += 1;
-			$alert = "Prochaine étape";
+			$alert = "Merci, étape suivante...";
 		}
 
 		loading = false
@@ -249,17 +255,7 @@ onMount(() => {
 		}
 	}
 
-	/* si step 2 et reponse negatif : mettre au step final !!! */
 
-	const pushFamilyDataPopin = () => {
-
-		if(formValues.cocktailAttending){pushFamilyData();return}else{
-
-			displayStep2Popin = true;
-
-		}
-
-	}
 
 	const pushToolBookingsData = async (toolsIntermediateObject) => {
 		loading = true
@@ -302,12 +298,15 @@ onMount(() => {
 	if(json.error)
 	{
 		console.log("Not enough available")
+		$alertFailure = "true";
+		$alert = "Il n'y a plus assez de " + toolsArray[i].toolName;
 	}
 	else
 	{
 		// add it to the existing formValues tree
 		toolsIntermediateObject.toolBookingId = json.data.makeToolBookingv4.toolBooking.toolBookingId;
-		formValues.toolBookingsByFamilyId.nodes = [...formValues.toolBookingsByFamilyId.nodes, toolsIntermediateObject]
+		formValues.toolBookingsByFamilyId.nodes = [...formValues.toolBookingsByFamilyId.nodes, toolsIntermediateObject];
+		toolsArray[i].remaining -= 1
 	}
 
 	
@@ -320,8 +319,8 @@ onMount(() => {
 
 	// construct like it would be from DB
 	console.log(formValues.toolBookingsByFamilyId);
-	formValues.toolBookingsByFamilyId.nodes[j].bookingState = "open";
-
+	formValues.toolBookingsByFamilyId.nodes[j.toolByToolId.toolId].bookingState = "open";
+	toolsArray[j.toolByToolId.toolId].remaining += 1
 	
 	const json = await pushToolBookingsData(formValues.toolBookingsByFamilyId.nodes[j]);
 
@@ -447,7 +446,7 @@ $: if(htmlLoaded && familyDataLoaded){
   <div class="modal-box">
 	<p>êtes vous certain(e)(s) ? vous allez nous manquer :(</p> 
 	<div class="modal-action">
-	  <label for="my-modal-2" class="btn btn-primary" on:click={pushFamilyData}>Oui, je suis certain</label> 
+	  <label for="my-modal-2" class="btn btn-primary" on:click={() => pushFamilyData(false)}>Oui, je suis certain</label> 
 	  <label for="my-modal-2" class="btn">Non, attends !</label>
 	</div>
   </div>
@@ -461,7 +460,7 @@ $: if(htmlLoaded && familyDataLoaded){
 	  <label>Vous êtes invité(e)(s) au cocktail {#if formValues.guestLevel >= 2}et au dîner{/if}</label>
 	</div>
 </div>
-<form on:submit|preventDefault={pushFamilyDataPopin}>
+<form on:submit|preventDefault={pushFamilyData}>
 
 <!-- Votre réponse -->
 <fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4">
@@ -743,8 +742,9 @@ afficher les hotels
 				{#if toolsArray.length > 0}
 				<legend>Les lits supplémentaires disponibles :</legend>
 				<ul>
-				{#each toolsArray as tool,i}
-				<li>{tool.remaining} {tool.toolName} <label class="btn btn-primary btn-sm" on:click={() => getOneTool(i)}>J'en réserve un</label></li>
+				{#each toolsArray as tool}
+				<li>{tool.remaining} {tool.toolName} <label class="btn btn-primary btn-sm" on:click={() => getOneTool(tool.toolId)}>J'en réserve un</label></li>
+				>>> toolid tool.toolId = {tool.toolId}
 				{/each}
 				</ul>
 				{:else}Plus de lits "parapluie" ou de lits pliants disponibles.
@@ -755,9 +755,9 @@ afficher les hotels
 				{#if formValues.toolBookingsByFamilyId.nodes.filter((arg) => arg.bookingState != "open").length > 0}
 				<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
 				<legend>Vos lits supplémentaires réservés:</legend>
-				{#each formValues.toolBookingsByFamilyId.nodes as toolBooking,j}
+				{#each formValues.toolBookingsByFamilyId.nodes as toolBooking}
 				{#if toolBooking.bookingState != "open"}
-				<span class="badge badge-outline badge-sm"><label class="cursor-pointer" on:click={() => delOneTool(j)}><strong>X&nbsp;</strong></label> {toolBooking.toolByToolId.toolName}  </span>
+				<span class="badge badge-outline badge-sm"><label for="" class="cursor-pointer" on:click={() => delOneTool(toolBooking)}><strong>X&nbsp;</strong></label> {toolBooking.toolByToolId.toolName}  </span>
 				{/if}
 				{/each}
 				</fieldset>

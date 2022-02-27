@@ -60,7 +60,7 @@ await runner.release();
 
 if(result.data.getAuth.family){
   result.jwt = jwt.sign({ family_id: result.data.getAuth.family.familyId, pass_word: result.data.getAuth.family.passWord}, process.env.HASH, {})
-  res.cookie("jwt", result.jwt, {maxAge: 90000000, httpOnly: false, secure: false})
+  res.cookie("jwt", result.jwt, {maxAge: 604800000, httpOnly: false, secure: false})
   res.json(result)
 }else{
   res.json({ error : "Le code est inconnu"})
@@ -207,10 +207,17 @@ catch(e){
 // encode nodeID for tool
 
 async function getTools(req, res){
-  if(!req.cookies['jwt']){res.json({ error : "erreur cookie non fourni"}); return}
-  let decoded = jwt.verify(req.cookies['jwt'], process.env.HASH);
 
-  if(!decoded.family_id){res.json({ error : "cookie fourni mais familiy_id non existant"}); return}
+  let decoded
+  if(!req.cookies['jwt']){res.json({ error : "erreur cookie non fourni"}); return}
+  try{
+  decoded = jwt.verify(req.cookies['jwt'], process.env.HASH)
+  }
+  catch(e){
+    res.clearCookie("jwt")
+    res.json({error: "cookie jwt cassé", cookieError: true})
+    return
+  }
 
   try{
     const runner = await makeQueryRunner(
@@ -262,8 +269,16 @@ async function getTools(req, res){
 // push createBookingTooldata ------
 
 async function pushToolBookingsData(req, res) {
+  let decoded
   if(!req.cookies['jwt']){res.json({ error : "erreur cookie non fourni"}); return}
-  let decoded = jwt.verify(req.cookies['jwt'], process.env.HASH)
+  try{
+  decoded = jwt.verify(req.cookies['jwt'], process.env.HASH)
+  }
+  catch(e){
+    res.clearCookie("jwt")
+    res.json({error: "cookie jwt cassé", cookieError: true})
+    return
+  }
   let family_id = decoded.family_id
 
   let toolBookingData = req.body
@@ -377,8 +392,16 @@ async function pushToolBookingsData(req, res) {
 // push family data -------------------------
 
 async function pushFamilyData(req, res) {
+  let decoded
   if(!req.cookies['jwt']){res.json({ error : "erreur cookie non fourni"}); return}
-  let decoded = jwt.verify(req.cookies['jwt'], process.env.HASH)
+  try{
+  decoded = jwt.verify(req.cookies['jwt'], process.env.HASH)
+  }
+  catch(e){
+    res.clearCookie("jwt")
+    res.json({error: "cookie jwt cassé", cookieError: true})
+    return
+  }
 
   let family_id = decoded.family_id
 
