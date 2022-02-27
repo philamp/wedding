@@ -1,6 +1,6 @@
 <script>
   import './global.css'
-	
+  import Alert from './Alert.svelte'
 	import Router from 'svelte-spa-router';
 	export let ready;
 
@@ -32,13 +32,30 @@ let routes = {
 
 // make the navbar disappear on clicking on any A and scroll on top of main
 onMount(() => {
+
+	if(document.cookie){
+		verifyAuth()
+		}
+
+
 	var els = document.querySelectorAll('a');
 for( let i = 0; i < els.length; i++ ) {
   els[i].addEventListener( 'click', () => {menuOpened = false; document.querySelector('main').scrollTo(0, 0);})
 }
 	})
 
+	async function verifyAuth() {
 
+		const res = await fetch('/api/familydata', {
+			method: 'GET'
+		})
+		
+		const json = await res.json()
+		if(json.error){console.log(json.error);return}
+		//set global connectionstatus
+		$connectionStatus = true;
+
+	}
 
 
 </script>
@@ -46,6 +63,7 @@ for( let i = 0; i < els.length; i++ ) {
 <svelte:head>
 	<script defer async src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBaGgHMLDLVWiOQC0m6F23v3mfccGnvbhM&callback=initMap"></script>
 </svelte:head>
+<Alert />
 <div class="drawer drawer-mobile">
 	<input id="main-menu" type="checkbox" class="drawer-toggle" bind:checked={menuOpened}>
 	<main class="flex-grow block overflow-x-hidden bg-base-100 bg-neutral-content drawer-content">
@@ -284,6 +302,7 @@ for( let i = 0; i < els.length; i++ ) {
 
 
 <!-- PUT PAGE CONTENT HERE-->
+
 <Router {routes} />
 <!-- END PUT PAGE CONTENT HERE !!! spacer below -->
 

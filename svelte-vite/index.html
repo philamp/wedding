@@ -19,12 +19,12 @@
 		
 			window.qrcode.callback = (res) => {
 			  if (res) {
-				console.log(res);
-				/*const match = res.match(/mari.*c=([a-z0-9]{5})([a-z0-9]{5})/);*/
 		
-				console.log(res);
+				const found = res.match(/\/#\/P\/(.*)/);
+		
+			
 				stopQRScan();
-			  window.QRreturn(res);
+			  window.QRreturn(found[1]);
 		
 			  }
 			};

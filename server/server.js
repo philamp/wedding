@@ -58,7 +58,7 @@ await runner.release();
 
 /* rendre le cookie secure !!! SSL */
 
-if(result.data.getAuth.family.familyId){
+if(result.data.getAuth.family){
   result.jwt = jwt.sign({ family_id: result.data.getAuth.family.familyId, pass_word: result.data.getAuth.family.passWord}, process.env.HASH, {})
   res.cookie("jwt", result.jwt, {maxAge: 90000000, httpOnly: false, secure: false})
   res.json(result)
@@ -78,8 +78,16 @@ catch(e){
 
   // get family data -------------------------
   async function getFamilyData(req, res) {
+    let decoded
     if(!req.cookies['jwt']){res.json({ error : "erreur cookie non fourni"}); return}
-    let decoded = jwt.verify(req.cookies['jwt'], process.env.HASH)
+    try{
+    decoded = jwt.verify(req.cookies['jwt'], process.env.HASH)
+    }
+    catch(e){
+      res.clearCookie("jwt")
+      res.json({error: "cookie cassé", cookieError: true})
+      return
+    }
 
     let family_id = decoded.family_id
     
@@ -99,16 +107,14 @@ catch(e){
             dinerAttending
             emailAddress
             phone
-            phoneCountryCode
             guestLevel
             formStep
+            freeBooking
+            dayOfArrival
             
             peopleByFamilyId {
               nodes {
-                reverseCocktailAttending
-                reverseDinerAttending
                 foodRemarks
-                gender
                 lastName
                 nodeId
                 ageRange
@@ -129,6 +135,9 @@ catch(e){
                   nodeId
                   roomId
                   roomNumber
+                  maxDays
+                  oneNightPrice
+                  twoNightPrice
                 }
                 bookingId
                 bookingState
@@ -136,6 +145,21 @@ catch(e){
                 roomId
                 nodeId
                 updatedAt
+              }
+            }
+
+            toolBookingsByFamilyId {
+              nodes {
+                toolByToolId {
+                  toolName
+                  toolId
+                  quantity
+                  nodeId
+                }
+                bookingState
+                familyId
+                toolBookingId
+                nodeId
               }
             }
             
@@ -176,6 +200,180 @@ catch(e){
 
 }
 
+
+
+// get toools data
+
+// encode nodeID for tool
+
+async function getTools(req, res){
+  if(!req.cookies['jwt']){res.json({ error : "erreur cookie non fourni"}); return}
+  let decoded = jwt.verify(req.cookies['jwt'], process.env.HASH);
+
+  if(!decoded.family_id){res.json({ error : "cookie fourni mais familiy_id non existant"}); return}
+
+  try{
+    const runner = await makeQueryRunner(
+      `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
+      process.env.DB_SCHEMA,
+    );
+  
+    const result = await runner.query(
+      `query MyToolsQuery {
+        allViewAvailableTools {
+            nodes {
+              toolId
+              toolName
+              remaining
+              quantity
+              taken
+            }
+        }
+      }
+      `
+
+    );
+
+
+  console.log(JSON.stringify(result, null, 2));  
+  await runner.release();
+  res.json(result)
+  
+  }
+
+  catch(e){
+    console.error(e); res.json({ error : "erreur connexion graphql"})
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// push createBookingTooldata ------
+
+async function pushToolBookingsData(req, res) {
+  if(!req.cookies['jwt']){res.json({ error : "erreur cookie non fourni"}); return}
+  let decoded = jwt.verify(req.cookies['jwt'], process.env.HASH)
+  let family_id = decoded.family_id
+
+  let toolBookingData = req.body
+  let result;
+
+  
+
+  try{
+    const runner = await makeQueryRunner(
+      `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
+      process.env.DB_SCHEMA,
+    );
+
+    if(toolBookingData.toolBookingId){
+      console.log("UPDATE MODE");
+
+      result = await runner.query(
+        `mutation MyMutation(
+          $toolBookingId: Int!
+          $bookingState: String!
+        ) {
+          updateToolBookingByToolBookingId(
+            input: {
+              toolBookingPatch: { bookingState: $bookingState }
+              toolBookingId: $toolBookingId
+            }
+          ) {
+            clientMutationId
+          }
+        }`
+        ,
+        { 
+          toolBookingId: toolBookingData.toolBookingId,
+          bookingState: toolBookingData.bookingState
+        }
+      );
+      
+      
+ 
+      res.json({ error : false})
+
+
+
+
+    }else{
+      console.log("INSERT MODE");
+
+      result = await runner.query(
+        `mutation MyMutation(
+          $familyid: Int!
+          $toolId: Int!
+          $bookingState: String!
+          ) {
+          makeToolBookingv4(
+            input: {
+              bookingStateSubmitted: $bookingState
+              familyIdSubmitted: $familyid
+              toolIdSubmitted: $toolId
+            }
+          ) {
+            toolBooking {
+              toolBookingId
+            }
+          }
+        }`
+        ,
+        { 
+          familyid: family_id,
+          toolId: toolBookingData.toolByToolId.toolId,
+          bookingState: toolBookingData.bookingState
+        }
+      );
+    
+    
+      console.log(JSON.stringify(result, null, 2));
+  
+      
+      if(result.data.makeToolBookingv4.toolBooking == null){res.json({error: true})}else{res.json(result)}
+    }
+
+
+
+    await runner.release();
+    //fin try
+    }
+
+    catch(e){
+      console.error(e); res.json({ error : true});return
+      }
+    
+  
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // push family data -------------------------
 
 async function pushFamilyData(req, res) {
@@ -197,15 +395,17 @@ async function pushFamilyData(req, res) {
   // familyData.phone = familyData.hiddenphone; !!!
 
   /* constrain postgre à faire pour empecher un dinerAttending true si guestlevel < 2  !!!! */
+  /* ou le faire ici !!! */
   const result = await runner.query(
     `mutation MyFamilyMutation 
     (
       $cocktailAttending: Boolean!
-      $dinerAttending: Boolean!
+      $dinerAttending: Boolean
       $emailAddress: String
       $phone: String
       $familyid: Int!
       $formStep: Int
+      $dayOfArrival: String
     )
     {
       updateFamilyByFamilyId(
@@ -216,6 +416,7 @@ async function pushFamilyData(req, res) {
             emailAddress: $emailAddress
             phone: $phone
             formStep: $formStep
+            dayOfArrival: $dayOfArrival
           }
           familyId: $familyid
         }
@@ -282,6 +483,9 @@ async function pushFamilyData(req, res) {
 
   for(let i = 0; i < familyData.bookingsByFamilyId.nodes.length; i++){
     let bookingData = familyData.bookingsByFamilyId.nodes[i]
+
+    // un cocktailattending false -> booking refused
+    bookingData.bookingState = familyData.cocktailAttending == false ? "refused" : bookingData.bookingState
     
     let resultBooking = await runner.query(
       `
@@ -323,7 +527,7 @@ async function pushFamilyData(req, res) {
   }
 
   catch(e){
-  console.error(e); res.json({ error : "erreur push graphql"})
+  console.error(e); res.json({ error : "erreur push graphql"}); return
   }
 
   res.json({error : false})
@@ -340,10 +544,22 @@ app.get('/api/familydata', cookieParser(), (req, res) => {
   getFamilyData(req, res)
 });
 
+app.get('/api/tools', cookieParser(), (req, res) => {
+  console.log("une requete GET tools a été envoyé")
+  getTools(req, res)
+});
+
 app.post('/api/pushfamilydata', bodyParser.json(), cookieParser(), (req, res) => {
   console.log("une requete POST formValues a été envoyé")
   console.log(req.body)
   pushFamilyData(req, res)
+  //res.json({ error : false})
+});
+
+app.post('/api/pushToolBookingsData', bodyParser.json(), cookieParser(), (req, res) => {
+  console.log("une requete POST getToolbooking a été envoyé")
+  console.log(req.body)
+  pushToolBookingsData(req, res)
   //res.json({ error : false})
 });
 
