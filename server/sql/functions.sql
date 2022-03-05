@@ -80,8 +80,8 @@ SELECT
   CASE WHEN privateschema.families.guest_level = 2 THEN 'et dîner' ELSE '' END AS mailing_diner,
   COALESCE (  max(invt.invitedcounter), 0) as mailing_number_of_persons_coming,
         CASE
-            WHEN max(rmbk.counter) > 0 THEN 'vous pouvez disposer d’un logement sur le domaine. Merci de répondre sur le site (ou de nous appeler) et de vous munir de ce carton lors de votre arrivée.'::text
-            ELSE 'nous sommes heureux de vous retrouver à cette occasion. Merci de répondre via le site pour avoir accès aux photos ultérieurement.'::text
+            WHEN max(rmbk.counter) > 0 THEN 'Vous pouvez disposer d’un logement sur place : voir le site'::text
+            ELSE 'Merci de répondre de préférence via le site'::text
         END AS mailing_text_booking,
   	CASE WHEN 
 		COUNT(privateschema.persons.*) > 1
@@ -108,7 +108,7 @@ SELECT
             bookings.family_id,
 				 sum(rooms.capacity) as total_capacity
            FROM privateschema.bookings LEFT JOIN privateschema.rooms ON rooms.room_id = bookings.room_id
-          WHERE bookings.booking_state::text = 'pending'::text
+          WHERE bookings.booking_state::text IN ('pending','accepted')
           GROUP BY bookings.family_id ) rmbk 
 		  ON rmbk.family_id = families.family_id
 
@@ -116,6 +116,8 @@ SELECT
   privateschema.persons 
   on 
   privateschema.persons.family_id = privateschema.families.family_id
+
+  WHERE privateschema.families.guest_level > 0 -- switch en enveloppe / carton
   
   GROUP BY 
   privateschema.families.family_id

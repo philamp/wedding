@@ -61,7 +61,7 @@ for( let i = 0; i < els.length; i++ ) {
 </script>
 
 <svelte:head>
-	<script defer async src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBaGgHMLDLVWiOQC0m6F23v3mfccGnvbhM&callback=initMap"></script>
+	<script defer async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaGgHMLDLVWiOQC0m6F23v3mfccGnvbhM&callback=initMap"></script>
 </svelte:head>
 <Alert />
 <div class="drawer drawer-mobile">
@@ -471,7 +471,7 @@ for( let i = 0; i < els.length; i++ ) {
 	#chinoiserie{
 		
 		background: linear-gradient(to left, rgba(255,255,255,0) -10%,
-              rgba(255, 255, 255, 0.8)), url(/dist/mariage_sidemenu.jpg);
+              rgba(255, 255, 255, 0.8)), url(/pictures/mariage_sidemenu.jpg);
 		background-size: cover;
     	background-position: bottom;
 		

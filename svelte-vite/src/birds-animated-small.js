@@ -87,10 +87,10 @@ export default async function init(containerID) {
   //CSS3D
 
   var content = '<div id="csssceneglobal" style="position: relative; width: 300px; height: 600px; overflow:hidden;">' +
-  '<img id="rabat" src="/dist/rabat.png" style="width: 100%; height: 300px; position: absolute; bottom: 300px; transform-origin: bottom">' +
-  '<img id="derriere" src="/dist/derriere.png" style="width: 100%; height: 300px; position: absolute; bottom: 0px">' +
+  '<img id="rabat" src="/3d_assets/rabat.png" style="width: 100%; height: 300px; position: absolute; bottom: 300px; transform-origin: bottom">' +
+  '<img id="derriere" src="/3d_assets/derriere.png" style="width: 100%; height: 300px; position: absolute; bottom: 0px">' +
   '<div id="formtabscontainer" style="width: 100%; height: 300px; position: absolute; top: 300px"></div>' +
-  '<img id="devant" src="/dist/devant.png" style="width: 100%; height: 300px; position: absolute; bottom: 0px">' +
+  '<img id="devant" src="/3d_assets/devant.png" style="width: 100%; height: 300px; position: absolute; bottom: 0px">' +
 '</div>';
 
 var wrapper = document.createElement('div');
@@ -213,7 +213,7 @@ cssscene.add(cssobject);
 
   const GLscene = new Scene();
   const geometry = new PlaneGeometry( scenewidth, scenewidth*369/577 );
-  const texture = ImageUtils.loadTexture( "/dist/frontletter.png" );
+  const texture = ImageUtils.loadTexture( "/3d_assets/frontletter.png" );
   // assuming you want the texture to repeat in both directions:
   //texture.wrapS = RepeatWrapping; 
   //texture.wrapT = RepeatWrapping;
@@ -236,7 +236,7 @@ cssscene.add(cssobject);
   const GLObjects = [];
 
   const loader = new GLTFLoader();
-  const gltfPromise = myGLTFLoader(loader, "/dist/Stork.glb");  
+  const gltfPromise = myGLTFLoader(loader, "/3d_assets/Stork.glb");  
 
   GLrenderer.setSize(container.clientWidth, container.clientHeight);
   GLrenderer.domElement.style.position = 'absolute';

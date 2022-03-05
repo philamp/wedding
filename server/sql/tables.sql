@@ -92,3 +92,6 @@ CREATE TABLE privateschema.bookings (
 
 -- ALTER TABLE
 -- ADD COLUMN
+
+--TRUNCATE TABLE privateschema.rooms RESTART IDENTITY CASCADE;
+--TRUNCATE TABLE privateschema.families RESTART IDENTITY CASCADE;

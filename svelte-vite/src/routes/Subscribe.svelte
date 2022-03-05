@@ -1,8 +1,8 @@
 <script>
 import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import init from "/dist/birds-animated-small.js";
-	import { connectionStatus, alert, alertFailure } from './../store.js';
+	import init from "/src/birds-animated-small.js";
+	import { connectionStatus, alert, alertFailure } from '/src/store.js';
 
 	//spa router params
 	export let params = {}
@@ -34,7 +34,7 @@ onMount(() => {
 	const triggered = () => {if(!window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput"))){
 		window.intlTelInput(document.getElementById("phoneinput"), {
 			separateDialCode: false,	// any initialisation options go here
-			utilsScript: "/dist/intl-tel/js/utils.js",
+			utilsScript: "/intl-tel/js/utils.js",
 			initialCountry: "fr",
 			onlyCountries: ["fr","us","il","es","it","ch"]
 		});
