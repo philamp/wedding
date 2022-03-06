@@ -399,7 +399,8 @@ function updateGLScene(myT) {
   if (t>=10) {
     glAnimState.renderer.setAnimationLoop(null);
     glAnimState.container.style.display='none';
-    alert("TODOOOOOOOO TADAAAAAAA!!!!!!");
+    window.location.href = location.protocol + '//' + location.host + "/#/programme-acces"
+    //alert("TODOOOOOOOO TADAAAAAAA!!!!!!");
     return;
   }
   glAnimState.mixers.forEach((mixer) => {

@@ -14,7 +14,7 @@ import { storeReady } from './../store.js';
     
 
     
-    <h2 class="my-4 mx-4 text-2xl font-bold text-primary">Programme</h2>
+    <h2 class="my-4 mx-4 text-2xl font-bold text-primary">Programme & accès</h2>
 
     <div class="max-w-4xl bg-white rounded-xl shadow-md overflow-hidden mx-4 my-4">
       <div class="xl:flex">
@@ -22,9 +22,9 @@ import { storeReady } from './../store.js';
           <img class="object-cover h-64 w-full" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/%C3%89glise_Sainte-Croix_de_Bernay.jpg/1024px-%C3%89glise_Sainte-Croix_de_Bernay.jpg" alt="">
         </div>
         <div class="p-4">
-          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Cérémonie de mariage: 14h20</div>
+          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Cérémonie de mariage: 14h30</div>
           <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Eglise Sainte-Croix de Bernay</a>
-          <p class="mt-2 text-slate-500">La messe sera célébrée en l’église Sainte-Croix de Bernay par le père Nicolas Lebas.</p>
+          <p class="mt-2 text-slate-500">La messe sera célébrée en l’église Sainte-Croix de Bernay par le Père Nicolas Lebas.</p>
           <label for="my-drawer-2" id="egliseSainteCroixM" class="cursor-pointer btn btn-secondary btn-xs">⛪ Afficher sur la carte</label>
         </div>
       </div>
@@ -36,10 +36,49 @@ import { storeReady } from './../store.js';
           <img class="object-cover h-64 w-full" src="https://www.1001salles.com/images/provider/9626/1507731735_6403_700920710.jpg" alt="">
         </div>
         <div class="p-4">
-          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Cocktail: 16h</div>
+          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Cocktail: 17h30</div>
           <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Chateau de Carsix</a>
-          <p class="mt-2 text-slate-500">Réception dans le chateau de Carsix</p>
+          <p class="mt-2 text-slate-500">Réception dans le chateau de Carsix.</p>
           <label for="my-drawer-2" id="ChateauM" class="cursor-pointer btn btn-secondary btn-xs">🏰 Afficher sur la carte</label>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="my-4 mx-4 text-2xl font-bold text-primary">Autres infos importantes</h2>
+
+    <div class="max-w-4xl bg-white rounded-xl shadow-md overflow-hidden mx-4 my-4">
+      <div class="xl:flex">
+        <div class="xl:w-5/12 md:shrink-0">
+          <img class="object-cover h-64 w-full" src="/static_pictures/fabienne_contact.png" alt="">
+        </div>
+        <div class="p-4">
+          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Animations</div>
+          <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Wedding planneuse</a>
+          <p class="mt-2 text-slate-500">Merci de contacter <strong>Fabienne Calvo</strong> si vous avez un discours, une surprise ou une animation à présenter/planifier.</p>
+          <a href="https://api.whatsapp.com/send?phone=+33682371092" id="FabienneContact" class="cursor-pointer btn btn-secondary btn-xs" target="_blank">Contacter Fabienne sur Whatsapp</a>
+          <a href="tel:+33682371092" id="FabienneContact" class="cursor-pointer btn btn-secondary btn-xs" target="_blank">Par téléphone: +33 6 82 37 10 92</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-4xl bg-white rounded-xl shadow-md overflow-hidden mx-4 my-4">
+      <div class="xl:flex">
+        <div class="xl:w-5/12 md:shrink-0">
+          <img class="object-cover h-64 w-full" src="/static_pictures/logement.jpg" alt="">
+        </div>
+        <div class="p-4">
+          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Logement</div>
+          <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Avant votre départ, veillez à:</a>
+          <ol class="mt-2 text-slate-500">
+            
+            <li>- Vider les chambres de toute affaire personnelle</li>
+            <li>- Descendre les poubelles de salle de bain dans la cuisine du château</li>
+            <li>- Déposer les draps et serviettes au pied du lit</li>
+          
+
+
+          </ol>
+          <label for="my-drawer-2" id="ChateauM" class="cursor-pointer btn btn-secondary btn-xs">a suppr</label>
         </div>
       </div>
     </div>

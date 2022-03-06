@@ -55,7 +55,9 @@ CREATE TABLE privateschema.persons (
 CREATE TABLE privateschema.tools (
     tool_id SERIAL PRIMARY KEY,
     tool_name varchar(128) NOT NULL,
-    quantity INTEGER DEFAULT 1
+    quantity INTEGER DEFAULT 1,
+    price INTEGER DEFAULT 0,
+    tool_type varchar(4)
 )
 ;
 CREATE TABLE privateschema.tool_bookings (

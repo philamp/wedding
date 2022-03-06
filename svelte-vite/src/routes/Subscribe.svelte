@@ -161,6 +161,8 @@ onMount(() => {
 			}
 		}
 
+		console.log(formValues);
+
 	}
 
 
@@ -175,8 +177,10 @@ onMount(() => {
 		const json = await res.json()
 		//loading = false
 		if(json.error){return}
-
+		
 		toolsArray = json.data.allViewAvailableTools.nodes;
+
+
 
 	}
 
@@ -282,17 +286,20 @@ onMount(() => {
 
 	// construct like it would be from DB
 
+
 	let toolsIntermediateObject =  {
                 "toolByToolId": {
                   "toolName": toolsArray[i].toolName,
                   "toolId": toolsArray[i].toolId,
+				  "toolType": toolsArray[i].toolType,
+				  "price": toolsArray[i].price
                 },
                 "bookingState": "reserved",
               }
 	
 	const json = await pushToolBookingsData(toolsIntermediateObject);
 
-
+	
 
 	// direct update to DB -> always create through EXPRESS: if familiy id present :: return error if not feasible
 	if(json.error)
@@ -306,6 +313,7 @@ onMount(() => {
 		// add it to the existing formValues tree
 		toolsIntermediateObject.toolBookingId = json.data.makeToolBookingv4.toolBooking.toolBookingId;
 		formValues.toolBookingsByFamilyId.nodes = [...formValues.toolBookingsByFamilyId.nodes, toolsIntermediateObject];
+		console.log(formValues);
 		toolsArray[i].remaining -= 1
 	}
 
@@ -318,9 +326,11 @@ onMount(() => {
 	const delOneTool = async (j) => {
 
 	// construct like it would be from DB
-	console.log(formValues.toolBookingsByFamilyId);
-	formValues.toolBookingsByFamilyId.nodes[j.toolByToolId.toolId].bookingState = "open";
-	toolsArray[j.toolByToolId.toolId].remaining += 1
+	// console.log(formValues.toolBookingsByFamilyId);
+
+	formValues.toolBookingsByFamilyId.nodes[j].bookingState = "open";
+
+	toolsArray[toolsArray.findIndex(arg => arg.toolId == formValues.toolBookingsByFamilyId.nodes[j].toolByToolId.toolId)].remaining += 1
 	
 	const json = await pushToolBookingsData(formValues.toolBookingsByFamilyId.nodes[j]);
 
@@ -385,6 +395,8 @@ $: if(htmlLoaded && familyDataLoaded){
 }
 
 </script>
+
+
 
 {#if currentStep >= 5}
 <figure id="scene-275138496" style="height: 50px; width: 50px; position: absolute; z-index: 10000"></figure>
@@ -692,31 +704,51 @@ $: if(htmlLoaded && familyDataLoaded){
 	</div> 
 	<div class="collapse-content"> 
 
+
 		<form on:submit|preventDefault={pushFamilyData}>
 			{#if formValues.bookingsByFamilyId.nodes.length > 0}
-			<div class="alert my-2 alert-sm shadow-md bg-base-100">
-			<div class="flex-1">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
-				  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
-				</svg> 
-				<label>Nous avons le plaisir de vous proposer les logements suivants sur le domaine du chateau:</label>
-			  </div>
-			</div>
+		    <ul>
+				<li>
+			Nous avons le plaisir de vous proposer les logements suivants sur le domaine du chateau:
+		</li>
+		    </ul>
 			{#each formValues.bookingsByFamilyId.nodes as booking,i}
+
+
+
+
+
+
 			<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
+
+
 				<legend><strong>Batiment:</strong> {booking.roomByRoomId.buildingName} / <strong>Etage:</strong> {booking.roomByRoomId.etage} / <strong>Chambre:</strong> {booking.roomByRoomId.roomNumber}</legend>
 
-				<span class="badge badge-outline badge-sm"><strong>Catégorie: </strong> {booking.roomByRoomId.categoryDescription}</span>
-				<span class="badge badge-outline badge-sm"><strong>Equipement: </strong> {booking.roomByRoomId.equipement}</span>
-				<span class="badge badge-outline badge-sm"><strong>Capacité: </strong> {booking.roomByRoomId.capacity} personne(s)</span>
+				<ul class="list-disc list-inside text-sm">
+					<li>
+						<strong>Catégorie: </strong>{booking.roomByRoomId.categoryDescription}
+					</li>
+					<li>
+						<strong>Equipement: </strong>{booking.roomByRoomId.equipement}
+					</li>
+					<li>
+						<strong>Capacité: </strong>{booking.roomByRoomId.capacity} personne(s)
+					</li>
+					<li>
+						<strong>Taille des lits: </strong>{booking.roomByRoomId.bedsizes}
+					</li>
+
+
+
+				</ul>
+				
 	
-			<label class="cursor-pointer label">
 			<select class="select select-bordered select-sm w-full max-w-xs select-primary" bind:value={booking.bookingState}>
 			  <option value="pending" disabled>Votre réponse</option> 
 			  <option value="accepted" >J'accepte</option> 
 			  <option value="refused" >Je refuse</option>
 			</select> 
-			</label>
+			
 			
 			</fieldset>
 			{/each}
@@ -739,25 +771,38 @@ afficher les hotels
 
 			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
 				<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
-				{#if toolsArray.length > 0}
-				<legend>Les lits supplémentaires disponibles :</legend>
-				<ul>
-				{#each toolsArray as tool}
-				<li>{tool.remaining} {tool.toolName} <label class="btn btn-primary btn-sm" on:click={() => getOneTool(tool.toolId)}>J'en réserve un</label></li>
-				>>> toolid tool.toolId = {tool.toolId}
+
+				<legend>Lits supplémentaires disponibles :</legend>
+				<ul class="list-disc list-inside">
+				{#each toolsArray as tool, i}
+				{#if tool.toolType == "bed"}
+				<li>({tool.remaining}){tool.toolName} <label for ="" class="btn btn-primary btn-sm" on:click={() => getOneTool(i)}>Ajouter</label></li>
+				{/if}
 				{/each}
 				</ul>
-				{:else}Plus de lits "parapluie" ou de lits pliants disponibles.
+			</fieldset>
+
+
+			<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
+
+				<legend>Petits déjeuners du samedi matin :</legend>
+				<ul class="list-disc list-inside">
+				{#each toolsArray as tool, i}
+				{#if tool.toolType == "food"}
+				<li>({tool.remaining}){tool.toolName} <label for ="" class="btn btn-primary btn-sm" on:click={() => getOneTool(i)}>Ajouter</label></li>
 				{/if}
+				{/each}
+				</ul>
+
 			</fieldset>
 				
 				
-				{#if formValues.toolBookingsByFamilyId.nodes.filter((arg) => arg.bookingState != "open").length > 0}
+				{#if formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" ).length > 0}
 				<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
-				<legend>Vos lits supplémentaires réservés:</legend>
-				{#each formValues.toolBookingsByFamilyId.nodes as toolBooking}
+				<legend>Vos options supplémentaires:</legend>
+				{#each formValues.toolBookingsByFamilyId.nodes as toolBooking, j}
 				{#if toolBooking.bookingState != "open"}
-				<span class="badge badge-outline badge-sm"><label for="" class="cursor-pointer" on:click={() => delOneTool(toolBooking)}><strong>X&nbsp;</strong></label> {toolBooking.toolByToolId.toolName}  </span>
+				<span class="badge badge-secondary badge-sm"><label for="" class="cursor-pointer" on:click={() => delOneTool(j)}><strong>X&nbsp;</strong></label> {toolBooking.toolByToolId.toolName}  </span>
 				{/if}
 				{/each}
 				</fieldset>
@@ -769,19 +814,41 @@ afficher les hotels
 
 			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
 			<div class="alert my-2 alert-sm shadow-md bg-base-100">
-			<div class="flex-1">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
-				  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
-				</svg> 
-				<label for="">Vous venez donc pour {daysText}, {#if !formValues.freeBooking}Si vous validez ce choix, le prix est de: {contribution} €. {:else}Logement(s) offert(s).{/if} Nombre de logements acceptés :{formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length}</label>
-			  </div>
-			</div>
-			<div class="alert my-2 alert-sm shadow-md bg-base-100">
 				<div class="flex-1">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
 					  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
 					</svg> 
-					<label for="">Avec ce choix vous logez théoriquement {capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter((arg) => arg.bookingState != "open").length} des {attendingPeopleCount} personne(s) qui viennent.</label>
+					<label for="">Avec ces choix:
+						<ul class="list-disc list-inside">
+							<li>Nombre de chambres acceptées :<strong>{formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length}</li>
+						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) qui viennent pour <strong>{daysText}</strong>.
+						</li>
+
+						{#if (capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length) < attendingPeopleCount}
+						<div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
+							<div>
+							  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+							  <span>Attention, le nombre de couchages semble insuffisant, vous pouvez ajouter un ou des lits supplémentaires</span>
+							</div>
+						  </div>
+						  {/if}
+
+						<li>Vous avez pris <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length}</strong> petit déjeuners du samedi pour les {attendingPeopleCount} personne(s) qui viennent.
+						</li>
+						
+							
+							
+							{#if formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length}
+							<li>Le prix pour les petits déjeuners est de <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
+							{/if}
+
+							<li>Le prix pour les chambres est de : <strong>{contribution} €</strong></li>
+							<li>Le prix total est de : <strong>{contribution + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
+
+							<br/>Remarque: pour les personnes logées sur place, un brunch sera servi dimanche matin.
+					
+						</ul>
+						</label>
 				  </div>
 				</div>
 			{/if}
@@ -849,4 +916,8 @@ afficher les hotels
 		top: -13px;
 		right: -2px;
 	}
+	.failure{
+    background-color: rgb(230, 67, 26);
+    color: #fff;
+  }
   </style>

@@ -9,17 +9,19 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
-app.use(
-  postgraphile(
-    `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
-    "privateschema",
-    {
-      watchPg: true,
-      graphiql: true,
-      enhanceGraphiql: true,
-    }
-  )
-);
+if(process.env.NODE_ENV == "dev"){
+  app.use(
+    postgraphile(
+      `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
+      "privateschema",
+      {
+        watchPg: true,
+        graphiql: true,
+        enhanceGraphiql: true,
+      }
+    )
+  );
+}
 
 /* change schema important !!! */
 
@@ -154,6 +156,8 @@ catch(e){
                   toolName
                   toolId
                   quantity
+                  price
+                  toolType
                   nodeId
                 }
                 bookingState
@@ -234,6 +238,8 @@ async function getTools(req, res){
               remaining
               quantity
               taken
+              price
+              toolType
             }
         }
       }
