@@ -430,7 +430,7 @@ $: if(htmlLoaded && familyDataLoaded){
 	  <span class="label-text">Ou saisissez le code dans le champ ci-dessous:</span>
 	</label> 
 	<div class="relative">
-	  <input type="text" id="code-input" placeholder="XXXXXXXXXX" style="text-transform: uppercase" bind:value={QRValueSvelte} class="w-full pr-16 input input-primary input-bordered" required> 
+	  <input type="text" id="code-input" placeholder="A1B2C3D4" style="text-transform: uppercase" bind:value={QRValueSvelte} class="w-full pr-16 input input-primary input-bordered" required> 
 	  <button type="submit" class="absolute top-0 right-0 rounded-l-none btn btn-primary" class:loading={loading} value="Valider">Valider</button>
 	</div>
    </div> 
@@ -475,15 +475,20 @@ $: if(htmlLoaded && familyDataLoaded){
 <form on:submit|preventDefault={pushFamilyData}>
 
 <!-- Votre réponse -->
+
 <fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4">
-<legend>Votre réponse:</legend>
-	<label class="cursor-pointer label"><span class="label-text">Nous venons au cocktail non/oui : </span> <input type="checkbox" bind:checked={formValues.cocktailAttending} on:change={tangledCheckboxes} class="toggle toggle-secondary"></label>
-	{#if formValues.cocktailAttending}
-	{#if formValues.guestLevel >= 2}
-	  <label class="cursor-pointer label"><span class="label-text">Nous venons aussi au diner non/oui : </span> <input type="checkbox" bind:checked={formValues.dinerAttending} class="toggle toggle-secondary"></label>
-	{/if}
-	{/if}
+	<legend>Nous viendrons avec plaisir au cocktail:</legend>
+	<label class="cursor-pointer label">non: <input type="radio" name="radio-1" class="radio radio-secondary" bind:group={formValues.cocktailAttending} value={false} on:change={tangledCheckboxes}></label>
+	<label class="cursor-pointer label">oui: <input type="radio" name="radio-1" class="radio radio-secondary" bind:group={formValues.cocktailAttending} value={true} on:change={tangledCheckboxes}></label>
 </fieldset>
+
+{#if formValues.cocktailAttending && formValues.guestLevel >= 2}
+<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4" transition:fly={{ x: -200, duration: 500 }}>
+	<legend>Nous viendrons avec plaisir au diner:</legend>
+	<label class="cursor-pointer label">non: <input type="radio" name="radio-2" class="radio radio-secondary" bind:group={formValues.dinerAttending} value={false}></label>
+	<label class="cursor-pointer label">oui: <input type="radio" name="radio-2" class="radio radio-secondary" bind:group={formValues.dinerAttending} value={true}></label>
+</fieldset>
+{/if}
 
 <!--Bloc membres-->
 {#if formValues.cocktailAttending}
