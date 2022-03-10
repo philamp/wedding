@@ -52,6 +52,8 @@ onMount(() => {
 
 	let displayStep2Popin = false;
 
+	let displayStep5Popin = false;
+
 	let displayDayOfArrival = false;
 
 	let toolsArray = [];
@@ -90,6 +92,8 @@ onMount(() => {
  
 
 	let loading = false;
+	let addLoading;
+	let delLoading;
 
 	const triggerQR = () => {
 
@@ -188,6 +192,9 @@ onMount(() => {
 
 	const deletePerson = (i) => {
 		formValues.peopleByFamilyId.nodes[i].attending = false;
+
+		$alert = formValues.peopleByFamilyId.nodes[i].firstName + " ne vient pas"
+
 		if (formValues?.peopleByFamilyId?.nodes?.filter(arg => arg.attending).length < 1) {
 		formValues.dinerAttending = false
 		formValues.cocktailAttending = false
@@ -202,6 +209,7 @@ onMount(() => {
 		for(let i = 0; i < formValues.peopleByFamilyId.nodes.length; i++ ){
 			if(formValues.peopleByFamilyId.nodes[i].attending == false){
 				formValues.peopleByFamilyId.nodes[i].attending = true
+				$alert = formValues.peopleByFamilyId.nodes[i].firstName + " vient"
 				return;
 			}
 		}
@@ -210,9 +218,13 @@ onMount(() => {
 	const pushFamilyData = async (confirmNeeded = true) => {
 
 		// simplification popin, default ask confirmaiton in listed cases
-		if(!formValues.cocktailAttending && confirmNeeded){
+		if(!formValues.cocktailAttending && confirmNeeded && currentStep == 2){
 		displayStep2Popin = true;return;
-		}	
+		}
+
+		if(confirmNeeded && currentStep == 5 && formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "refused" || arg.bookingState == "pending").length > 0){
+		displayStep5Popin = true;return;
+		}
 
 		let actualSentPhone;
 		let actualSentDayOfArrival;
@@ -262,8 +274,8 @@ onMount(() => {
 
 
 	const pushToolBookingsData = async (toolsIntermediateObject) => {
-		loading = true
 
+		loading = true
 		const res = await fetch('/api/pushToolBookingsData', {
 			method: 'POST',
 			body: JSON.stringify(toolsIntermediateObject),
@@ -275,8 +287,8 @@ onMount(() => {
 		})
 		
 		const json = await res.json()
-
 		loading = false
+
 
 		return json;
 
@@ -285,7 +297,7 @@ onMount(() => {
 	const getOneTool = async (i) => {
 
 	// construct like it would be from DB
-
+	addLoading = i;
 
 	let toolsIntermediateObject =  {
                 "toolByToolId": {
@@ -299,7 +311,7 @@ onMount(() => {
 	
 	const json = await pushToolBookingsData(toolsIntermediateObject);
 
-	
+	addLoading = null;
 
 	// direct update to DB -> always create through EXPRESS: if familiy id present :: return error if not feasible
 	if(json.error)
@@ -324,9 +336,12 @@ onMount(() => {
 	}
 
 	const delOneTool = async (j) => {
+	//deprecated after counter evol !!!
 
 	// construct like it would be from DB
 	// console.log(formValues.toolBookingsByFamilyId);
+
+	
 
 	formValues.toolBookingsByFamilyId.nodes[j].bookingState = "open";
 
@@ -334,7 +349,34 @@ onMount(() => {
 	
 	const json = await pushToolBookingsData(formValues.toolBookingsByFamilyId.nodes[j]);
 
+	
+
 		
+	}
+
+	const delOneToolBis = async (g) => {
+
+		let i = toolsArray[g].toolId
+
+		// si pas de toolbooking à enelever return
+		if (formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolId == i).length > 0){
+
+			delLoading = g;
+			//remove one of them
+			let found = formValues.toolBookingsByFamilyId.nodes.findIndex(arg => arg.toolByToolId.toolId == i && arg.bookingState != "open")
+			formValues.toolBookingsByFamilyId.nodes[found].bookingState = "open";
+			const json = await pushToolBookingsData(formValues.toolBookingsByFamilyId.nodes[found]);
+			toolsArray[toolsArray.findIndex(arg => arg.toolId == formValues.toolBookingsByFamilyId.nodes[found].toolByToolId.toolId)].remaining += 1
+
+			delLoading = null;
+		
+		}else{
+
+			return
+		}
+
+
+
 	}
 
 
@@ -406,9 +448,9 @@ $: if(htmlLoaded && familyDataLoaded){
 	
 <!-- BEGIN TAB 1 / QR CODE -->
 
-<div tabindex="0" class="collapse border rounded-box bg-base-100 border-base-300 m-2 shadow-lg" class:bg-accent={currentStep > 1} class:collapse-open={currentStep === 1} class:collapse-close={currentStep !== 1} on:click={() => currentStep >= 1 ? currentStep = 1 : currentStep}> 
+<div tabindex="0" class="collapse border rounded-box bg-base-100 border-base-300 m-2 shadow-lg" class:bg-accent={currentStep > 1} class:collapse-open={currentStep === 1} class:collapse-close={currentStep !== 1} class:cursor-pointer={currentStep > 1} on:click={() => currentStep >= 1 ? currentStep = 1 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
-	  S'identifier avec le carton
+	  S'identifier <small>avec le carton d'invitation</small>
 	</div> 
 	<div class="collapse-content">
   
@@ -445,7 +487,7 @@ $: if(htmlLoaded && familyDataLoaded){
 
 
 <!-- BEGIN TAB 2 / ANSWER + PEOPLE V2-->
-<div tabindex="0" class="collapse border rounded-box border-base-300 m-2 collapse-close bg-base-100 shadow-lg" class:bg-accent={currentStep > 2} class:collapse-open={currentStep === 2} class:collapse-close={currentStep !== 2} on:click={() => currentStep >= 2 ? currentStep = 2 : currentStep}> 
+<div tabindex="0" class="collapse border rounded-box border-base-300 m-2 collapse-close bg-base-100 shadow-lg" class:bg-accent={currentStep > 2} class:collapse-open={currentStep === 2} class:collapse-close={currentStep !== 2} class:cursor-pointer={currentStep > 2} on:click={() => currentStep >= 2 ? currentStep = 2 : currentStep}> 
 <div class="collapse-title text-xl font-medium">
   Réponse et invités
 </div> 
@@ -477,16 +519,18 @@ $: if(htmlLoaded && familyDataLoaded){
 <!-- Votre réponse -->
 
 <fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4">
-	<legend>Nous viendrons avec plaisir au cocktail:</legend>
-	<label class="cursor-pointer label">non: <input type="radio" name="radio-1" class="radio radio-secondary" bind:group={formValues.cocktailAttending} value={false} on:change={tangledCheckboxes}></label>
-	<label class="cursor-pointer label">oui: <input type="radio" name="radio-1" class="radio radio-secondary" bind:group={formValues.cocktailAttending} value={true} on:change={tangledCheckboxes}></label>
+	<legend>Nous viendrons avec plaisir au cocktail</legend>
+	<label class="cursor-pointer label">oui&nbsp;<input type="radio" name="radio-1" class="radio radio-secondary" bind:group={formValues.cocktailAttending} value={true} on:change={tangledCheckboxes}></label>
+	<label class="cursor-pointer label">non&nbsp;<input type="radio" name="radio-1" class="radio radio-secondary" bind:group={formValues.cocktailAttending} value={false} on:change={tangledCheckboxes}></label>
+
 </fieldset>
 
 {#if formValues.cocktailAttending && formValues.guestLevel >= 2}
 <fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4" transition:fly={{ x: -200, duration: 500 }}>
-	<legend>Nous viendrons avec plaisir au diner:</legend>
-	<label class="cursor-pointer label">non: <input type="radio" name="radio-2" class="radio radio-secondary" bind:group={formValues.dinerAttending} value={false}></label>
-	<label class="cursor-pointer label">oui: <input type="radio" name="radio-2" class="radio radio-secondary" bind:group={formValues.dinerAttending} value={true}></label>
+	<legend>Nous viendrons avec plaisir au dîner</legend>
+
+	<label class="cursor-pointer label">oui&nbsp;<input type="radio" name="radio-2" class="radio radio-secondary" bind:group={formValues.dinerAttending} value={true}></label>
+	<label class="cursor-pointer label">non&nbsp;<input type="radio" name="radio-2" class="radio radio-secondary" bind:group={formValues.dinerAttending} value={false}></label>
 </fieldset>
 {/if}
 
@@ -499,68 +543,7 @@ $: if(htmlLoaded && familyDataLoaded){
 <fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative" transition:fly={{ x: -200, duration: 500 }}>
 	<legend>{person.firstName} {person.lastName}</legend>
 
-		<button class="btn btn-secondary btn-sm absolute persondelete" on:click|preventDefault={() => deletePerson(i)}>
-		  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 stroke-current">   
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-			                 
-		  </svg>
-
-
-		  <svg
-		  class="inline-block w-4 h-4 stroke-current"
-		  viewBox="0 0 197.55701 197.55743"
-		  version="1.1"
-		  id="svg5"
-		  inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-		  sodipodi:docname="remove.svg"
-		  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-		  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-		  xmlns="http://www.w3.org/2000/svg"
-		  xmlns:svg="http://www.w3.org/2000/svg">
-		 <sodipodi:namedview
-			id="namedview7"
-			pagecolor="#ffffff"
-			bordercolor="#666666"
-			borderopacity="1.0"
-			inkscape:pageshadow="2"
-			inkscape:pageopacity="0.0"
-			inkscape:pagecheckerboard="0"
-			inkscape:document-units="mm"
-			showgrid="false"
-			inkscape:zoom="0.77771465"
-			inkscape:cx="396.03215"
-			inkscape:cy="449.39362"
-			inkscape:window-width="1927"
-			inkscape:window-height="1131"
-			inkscape:window-x="3331"
-			inkscape:window-y="673"
-			inkscape:window-maximized="0"
-			inkscape:current-layer="layer1" />
-		 <defs
-			id="defs2" />
-		 <g
-			inkscape:label="Calque 1"
-			inkscape:groupmode="layer"
-			id="layer1"
-			transform="translate(-0.22149821,0.11891948)">
-		   <g
-			  fill-rule="evenodd"
-			  id="g13"
-			  transform="matrix(0.35277778,0,0,0.35277778,-24.4715,-0.11891948)">
-			 <path
-				d="M 258.43,44.145 C 277.977,16.149 308.817,0 350,0 c 41.183,0 72.023,16.148 91.57,44.145 18.598,26.633 25.098,61.281 25.098,95.855 0,34.574 -6.5,69.223 -25.098,95.852 -2.9609,4.2461 -6.1875,8.2188 -9.6641,11.902 21.922,3.6836 43.652,8.8555 65.031,15.516 12.305,3.8359 19.172,16.914 15.34,29.219 -3.832,12.305 -16.914,19.172 -29.215,15.336 -119.9,-37.352 -251.89,-22.988 -362.48,43.078 -2.4297,1.4492 -3.918,4.0742 -3.918,6.9023 v 132.2 c 0,12.887 10.445,23.332 23.332,23.332 h 233.33 c 12.887,0 23.336,10.449 23.336,23.336 0,12.887 -10.449,23.332 -23.336,23.332 h -233.33 c -38.66,0 -70,-31.34 -70,-70 v -132.2 c 0,-19.254 10.121,-37.094 26.652,-46.969 53.633,-32.039 111.82,-53.066 171.44,-63.082 -3.4766,-3.6836 -6.6992,-7.6562 -9.6641,-11.902 -18.598,-26.629 -25.098,-61.277 -25.098,-95.852 0,-34.575 6.5,-69.223 25.098,-95.855 z m 38.262,26.719 c -10.887,15.59 -16.691,39.277 -16.691,69.137 0,29.86 5.8047,53.547 16.691,69.137 9.9375,14.23 25.762,24.195 53.309,24.195 27.547,0 43.371,-9.9648 53.309,-24.195 10.887,-15.59 16.691,-39.277 16.691,-69.137 0,-29.86 -5.8047,-53.547 -16.691,-69.137 -9.9375,-14.23 -25.762,-24.195 -53.309,-24.195 -27.547,0 -43.371,9.9648 -53.309,24.195 z"
-				id="path9"
-				style="fill:#f9f9f9" />
-			 <path
-				d="M 630,443.33 C 630,507.764 577.766,560 513.33,560 448.9,560 396.67,507.766 396.67,443.33 c 0,-64.43 52.234,-116.66 116.66,-116.66 64.434,0 116.67,52.234 116.67,116.66 z m -46.668,0 c 0,12.887 -10.445,23.336 -23.332,23.336 h -93.332 c -12.887,0 -23.336,-10.449 -23.336,-23.336 0,-12.887 10.449,-23.332 23.336,-23.332 H 560 c 12.887,0 23.332,10.445 23.332,23.332 z"
-				id="path11"
-				style="fill:#f9f9f9" />
-		   </g>
-		 </g>
-	   </svg>
-
-
-		</button> 
+		<button class="btn btn-secondary btn-sm absolute persondelete" on:click|preventDefault={() => deletePerson(i)}><small>enlever</small></button> 
 
 <label class="cursor-pointer label">
 <input type="text" placeholder="Prénom" class="input input-sm input-bordered" bind:value={person.firstName} required>
@@ -622,9 +605,9 @@ $: if(htmlLoaded && familyDataLoaded){
   
   
   
-  <div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 bg-base-100 shadow-lg" class:bg-accent={currentStep > 3} class:collapse-open={currentStep === 3} class:collapse-close={currentStep !== 3} on:click={() => currentStep >= 3 ? currentStep = 3 : currentStep}> 
+  <div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 bg-base-100 shadow-lg" class:bg-accent={currentStep > 3} class:collapse-open={currentStep === 3} class:collapse-close={currentStep !== 3} class:cursor-pointer={currentStep > 3} on:click={() => currentStep >= 3 ? currentStep = 3 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
-	  Remarques / Allergies
+	  Allergies et/ou régime
 	</div> 
 	<div class="collapse-content"> 
   
@@ -633,7 +616,7 @@ $: if(htmlLoaded && familyDataLoaded){
 	  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
 	  </svg> 
-	  <label>Veuillez indiquer ici des remarques concernant les potentielles allergies et/ou régime alimentaire de chacun</label>
+	  <label for="">Le cas échéant, merci de nous indiquer vos eventuelles allergies et/ou régime alimentaire</label>
 	</div>
   </div>
 
@@ -645,9 +628,9 @@ $: if(htmlLoaded && familyDataLoaded){
 
   <div class="form-control my-2">
 	<label class="label">
-	  <span class="label-text">Remarques concernant {person.firstName} {person.lastName} (facultatif)</span>
+	  <span class="label-text">Pour {person.firstName} {person.lastName}</span>
 	</label> 
-	<textarea class="textarea h-24 textarea-bordered textarea-secondary" placeholder="Exemple : {person.firstName} est allergique à la viande de mammouth" bind:value={person.foodRemarks}></textarea>
+	<textarea rows="2" class="textarea h-12 textarea-bordered textarea-secondary" placeholder="Exemple : {person.firstName} est allergique à la viande de mammouth" bind:value={person.foodRemarks}></textarea>
   </div> 
 
   {/if}
@@ -667,22 +650,22 @@ $: if(htmlLoaded && familyDataLoaded){
   
 <!-- BEGIN TAB 4 / CONTACT -->
   
-  <div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 4} class:collapse-open={currentStep === 4} class:collapse-close={currentStep !== 4} on:click={() => currentStep >= 4 ? currentStep = 4 : currentStep}> 
+  <div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 4} class:collapse-open={currentStep === 4} class:collapse-close={currentStep !== 4} class:cursor-pointer={currentStep > 4} on:click={() => currentStep >= 4 ? currentStep = 4 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
-	  Contact
+	  Contacts <small>pour vous prévenir des aléas éventuels</small>
 	</div> 
 	<div class="collapse-content"> 
 
 		<form on:submit|preventDefault={pushFamilyData}>
   <div class="form-control my-2">
-	<label class="label">
-	  <span class="label-text">Adresse e-mail, facultatif (pour vours prévenir des aléas COVID)</span>
+	<label class="label" for="emailinput">
+	  <span class="label-text">Adresse e-mail</span>
 	</label> 
-	<input type="text" placeholder="françois@hollande.fr" class="input input-primary input-bordered" bind:value={formValues.emailAddress} pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+	<input type="text" placeholder="françois@hollande.fr" id="emailinput" class="input input-primary input-bordered" bind:value={formValues.emailAddress} pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
   </div> 
   
 	<label class="label" for="phoneinput">
-	  <span class="label-text">Numero de téléphone, facultatif (pour vours prévenir des aléas COVID)</span>
+	  <span class="label-text">Numéro de téléphone</span>
    </label> 
   
   
@@ -703,20 +686,47 @@ $: if(htmlLoaded && familyDataLoaded){
   
 <!-- BEGIN TAB 5 / TEMPlogement -->
   
-<div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 5} class:collapse-open={currentStep === 5} class:collapse-close={currentStep !== 5} on:click={() => currentStep >= 5 ? currentStep = 5 : currentStep}> 
+<div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 5} class:collapse-open={currentStep === 5} class:collapse-close={currentStep !== 5} class:cursor-pointer={currentStep > 5} on:click={() => currentStep >= 5 ? currentStep = 5 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
 	  Logement
 	</div> 
 	<div class="collapse-content"> 
 
+<!-- popin confirmation que la personne ne vient pas -->
+<input type="checkbox" id="my-modal-5" class="modal-toggle" bind:checked={displayStep5Popin}> 
+<div class="modal">
+  <div class="modal-box">
+	<p>Vous n'avez pas accepté tous les logements, êtes vous certains ? <br/>
+		- si vous n'avez pas choisi, vous pourrez revenir ici plus tard pour modifier votre choix. <br/>
+		- si vous avez refusé, c'est définitif</p> 
+	<div class="modal-action">
+	  <label for="my-modal-5" class="btn btn-primary" on:click={() => pushFamilyData(false)}>Oui, je suis certain</label> 
+	  <label for="my-modal-5" class="btn">Non, attends !</label>
+	</div>
+  </div>
+</div>
 
-		<form on:submit|preventDefault={pushFamilyData}>
+		
+
+
+		<form on:submit|preventDefault={() => pushFamilyData(true)}>
+
+
+			
+
 			{#if formValues.bookingsByFamilyId.nodes.length > 0}
-		    <ul>
-				<li>
-			Nous avons le plaisir de vous proposer les logements suivants sur le domaine du chateau:
-		</li>
-		    </ul>
+
+			<p>Nous avons le plaisir de vous proposer ces logements dans le domaine du château:</p>
+			{#if displayDayOfArrival}
+			<label class="label" for="">
+				<span class="label-text">...et vous avez la possiblité d'arriver dès vendredi 19 août et donc de rester pour 2 nuits, précisez-le ci-dessous :</span>
+					</label>
+			<select class="select select-bordered select-sm select-primary" bind:value={formValues.dayOfArrival}> 
+				<option value="vendredi">J'arrive vendredi</option> 
+				<option value="samedi">J'arrive samedi</option>
+			  </select> 
+			{/if}
+
 			{#each formValues.bookingsByFamilyId.nodes as booking,i}
 
 
@@ -743,13 +753,11 @@ $: if(htmlLoaded && familyDataLoaded){
 						<strong>Taille des lits: </strong>{booking.roomByRoomId.bedsizes}
 					</li>
 
-
-
 				</ul>
 				
 	
 			<select class="select select-bordered select-sm w-full max-w-xs select-primary" bind:value={booking.bookingState}>
-			  <option value="pending" disabled>Votre réponse</option> 
+			  <option value="pending" disabled>Votre réponse ici :</option> 
 			  <option value="accepted" >J'accepte</option> 
 			  <option value="refused" >Je refuse</option>
 			</select> 
@@ -758,60 +766,72 @@ $: if(htmlLoaded && familyDataLoaded){
 			</fieldset>
 			{/each}
 
-			{#if displayDayOfArrival}
-			<label class="label" for="">
-				<span class="label-text">Vous avez la possiblité d'arriver dès vendredi 19 août et donc de rester pour 2 nuits<br/>Jour d'arrivée:</span>
-					</label>
-			<select class="select select-bordered select-sm select-primary" bind:value={formValues.dayOfArrival}> 
-				<option value="vendredi">J'arrive vendredi</option> 
-				<option value="samedi">J'arrive samedi</option>
-			  </select> 
-			{/if}
+
 
 
 			{:else}
-afficher les hotels
+
+			Vous pourrez retrouver les hôtels aux environs via le menu
 			{/if}
   
 
-			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
-				<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
+			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "refused").length != formValues?.bookingsByFamilyId?.nodes?.length}
+				
 
-				<legend>Lits supplémentaires disponibles :</legend>
-				<ul class="list-disc list-inside">
+			<p>Nous vous proposons des lits supplémentaires (s'il en reste) :</p>
+				
 				{#each toolsArray as tool, i}
 				{#if tool.toolType == "bed"}
-				<li>({tool.remaining}){tool.toolName} <label for ="" class="btn btn-primary btn-sm" on:click={() => getOneTool(i)}>Ajouter</label></li>
+
+				
+
+				<fieldset class="border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
+
+					<legend>{tool.toolName} <small>(il en reste {tool.remaining})</small></legend>
+				
+				
+					<div class="flex flex-row w-32">
+						<label for="" class="btn btn-primary btn-sm" class:loading={delLoading == i} on:click={() => delOneToolBis(i)}>enlever</label>
+						<div id="quantity" placeholder="1" class="input input-primary input-bordered input-sm">{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolId == toolsArray[i].toolId).length}</div>
+						<label for="" class="btn btn-primary btn-sm" class:loading={addLoading == i} on:click={() => getOneTool(i)}>ajouter</label>
+			
+					  </div>
+					</fieldset>
+				
+
 				{/if}
 				{/each}
-				</ul>
-			</fieldset>
+				
+			
 
 
-			<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
-
-				<legend>Petits déjeuners du samedi matin :</legend>
-				<ul class="list-disc list-inside">
+				<p>Nous vous proposons des petits déjeuners du samedi matin (s'il en reste) :</p>
+				
 				{#each toolsArray as tool, i}
 				{#if tool.toolType == "food"}
-				<li>({tool.remaining}){tool.toolName} <label for ="" class="btn btn-primary btn-sm" on:click={() => getOneTool(i)}>Ajouter</label></li>
-				{/if}
-				{/each}
-				</ul>
 
-			</fieldset>
+				
+
+				<fieldset class="border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
+
+					<legend>{tool.toolName} <small>(il en reste {tool.remaining})</small></legend>
 				
 				
-				{#if formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" ).length > 0}
-				<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
-				<legend>Vos options supplémentaires:</legend>
-				{#each formValues.toolBookingsByFamilyId.nodes as toolBooking, j}
-				{#if toolBooking.bookingState != "open"}
-				<span class="badge badge-secondary badge-sm"><label for="" class="cursor-pointer" on:click={() => delOneTool(j)}><strong>X&nbsp;</strong></label> {toolBooking.toolByToolId.toolName}  </span>
+					<div class="flex flex-row w-32">
+						<label for="" class="btn btn-primary btn-sm" class:loading={delLoading == i} on:click={() => delOneToolBis(i)}>enlever</label>
+						<div id="quantity" placeholder="1" style="text-transform: uppercase" class="input input-primary input-bordered input-sm">{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolId == toolsArray[i].toolId).length}</div>
+						<label for="" class="btn btn-primary btn-sm" class:loading={addLoading == i} on:click={() => getOneTool(i)}>ajouter</label>
+			
+					  </div>
+					</fieldset>
+				
+
 				{/if}
 				{/each}
-				</fieldset>
-				{/if}
+				
+				
+				
+
 			{/if}
 
 
@@ -823,10 +843,10 @@ afficher les hotels
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
 					  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
 					</svg> 
-					<label for="">Avec ces choix:
+					<label for="">Avec ces choix :
 						<ul class="list-disc list-inside">
-							<li>Nombre de chambres acceptées :<strong>{formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length}</li>
-						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) qui viennent pour <strong>{daysText}</strong>.
+							<li>Nombre de chambres choisies : <strong>{formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length}</li>
+						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) pour <strong>{daysText}</strong>.
 						</li>
 
 						{#if (capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length) < attendingPeopleCount}
@@ -838,19 +858,21 @@ afficher les hotels
 						  </div>
 						  {/if}
 
-						<li>Vous avez pris <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length}</strong> petit déjeuners du samedi pour les {attendingPeopleCount} personne(s) qui viennent.
+						<li>Vous avez pris <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length}</strong> petit(s) déjeuner(s) du samedi.
 						</li>
 						
 							
 							
-							{#if formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length}
+							{#if formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length > 0 && !formValues.freeBooking}
 							<li>Le prix pour les petits déjeuners est de <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
 							{/if}
 
+							{#if !formValues.freeBooking}
 							<li>Le prix pour les chambres est de : <strong>{contribution} €</strong></li>
 							<li>Le prix total est de : <strong>{contribution + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
+							{/if}
 
-							<br/>Remarque: pour les personnes logées sur place, un brunch sera servi dimanche matin.
+							<br/>Remarque: nous offrons aux personnes logées sur place un brunch dimanche.
 					
 						</ul>
 						</label>
@@ -918,8 +940,8 @@ afficher les hotels
 <style global lang="postcss">
 
 	.persondelete{
-		top: -13px;
-		right: -2px;
+		top: -12px;
+		right: -1px;
 	}
 	.failure{
     background-color: rgb(230, 67, 26);

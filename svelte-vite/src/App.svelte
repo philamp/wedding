@@ -70,7 +70,7 @@ for( let i = 0; i < els.length; i++ ) {
 <Alert />
 <div class="drawer drawer-mobile">
 	<input id="main-menu" type="checkbox" class="drawer-toggle" bind:checked={menuOpened}>
-	<main class="flex-grow block overflow-x-hidden bg-base-100 bg-neutral-content drawer-content">
+	<main class="flex-grow block overflow-x-hidden bg-base-100 bg-neutral-content drawer-content pb-[60rem]">
 	  <div id="nav" class="inset-x-0 top-0 z-50 w-full transition duration-200 ease-in-out border-b border-base-200 bg-base-100 text-base-content sticky">
 
 		<div class="mx-auto space-x-1 navbar max-w-none h-[64px]"><div class="flex-none"><label for="main-menu" class="btn btn-square btn-ghost drawer-button lg:hidden">

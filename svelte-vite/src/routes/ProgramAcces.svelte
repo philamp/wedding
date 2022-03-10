@@ -7,14 +7,14 @@ import { storeReady } from './../store.js';
 
 </script>
 
-<div id="mapDrawer" class="rounded-lg shadow drawer drawer-end drawer-mobile">
+<div id="mapDrawer" class="drawer drawer-end drawer-mobile">
   <input id="my-drawer-2" type="checkbox" class="drawer-toggle"> 
   <div class="drawer-content py-[4rem]">
     
     
 
     
-    <h2 class="my-4 mx-4 text-2xl font-bold text-primary">Programme & accès</h2>
+    <h2 class="my-4 mx-4 text-2xl font-bold text-primary">Programme & accès (reformuler)</h2>
 
     <div class="max-w-4xl bg-white rounded-xl shadow-md overflow-hidden mx-4 my-4">
       <div class="xl:flex">
@@ -22,9 +22,9 @@ import { storeReady } from './../store.js';
           <img class="object-cover h-64 w-full" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/%C3%89glise_Sainte-Croix_de_Bernay.jpg/1024px-%C3%89glise_Sainte-Croix_de_Bernay.jpg" alt="">
         </div>
         <div class="p-4">
-          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Cérémonie de mariage: 14h30</div>
+          <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Messe de mariage à 14h30</div>
           <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Eglise Sainte-Croix de Bernay</a>
-          <p class="mt-2 text-slate-500">La messe sera célébrée en l’église Sainte-Croix de Bernay par le Père Nicolas Lebas.</p>
+          <p class="mt-2 text-slate-500">Célébrée par le Père Nicolas Lebas curé de la paroisse.</p>
           <label for="my-drawer-2" id="egliseSainteCroixM" class="cursor-pointer btn btn-secondary btn-xs">⛪ Afficher sur la carte</label>
         </div>
       </div>
@@ -37,14 +37,14 @@ import { storeReady } from './../store.js';
         </div>
         <div class="p-4">
           <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Cocktail: 17h30</div>
-          <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Chateau de Carsix</a>
-          <p class="mt-2 text-slate-500">Réception dans le chateau de Carsix.</p>
+          <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Château de Carsix</a>
+          <p class="mt-2 text-slate-500">Réception dans le château de Carsix.</p>
           <label for="my-drawer-2" id="ChateauM" class="cursor-pointer btn btn-secondary btn-xs">🏰 Afficher sur la carte</label>
         </div>
       </div>
     </div>
 
-    <h2 class="my-4 mx-4 text-2xl font-bold text-primary">Autres infos importantes</h2>
+    <h2 class="my-4 mx-4 text-2xl font-bold text-primary">Autres informations importantes</h2>
 
     <div class="max-w-4xl bg-white rounded-xl shadow-md overflow-hidden mx-4 my-4">
       <div class="xl:flex">
