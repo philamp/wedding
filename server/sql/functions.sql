@@ -120,7 +120,7 @@ SELECT
   on 
   privateschema.persons.family_id = privateschema.families.family_id
 
-  WHERE privateschema.families.guest_level > 0 -- switch en enveloppe / carton
+  WHERE privateschema.families.guest_level > 0 AND privateschema.families.road_address != '' -- switch en enveloppe / carton
   
   GROUP BY 
   privateschema.families.family_id
