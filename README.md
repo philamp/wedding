@@ -2,7 +2,12 @@
 A wedding site with guest subscription
 
 ## Prerequesites
-PostgreSQL
+- PostgreSQL
+- nginx
 
-by Philamp
+## Build
+You can find a git hook script deploy in the folder....
+
+
+
 
