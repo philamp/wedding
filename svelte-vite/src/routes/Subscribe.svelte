@@ -9,6 +9,7 @@ import { fly } from 'svelte/transition';
 
 	let htmlLoaded = false;
 	let familyDataLoaded = false;
+	
 
 
 
@@ -66,7 +67,9 @@ onMount(() => {
 
 	let capacityOptedFor = 0;
 
-	let daysText = "";
+	let daysText = "1 nuit";
+
+	let dateArrivalText = "samedi 20";
 
 	let formValues = {
                "familyId": 0,
@@ -158,7 +161,7 @@ onMount(() => {
 		
 		// sub default vendredi for max-dayed people (not constrained secured server side !!!)
 		if(formValues.dayOfArrival == null){
-			if(formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDays == 1).length < 1){
+			if(formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length > 0 && formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDays == 1).length < 1){
 			formValues.dayOfArrival = "vendredi"
 			}else{
 			formValues.dayOfArrival = "samedi"
@@ -416,6 +419,8 @@ $: if(currentStep >= 4){
 
 $: daysText = formValues.dayOfArrival == "vendredi" ? "2 nuits" : "1 nuit"
 
+$: dateArrivalText = formValues.dayOfArrival == "vendredi" ? "vendredi 19" : "samedi 20"
+
 
 $: if(currentStep == 5){
 // get tools data
@@ -498,7 +503,7 @@ $: if(htmlLoaded && familyDataLoaded){
 <input type="checkbox" id="my-modal-2" class="modal-toggle" bind:checked={displayStep2Popin}> 
 <div class="modal">
   <div class="modal-box">
-	<p>êtes vous certain(e)(s) ? vous allez nous manquer :(</p> 
+	<p>êtes vous certain(e)(s) ?(</p> 
 	<div class="modal-action">
 	  <label for="my-modal-2" class="btn btn-primary" on:click={() => pushFamilyData(false)}>Oui, je suis certain</label> 
 	  <label for="my-modal-2" class="btn">Non, attends !</label>
@@ -511,7 +516,9 @@ $: if(htmlLoaded && familyDataLoaded){
 	  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
 	  </svg> 
-	  <label>Vous êtes invité(e)(s) au cocktail {#if formValues.guestLevel >= 2}et au dîner{/if}</label>
+	  <label for="">
+		{formValues.familyName}  
+		<br/>Vous êtes invité(e)(s) au cocktail {#if formValues.guestLevel >= 2}et au dîner{/if}</label>
 	</div>
 </div>
 <form on:submit|preventDefault={pushFamilyData}>
@@ -611,14 +618,7 @@ $: if(htmlLoaded && familyDataLoaded){
 	</div> 
 	<div class="collapse-content"> 
   
-	  <div class="alert alert-info my-2 alert-sm">
-	<div class="flex-1">
-	  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
-		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
-	  </svg> 
-	  <label for="">Le cas échéant, merci de nous indiquer vos eventuelles allergies et/ou régime alimentaire</label>
-	</div>
-  </div>
+<p>Le cas échéant, merci de nous indiquer vos eventuelles allergies et/ou régime alimentaire.</p>
 
 
 
@@ -894,35 +894,84 @@ $: if(htmlLoaded && familyDataLoaded){
 	  Récapitulatif
 	</div> 
 	<div class="collapse-content"> 
-<ul>
-	{#if formValues.cocktailAttending}
-<li>Nous nous réjouissons de vous retrouver le samedi 20 aout 2022</li>
-	<li>
-	Vous venez au cocktail {#if formValues.dinerAttending}et au dîner{/if}
-</li>
+
+
+<div class="alert alert-info my-2 alert-sm">
+	<div class="flex-1">
+	  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+	  </svg> 
+	  <label for="">
+		{#if formValues.cocktailAttending}
+Vous venez au cocktail {#if formValues.dinerAttending}et au dîner{/if}
+		{:else}
+Vous ne pouvez pas venir :(
+		{/if}
+	  </label>
+	</div>
+</div>
+
+{#if formValues.cocktailAttending}
+Nous serons heureux de vous retrouver {dateArrivalText} aout 2022 !
+<img alt="" src="https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif" />
 {:else}
-<li>
-	Vous ne pouvez pas venir, vous pourrez toutefois nous laisser un message et accéder aux photos
-</li>
+...mais vous pourrez voir les photos ulterieurement sur le site :)
 {/if}
+
+
+
 
 {#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
-<li>
-	Nous vous demandons une contribution de {contribution} € pour ces {formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length} logements que vous avez accepté(s)
-</li>
-{/if}
+			<div class="alert my-2 alert-sm shadow-md bg-base-100">
+				<div class="flex-1">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+					  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+					</svg> 
+					<label for="">En ce qui concerne le logement :
+						<ul class="list-disc list-inside">
+							<li>Nombre de chambres choisies : <strong>{formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length}</li>
+						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) pour <strong>{daysText}</strong>.
+						</li>
+
+						{#if (capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length) < attendingPeopleCount}
+						<div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
+							<div>
+							  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+							  <span>Attention, le nombre de couchages semble insuffisant, vous pouvez ajouter un ou des lits supplémentaires en revenant à l'étape précédente</span>
+							</div>
+						  </div>
+						  {/if}
+
+						<li>Vous avez pris <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length}</strong> petit(s) déjeuner(s) du samedi.
+						</li>
+						
+							
+							
+							{#if formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length > 0 && !formValues.freeBooking}
+							<li>Le prix pour les petits déjeuners est de <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
+							{/if}
+
+							{#if !formValues.freeBooking}
+							<li>Le prix pour les chambres est de : <strong>{contribution} €</strong></li>
+							<li>Le prix total est de : <strong>{contribution + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
+							<div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
+								<div>
+								  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+								  <span>Merci de venir avec la somme en espèces dans une enveloppe sur laquelle vous devez inscrire votre nom et ce numéro de référence: 00{formValues.familyId}</span>
+								</div>
+							  </div>
+							{/if}
+
+							<br/>Remarque: nous offrons aux personnes logées sur place un brunch dimanche.
+					
+						</ul>
+						</label>
+				  </div>
+				</div>
+			{/if}
 
 
-</ul>
-		
-<div class="alert my-2 alert-sm alert-warning">
-	<div class="flex-1">
-		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
-		  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
-		</svg> 
-		<label>En confirmant cette dernière étape votre réponse est définitive. Si toutefois il y avait un problème, n'hésitez pas à nous contacter.</label>
-	  </div>
-</div>
+
 		<form on:submit|preventDefault={pushFamilyData}>
   
   <button type="submit" class="btn btn-primary float-right" class:loading={loading}>Je confirme</button>
