@@ -9,10 +9,11 @@
 	import Subscribe from './routes/Subscribe.svelte';
 	import Hotels from './routes/Hotels.svelte';
 	import Avisiter from './routes/Avisiter.svelte';
+	import Mcontent from '/src/routes/Mcontent.svelte';
 	import ProgramAcces from './routes/ProgramAcces.svelte';
 	import { onMount } from 'svelte';
 	import {wrap} from 'svelte-spa-router/wrap';
-	import { storeReady, connectionStatus} from './store.js';
+	import { storeReady, connectionStatus} from '/src/store.js';
 
 	let menuOpened = false; 
 
@@ -27,6 +28,7 @@ let routes = {
     '/P/:urlQrCode?': Subscribe,
 	'/hotels': Hotels,
 	'/avisiter': Avisiter,
+	'/M/:category?' : Mcontent,
 	'/programme-acces': wrap({
         component: ProgramAcces
     })
@@ -70,7 +72,7 @@ for( let i = 0; i < els.length; i++ ) {
 <Alert />
 <div class="drawer drawer-mobile">
 	<input id="main-menu" type="checkbox" class="drawer-toggle" bind:checked={menuOpened}>
-	<main class="flex-grow block overflow-x-hidden bg-base-100 bg-neutral-content drawer-content pb-[60rem]">
+	<main class="flex-grow block overflow-x-hidden bg-base-100 bg-neutral-content drawer-content">
 	  <div id="nav" class="inset-x-0 top-0 z-50 w-full transition duration-200 ease-in-out border-b border-base-200 bg-base-100 text-base-content sticky">
 
 		<div class="mx-auto space-x-1 navbar max-w-none h-[64px]"><div class="flex-none"><label for="main-menu" class="btn btn-square btn-ghost drawer-button lg:hidden">
@@ -443,32 +445,21 @@ for( let i = 0; i < els.length; i++ ) {
 			<ul class="menu flex flex-col p-4 pt-2 compact"><li class="mt-4 menu-title"><span>
 				  Essentiels
 				</span></li>
-				<li><a href="#/P" class="capitalize"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----></svg>
+				<li><a href="#/P"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----></svg>
 					Répondre à l'invitation
 				  </a></li>
 
-				<li><a href="#/programme-acces" class="capitalize" class:hidelinks={!$connectionStatus}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!----> <!----> <!----> <!----> <!----></svg>
+				<li><a href="#/M/program" class:hidelinks={!$connectionStatus}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!----> <!----> <!----> <!----> <!----></svg>
 				  Programme et accès
 				</a></li>
-				<li><a href="#/hotels" class="capitalize"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!----> <!----> <!----> <!----> <!----></svg>
+				<li><a href="#/hotels"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!----> <!----> <!----> <!----> <!----></svg>
 					Hôtels aux environs
 				  </a></li>
 				
-				 <li><a href="#/avisiter" class="capitalize" ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----></svg>
+				 <li><a href="#/M/avisiter"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----></svg>
 				  A visiter dans la région
 				</a></li>
 				
-				<li><a href="/docs/default-themes" class="capitalize" class:hidelinks={!$connectionStatus}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path> <!----> <!----> <!----> <!----> <!----> <!----> <!----></svg>
-					Albums photos
-				  </a></li>
-
-				<li><a href="/core/colors" class="capitalize" class:hidelinks={!$connectionStatus}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 fill-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path d="M19,11.5C19,11.5 17,13.67 17,15C17,16.1 17.9,17 19,17C20.1,17 21,16.1 21,15C21,13.67 19,11.5 19,11.5M5.21,10L10,5.21L14.79,10M16.56,8.94L7.62,0L6.21,1.41L8.59,3.79L3.44,8.94C2.85,9.5 2.85,10.47 3.44,11.06L8.94,16.56C9.23,16.85 9.62,17 10,17C10.38,17 10.77,16.85 11.06,16.56L16.56,11.06C17.15,10.47 17.15,9.5 16.56,8.94Z"></path></svg>
-				  Liste de mariage
-				</a></li> 
-
-				<li><a href="/core/layout" class="capitalize"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 fill-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path d="M4,2 L20,2 C21.1045695,2 22,2.8954305 22,4 L22,20 C22,21.1045695 21.1045695,22 20,22 L4,22 C2.8954305,22 2,21.1045695 2,20 L2,4 C2,2.8954305 2.8954305,2 4,2 Z M4,4 L4,20 L20,20 L20,4 L4,4 Z M14.7999209,15 L9.19992091,15 L8,18 L6,18 L11,6 L13,6 L18,18 L16,18 L14.7999209,15 Z M13.9998682,13 L11.9997364,8 L9.99986818,13 L13.9998682,13 Z"></path> <!----></svg>
-				  Contact
-				</a></li>
 			</ul>
 			</div>
 		

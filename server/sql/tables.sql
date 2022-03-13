@@ -27,7 +27,8 @@ CREATE TABLE privateschema.families (
     booking_priority INTEGER DEFAULT 0 CHECK (booking_priority IN (0, 1, 2)),
     free_booking boolean, 
     formStep integer DEFAULT 0,
-    day_of_arrival varchar(8)
+    day_of_arrival varchar(8),
+    moderated boolean
 )
 ;
 
@@ -35,7 +36,12 @@ CREATE TABLE privateschema.logs (
     log_id SERIAL PRIMARY KEY,
     logged_at timestamp not null default now(),
     family_id INTEGER REFERENCES privateschema.families (family_id) ON DELETE CASCADE,
-    formStepLogged integer DEFAULT 0
+    formStepLogged integer DEFAULT 0,
+    cocktail_attending_logged boolean,
+    diner_attending_logged boolean,
+    email_address_logged text,
+    phone_logged character varying(32) COLLATE pg_catalog."default",
+    day_of_arrival_logged varchar(8)
 )
 ;
 

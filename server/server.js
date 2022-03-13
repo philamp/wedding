@@ -193,6 +193,10 @@ catch(e){
   //remove refused ones
   result.data.allFamilies.nodes[0].bookingsByFamilyId.nodes = result.data.allFamilies.nodes[0].bookingsByFamilyId.nodes.filter((current) => {return current.bookingState != "refused";})
   
+  //if formstep 0, set 1 
+  if(result.data.allFamilies.nodes[0].formStep == 0){
+    setFirstAccess(family_id)
+  }
 
   res.json(result)
   
@@ -200,6 +204,45 @@ catch(e){
 
   catch(e){
     console.error(e); res.json({ error : "erreur connexion graphql"})
+  }
+
+}
+
+async function setFirstAccess(fmid){
+
+  try{
+    const runner = await makeQueryRunner(
+      `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`,
+      process.env.DB_SCHEMA,
+    );
+  
+    const result = await runner.query(
+      `
+      mutation MyMutation ($family_id: Int!) {
+        updateFamilyByFamilyId(
+          input: {
+            familyPatch: {
+              formStep: 1
+            }, 
+            familyId: $family_id
+          }
+        )
+        {
+          clientMutationId  
+        }
+      }
+      `
+      ,{family_id: fmid}
+    );
+
+
+  console.log(JSON.stringify(result, null, 2));  
+  await runner.release();
+  
+  }
+
+  catch(e){
+    console.error(e);
   }
 
 }
@@ -430,6 +473,7 @@ async function pushFamilyData(req, res) {
     (
       $cocktailAttending: Boolean!
       $dinerAttending: Boolean
+      $moderated: Boolean
       $emailAddress: String
       $phone: String
       $familyid: Int!
@@ -446,6 +490,7 @@ async function pushFamilyData(req, res) {
             phone: $phone
             formStep: $formStep
             dayOfArrival: $dayOfArrival
+            moderated: $moderated
           }
           familyId: $familyid
         }
@@ -456,7 +501,8 @@ async function pushFamilyData(req, res) {
     ,
     { 
       ...familyData,
-      familyid: family_id
+      familyid: family_id,
+      moderated: false
     }
   );
 

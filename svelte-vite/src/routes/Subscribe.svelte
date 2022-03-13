@@ -155,8 +155,12 @@ onMount(() => {
 		formValues = json.data.allFamilies.nodes[0]
 		/*result = JSON.stringify(json)*/ 
 
-		// STEP POSITIONNER : if comprised between >1 & <6, place visotor on the good step if 6 place on 6, anything else is not logical, load 2.
-		if(formValues.formStep > 1 && formValues.formStep < 6){currentStep = formValues.formStep + 1}else if(formValues.formStep == 6){currentStep = formValues.formStep}else{currentStep = 2;}
+		// STEP POSITIONNER : if comprised between >1 & <6, place visotor on the good step if 6 place on 6, anything else is 0 or 1: load 2.
+		if(formValues.formStep > 1 && formValues.formStep < 6){currentStep = formValues.formStep + 1}else 
+		if(formValues.formStep == 6){currentStep = formValues.formStep}
+		else{
+			currentStep = 2
+		}
 		familyDataLoaded = true;
 		
 		// sub default vendredi for max-dayed people (not constrained secured server side !!!)
@@ -235,8 +239,8 @@ onMount(() => {
 		/*empecher valeur absurdes tel que cocktail false et diner true !!! */
 		/* forcer diner false si level 1 *  sur le server  !!!*/
 		if(currentStep == 4){
-			actualSentPhone = window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).getNumber();
-		}else{actualSentPhone = formValues.phone}
+			formValues.phone = window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).getNumber();
+		}
 
 		// force dayofarrival null if all logement refused
 		if(formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length < 1){
@@ -245,7 +249,7 @@ onMount(() => {
 			actualSentDayOfArrival = formValues.dayOfArrival
 		}
 
-		actualSentFormValues = {...formValues, phone: actualSentPhone, formStep: currentStep, dayOfArrival: actualSentDayOfArrival}
+		actualSentFormValues = {...formValues, formStep: currentStep, dayOfArrival: actualSentDayOfArrival}
 
 		loading = true
 		const res = await fetch('/api/pushfamilydata', {
@@ -438,6 +442,9 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 $: if(htmlLoaded && familyDataLoaded){
 	if(formValues.phone){
 		window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber(formValues.phone);
+	}else{
+		//reset to empty
+		window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber("");
 	}
 }
 
@@ -775,7 +782,7 @@ $: if(htmlLoaded && familyDataLoaded){
 			{/if}
   
 
-			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "refused").length != formValues?.bookingsByFamilyId?.nodes?.length}
+			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length == formValues?.bookingsByFamilyId?.nodes?.length && formValues?.bookingsByFamilyId?.nodes?.length > 0}
 				
 
 			<p>Nous vous proposons des lits supplémentaires (s'il en reste) :</p>
@@ -802,10 +809,10 @@ $: if(htmlLoaded && familyDataLoaded){
 				{/if}
 				{/each}
 				
-			
+			{/if}
 
-
-				<p>Nous vous proposons des petits déjeuners du samedi matin (s'il en reste) :</p>
+			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
+				<p>Nous vous proposons des petits déjeuners du samedi matin :</p>
 				
 				{#each toolsArray as tool, i}
 				{#if tool.toolType == "food"}
@@ -814,7 +821,7 @@ $: if(htmlLoaded && familyDataLoaded){
 
 				<fieldset class="border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
 
-					<legend>{tool.toolName} <small>(il en reste {tool.remaining})</small></legend>
+					<legend>{tool.toolName}</legend>
 				
 				
 					<div class="flex flex-row w-32">
@@ -912,7 +919,7 @@ Vous ne pouvez pas venir :(
 </div>
 
 {#if formValues.cocktailAttending}
-Nous serons heureux de vous retrouver {dateArrivalText} aout 2022 !
+Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
 <img alt="" src="https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif" />
 {:else}
 ...mais vous pourrez voir les photos ulterieurement sur le site :)
@@ -963,6 +970,9 @@ Nous serons heureux de vous retrouver {dateArrivalText} aout 2022 !
 							{/if}
 
 							<br/>Remarque: nous offrons aux personnes logées sur place un brunch dimanche.
+							<br/>{#if formValues.dayOfArrival == "vendredi"}
+							Attention les repas du vendredi soir et du samedi midi ne sont pas prévus.
+							{/if}
 					
 						</ul>
 						</label>

@@ -1,7 +1,10 @@
 
 <script>
-import Map from './Map.svelte';
-import { storeReady } from './../store.js';
+import Map from '/src/routes/Map.svelte';
+import { storeReady } from '/src/store.js';
+
+import UnfoldPoi from '/src/components/UnfoldPoi.svelte'
+
 
 
 
@@ -10,6 +13,11 @@ import { storeReady } from './../store.js';
 <div id="mapDrawer" class="drawer drawer-end drawer-mobile">
   <input id="my-drawer-2" type="checkbox" class="drawer-toggle"> 
   <div class="drawer-content py-[4rem]">
+
+
+
+
+
     
     
 
