@@ -442,9 +442,7 @@ for( let i = 0; i < els.length; i++ ) {
 
 
 			<div>
-			<ul class="menu flex flex-col p-4 pt-2 compact"><li class="mt-4 menu-title"><span>
-				  Essentiels
-				</span></li>
+			<ul class="menu flex flex-col p-4 pt-2 compact">
 				<li><a href="#/P"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----></svg>
 					Répondre à l'invitation
 				  </a></li>
