@@ -11,7 +11,7 @@ import { storeReady } from './../store.js';
   <input id="my-drawer-2" type="checkbox" class="drawer-toggle"> 
   <div class="drawer-content py-[4rem]">
     
-    
+    <div id="central-content">
 
     
     <h2 class="my-4 mx-4 text-2xl font-bold text-primary">Hôtels & Gîtes aux environs (recommandés par Fabienne Calvo)</h2>
@@ -297,7 +297,7 @@ www.hostellerie-du-lion-dor.com
     https://www.airbnb.fr/rooms/18537940?source_impression_id=p3_1570540353_Tfh
   </p>
   
-  
+</div><!--END CENTRAL CONTENT--> 
 
   </div> 
   <div class="drawer-side">

@@ -399,7 +399,7 @@ function updateGLScene(myT) {
   if (t>=10) {
     glAnimState.renderer.setAnimationLoop(null);
     glAnimState.container.style.display='none';
-    window.location.href = location.protocol + '//' + location.host + "/#/programme-acces"
+    window.location.href = location.protocol + '//' + location.host + "/#/M/program"
     //alert("TODOOOOOOOO TADAAAAAAA!!!!!!");
     return;
   }

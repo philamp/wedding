@@ -1,89 +1,6 @@
 {
     "sections" : [
         {
-            "sectionTitle" : "Programme et accès",
-            "sectionPageParam" : "program",
-                "pois" : [
-                    {
-                        "type": "shortCard",
-                        "imgSrc": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/%C3%89glise_Sainte-Croix_de_Bernay.jpg/1024px-%C3%89glise_Sainte-Croix_de_Bernay.jpg",
-                        "overTitle": "MESSE DE MARIAGE À 14H30",
-                        "title": "Eglise Sainte-Croix de Bernay",
-                        "desc": "Célébrée par le Père Nicolas Lebas curé de la paroisse.",
-                        "bottomLinks": [
-                            {
-                                "label": null,
-                                "href": null,
-                                "lat": 49.09136629680224, 
-                                "lng": 0.5988271661269582,
-                                "markerIcon": "⛪",
-                                "markerId": "eglise"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "shortCard",
-                        "imgSrc": "https://www.1001salles.com/images/provider/9626/1507731735_6403_700920710.jpg",
-                        "overTitle": "COCKTAIL à 17H30",
-                        "title": "Château de Carsix",
-                        "desc": "Réception dans le château de Carsix..",
-                        "bottomLinks": [
-                            {
-                                "label": null,
-                                "href": null,
-                                "lat": 49.14143080014507, 
-                                "lng": 0.6677124803025075,
-                                "markerIcon": "🏰",
-                                "markerId": "chateau"
-                            }
-                        ]
-                    }
-                ]
-        },
-
-
-        {
-            "sectionTitle" : "Indications importantes",
-            "sectionPageParam" : "program",
-                "pois" : [
-                    {
-                        "type": "shortCard",
-                        "imgSrc": "/static_pictures/fabienne_contact.png",
-                        "overTitle": "Wedding planneuse",
-                        "title": "Fabienne Calvo",
-                        "desc": "Merci de contacter Fabienne Calvo si vous avez un projet de discours, d'animation etc...",
-                        "bottomLinks": [
-                            {
-                                "label": "Contacter via Whatsapp",
-                                "href": "https://api.whatsapp.com/send?phone=+33682371092",
-                                "lat": null, 
-                                "lng": null,
-                                "markerIcon": "🗪",
-                                "markerId": null
-                            },
-                            {
-                                "label": "Contacter par tél: +33682371092",
-                                "href": "tel:+33682371092",
-                                "lat": null, 
-                                "lng": null,
-                                "markerIcon": "📞",
-                                "markerId": null
-                            }
-
-                        ]
-                    },
-                    {
-                        "type": "shortCard",
-                        "imgSrc": "/static_pictures/logement.jpg",
-                        "overTitle": "Logement",
-                        "title": "Avant de partir, merci de...",
-                        "desc": "Vider les chambres de toute affaire personnelle; descendre les poubelles de salle de bain dans la cuisine du château; Déposer les draps et serviettes au pied du lit",
-                        "bottomLinks": []
-                    }
-                ]
-        },
-
-        {
             "sectionTitle" : "A visiter dans la région",
             "sectionPageParam" : "avisiter",
                 "pois" : [
@@ -97,8 +14,8 @@
                             {
                                 "label": null,
                                 "href": null,
-                                "lat": 49.08925632129166, 
-                                "lng": 0.5977481223618368,
+                                "lat": 49.08771060430969, 
+                                "lng": 0.5924763103223959,
                                 "markerIcon": "🏠",
                                 "markerId": "bernay"
                             },
@@ -428,6 +345,86 @@
                             }
                             
                         ]
+                    }
+                ]
+        },
+        {
+            "sectionTitle" : "Programme et accès",
+            "sectionPageParam" : "program",
+                "pois" : [
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/%C3%89glise_Sainte-Croix_de_Bernay.jpg/1024px-%C3%89glise_Sainte-Croix_de_Bernay.jpg",
+                        "overTitle": "MESSE DE MARIAGE À 14H30",
+                        "title": "Eglise Sainte-Croix de Bernay",
+                        "desc": "Célébrée par le Père Nicolas Lebas curé de la paroisse.",
+                        "bottomLinks": [
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.09136629680224, 
+                                "lng": 0.5988271661269582,
+                                "markerIcon": "⛪",
+                                "markerId": "eglise"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "https://www.1001salles.com/images/provider/9626/1507731735_6403_700920710.jpg",
+                        "overTitle": "COCKTAIL à 17H30",
+                        "title": "Château de Carsix",
+                        "desc": "Réception dans le château de Carsix..",
+                        "bottomLinks": [
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.14143080014507, 
+                                "lng": 0.6677124803025075,
+                                "markerIcon": "🏰",
+                                "markerId": "chateau"
+                            }
+                        ]
+                    }
+                ]
+        },
+        {
+            "sectionTitle" : "Indications importantes",
+            "sectionPageParam" : "program",
+                "pois" : [
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/fabienne_contact.png",
+                        "overTitle": "Wedding planneuse",
+                        "title": "Fabienne Calvo",
+                        "desc": "Merci de contacter Fabienne Calvo si vous avez un projet de discours, d'animation etc...",
+                        "bottomLinks": [
+                            {
+                                "label": "Contacter via Whatsapp",
+                                "href": "https://api.whatsapp.com/send?phone=+33682371092",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🗪",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Contacter par tél: +33682371092",
+                                "href": "tel:+33682371092",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            }
+
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/logement.jpg",
+                        "overTitle": "Logement",
+                        "title": "Avant de partir, merci de...",
+                        "desc": "Vider les chambres de toute affaire personnelle; descendre les poubelles de salle de bain dans la cuisine du château; Déposer les draps et serviettes au pied du lit",
+                        "bottomLinks": []
                     }
                 ]
         }

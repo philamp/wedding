@@ -76,6 +76,7 @@ CREATE OR REPLACE VIEW privateschema.view_mailings
 SELECT
   CONCAT('https://helenephilippe.ch/#/P/', privateschema.families.pass_word) as mailing_url,
    CONCAT(REGEXP_REPLACE(array_to_string(array_agg(privateschema.persons.first_name ORDER BY privateschema.persons.person_id), ', '),',(?=[^,]*$)',' &','gi'), ', ') as mailing_names, 
+   CONCAT(REGEXP_REPLACE(array_to_string(array_agg(privateschema.persons.last_name ORDER BY privateschema.persons.person_id), ', '),',(?=[^,]*$)',' &','gi'), ', ') as mailing_lastnames, 
   array_to_string(array_agg(privateschema.persons.gender), ', ') as mailing_genders,
   COUNT(privateschema.persons.*) as mailing_people_count,
   COALESCE ( max(rmbk.counter), 0) as mailing_number_of_rooms,

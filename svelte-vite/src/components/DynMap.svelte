@@ -36,31 +36,25 @@
 
           if(bottomLink.lat){
 
-            var marker = new google.maps.Marker({
+            let marker = new google.maps.Marker({
             position: { lat: bottomLink.lat, lng: bottomLink.lng },
             map,
             title: card.title,
             label: bottomLink.markerIcon
             });
 
-            marker.addListener("click", () => 
-              {
-                  infoWindow.close();
-                infoWindow.setContent(card.title);
+            const fillWindow = () => {
+                infoWindow.close();
+                infoWindow.setContent(`${card.title}<br/><a href="https://www.google.com/maps/dir/?api=1&destination=${bottomLink.lat},${bottomLink.lng}" class="btn btn-secondary btn-xs" title="" target="_blank">Directions</a>`);
                 infoWindow.open(map, marker);
 
-            });
+            }
+
+            marker.addListener("click", fillWindow);
 
             // dont put the event on bottomlink if not present
               if(document.getElementById("M-"+bottomLink.markerId)){
-                document.getElementById("M-"+bottomLink.markerId).onclick = () => 
-                {
-
-                    infoWindow.close();
-                  infoWindow.setContent(card.title);
-                  infoWindow.open(map, marker);
-
-                }
+                document.getElementById("M-"+bottomLink.markerId).onclick = fillWindow
               }
 
             }

@@ -202,7 +202,7 @@ onMount(() => {
 
 		$alert = formValues.peopleByFamilyId.nodes[i].firstName + " ne vient pas"
 
-		if (formValues?.peopleByFamilyId?.nodes?.filter(arg => arg.attending).length < 1) {
+		if (formValues.peopleByFamilyId.nodes.filter(arg => arg.attending).length < 1) {
 		formValues.dinerAttending = false
 		formValues.cocktailAttending = false
 			//reboot people attending to max
@@ -229,7 +229,7 @@ onMount(() => {
 		displayStep2Popin = true;return;
 		}
 
-		if(confirmNeeded && currentStep == 5 && formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "refused" || arg.bookingState == "pending").length > 0){
+		if(confirmNeeded && currentStep == 5 && formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "refused" || arg.bookingState == "pending").length > 0){
 		displayStep5Popin = true;return;
 		}
 
@@ -243,7 +243,7 @@ onMount(() => {
 		}
 
 		// force dayofarrival null if all logement refused
-		if(formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length < 1){
+		if(formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length < 1){
 			actualSentDayOfArrival = null;
 		}else{
 			actualSentDayOfArrival = formValues.dayOfArrival
@@ -266,7 +266,8 @@ onMount(() => {
 		
 		if(!json.error){
 		if(!formValues.cocktailAttending && currentStep == 2){
-			currentStep = 6
+			currentStep = 5
+			pushFamilyData()
 			// !!! + faire booking refused à la fonfirmation du step 6 !!!
 		}else{
 			currentStep += 1;
@@ -396,8 +397,8 @@ onMount(() => {
 	}
 	
 
-	$: attendingPeopleCount = formValues?.peopleByFamilyId?.nodes?.filter(arg => arg.attending).length
-	$: displayAddButton = (attendingPeopleCount === formValues?.peopleByFamilyId?.nodes?.length) ? false : true
+	$: attendingPeopleCount = formValues.peopleByFamilyId.nodes.filter(arg => arg.attending).length
+	$: displayAddButton = (attendingPeopleCount === formValues.peopleByFamilyId.nodes.length) ? false : true
 	$: displayDeleteButton = (attendingPeopleCount <= 1) ? false : true /* n'est plus utilisé !!! */
 
 
@@ -432,7 +433,7 @@ getTools();
 
 }
 
-$ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDays == 1).length < 1 && formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length > 0){
+$ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDays == 1).length < 1 && formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length > 0){
 
 	displayDayOfArrival = true;
 
@@ -455,6 +456,8 @@ $: if(htmlLoaded && familyDataLoaded){
 {#if currentStep >= 5}
 <figure id="scene-275138496" style="height: 50px; width: 50px; position: absolute; z-index: 10000"></figure>
 {/if}
+
+<div id="central-content">
 
 <div id="formtabs" class="max-w-2xl" style="">
 	
@@ -510,7 +513,7 @@ $: if(htmlLoaded && familyDataLoaded){
 <input type="checkbox" id="my-modal-2" class="modal-toggle" bind:checked={displayStep2Popin}> 
 <div class="modal">
   <div class="modal-box">
-	<p>êtes vous certain(e)(s) ?(</p> 
+	<p>êtes vous certain(e)(s) ? 😞</p> 
 	<div class="modal-action">
 	  <label for="my-modal-2" class="btn btn-primary" on:click={() => pushFamilyData(false)}>Oui, je suis certain</label> 
 	  <label for="my-modal-2" class="btn">Non, attends !</label>
@@ -557,7 +560,7 @@ $: if(htmlLoaded && familyDataLoaded){
 <fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative" transition:fly={{ x: -200, duration: 500 }}>
 	<legend>{person.firstName} {person.lastName}</legend>
 
-		<button class="btn btn-secondary btn-sm absolute persondelete" on:click|preventDefault={() => deletePerson(i)}><small>enlever</small></button> 
+		<label for="" class="btn btn-secondary btn-sm absolute persondelete" on:click={() => deletePerson(i)}><small>enlever</small></label> 
 
 <label class="cursor-pointer label">
 <input type="text" placeholder="Prénom" class="input input-sm input-bordered" bind:value={person.firstName} required>
@@ -744,7 +747,7 @@ $: if(htmlLoaded && familyDataLoaded){
 			<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
 
 
-				<legend><strong>Batiment:</strong> {booking.roomByRoomId.buildingName} / <strong>Etage:</strong> {booking.roomByRoomId.etage} / <strong>Chambre:</strong> {booking.roomByRoomId.roomNumber}</legend>
+				<legend><strong>Batiment:</strong> {booking.roomByRoomId.buildingName} / <strong>Etage:</strong> {booking.roomByRoomId.etage}</legend>
 
 				<ul class="list-disc list-inside text-sm">
 					<li>
@@ -782,7 +785,7 @@ $: if(htmlLoaded && familyDataLoaded){
 			{/if}
   
 
-			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length == formValues?.bookingsByFamilyId?.nodes?.length && formValues?.bookingsByFamilyId?.nodes?.length > 0}
+			{#if formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length == formValues.bookingsByFamilyId.nodes.length && formValues.bookingsByFamilyId.nodes.length > 0}
 				
 
 			<p>Nous vous proposons des lits supplémentaires (s'il en reste) :</p>
@@ -811,7 +814,7 @@ $: if(htmlLoaded && familyDataLoaded){
 				
 			{/if}
 
-			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
+			{#if formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0}
 				<p>Nous vous proposons des petits déjeuners du samedi matin :</p>
 				
 				{#each toolsArray as tool, i}
@@ -844,7 +847,7 @@ $: if(htmlLoaded && familyDataLoaded){
 
 
 
-			{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
+			{#if formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0}
 			<div class="alert my-2 alert-sm shadow-md bg-base-100">
 				<div class="flex-1">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
@@ -852,7 +855,7 @@ $: if(htmlLoaded && familyDataLoaded){
 					</svg> 
 					<label for="">Avec ces choix :
 						<ul class="list-disc list-inside">
-							<li>Nombre de chambres choisies : <strong>{formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length}</li>
+							<li>Nombre de chambres choisies : <strong>{formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length}</li>
 						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) pour <strong>{daysText}</strong>.
 						</li>
 
@@ -928,7 +931,7 @@ Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
 
 
 
-{#if formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length > 0}
+{#if formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0}
 			<div class="alert my-2 alert-sm shadow-md bg-base-100">
 				<div class="flex-1">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
@@ -936,7 +939,7 @@ Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
 					</svg> 
 					<label for="">En ce qui concerne le logement :
 						<ul class="list-disc list-inside">
-							<li>Nombre de chambres choisies : <strong>{formValues?.bookingsByFamilyId?.nodes?.filter(arg => arg.bookingState == "accepted").length}</li>
+							<li>Nombre de chambres choisies : <strong>{formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length}</li>
 						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) pour <strong>{daysText}</strong>.
 						</li>
 
@@ -992,7 +995,9 @@ Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
 <!-- END TAB 6 / RECAP-->
 
 
-</div>
+</div> 
+
+</div> <!--END CENTRAL CONTENT--> 
 
 
 

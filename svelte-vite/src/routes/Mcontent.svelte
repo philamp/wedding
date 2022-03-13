@@ -22,11 +22,17 @@ import DynMap from '/src/components/DynMap.svelte';
 <div id="mapDrawer" class="drawer drawer-end drawer-mobile">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle"> 
     <div class="drawer-content py-[4rem]">
+
+
+      <div id="central-content">
   
-  <!--CONTENT BEGIN -->
+  <!--POI CONTENT BEGIN -->
       <UnfoldPoi sectionsProp={sections} {pageParam}/>
-  <!--CONTENT END-->
-      
+  <!--POI CONTENT END-->
+
+
+
+</div><!--END CENTRAL CONTENT--> 
 
     </div> 
     <div class="drawer-side">
