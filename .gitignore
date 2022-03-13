@@ -4,3 +4,5 @@ node_modules
 .env
 dist
 /svelte-vite/public/static_pictures/
+/prod_backups/
+/scripts/
