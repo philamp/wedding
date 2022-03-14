@@ -24,7 +24,7 @@
                                 "href": "https://www.wivisites.com/search_sites?type=city&address=Bernay,%2027300",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -49,7 +49,7 @@
                                 "href": "https://www.wivisites.com/monument_details?site=6ffbc3b9-a699-49d6-bff6-26a6231177b8",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -57,7 +57,7 @@
                     {
                         "type": "longCard",
                         "imgSrc": "/static_pictures/chrome_9Knin8nSWO.png",
-                        "overTitle": "Château médiéval",
+                        "overTitle": "arboretum depuis 1802",
                         "title": "Château et Domaine d’Harcourt",
                         "desc": "Le Château d'Harcourt est l'un des châteaux médiévaux les mieux conservés de Normandie. L’édifice domine un superbe arboretum installé depuis 1802, et considéré comme le plus ancien de France. Ce conservatoire à vocation scientifique et pédagogique, qui offre une synthèse du peuplement arboré des 5 continents, demeure un très agréable lieu de promenade.",
                         "bottomLinks": [
@@ -74,7 +74,7 @@
                                 "href": "https://www.wivisites.com/monument_details?site=34ebea9d-3485-428b-9866-b240ea8e9fd1",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             },
                             {
@@ -82,7 +82,7 @@
                                 "href": "https://www.harcourt-normandie.fr/",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -107,7 +107,7 @@
                                 "href": "https://www.wivisites.com/monument_details?site=d0fa71ac-5dcb-487a-bc24-67edd583561e",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             },
                             {
@@ -115,7 +115,7 @@
                                 "href": "https://www.chateauduchampdebataille.com/",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -140,7 +140,7 @@
                                 "href": "https://www.wivisites.com/monument_details?site=254a2529-049b-431c-9f45-9cc94b98fd8d",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             },
                             {
@@ -148,7 +148,7 @@
                                 "href": "https://www.chateaubeaumesnil.com",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -173,7 +173,7 @@
                                 "href": "https://www.wivisites.com/monument_details?site=6145ccb1-d835-414f-8596-0d93090176b4",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -198,7 +198,7 @@
                                 "href": "https://www.normandie-tourisme.fr/beaux-detours/marais-vernier/",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -223,7 +223,7 @@
                                 "href": "https://www.normandie-tourisme.fr/beaux-detours/evreux/",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -240,7 +240,7 @@
                                 "href": null,
                                 "lat": 49.420424296513396, 
                                 "lng": 0.23455810831514726,
-                                "markerIcon": "🏠",
+                                "markerIcon": "🌊",
                                 "markerId": "honfleur"
                             },
                             {
@@ -248,7 +248,7 @@
                                 "href": "https://www.wivisites.com/monument_details?site=c624752b-6294-42db-bcf1-6f48c60b67a2",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -266,7 +266,7 @@
                                 "href": null,
                                 "lat": 49.36393935440184, 
                                 "lng": 0.07694419524122773,
-                                "markerIcon": "🏠",
+                                "markerIcon": "🌊",
                                 "markerId": "deauvilletrouville"
                             },
                             {
@@ -274,7 +274,7 @@
                                 "href": "https://www.normandie-tourisme.fr/beaux-detours/trouville-deauville-et-la-cote-fleurie/",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -292,7 +292,7 @@
                                 "href": null,
                                 "lat": 49.70777917974438, 
                                 "lng": 0.20561414115700066,
-                                "markerIcon": "🏠",
+                                "markerIcon": "🌊",
                                 "markerId": "etretat"
                             },
                             {
@@ -300,7 +300,7 @@
                                 "href": "https://www.wivisites.com/monument_details?site=3a0103e3-57f2-4a4a-9b34-208ee5ad2e1e",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🛈",
+                                "markerIcon": "👀",
                                 "markerId": null
                             }
                         ]
@@ -332,7 +332,7 @@
                                 "href": "mailto:giteleparc.morice@orange.fr",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🖃",
+                                "markerIcon": "📧",
                                 "markerId": null
                             },
                             {
@@ -342,6 +342,502 @@
                                 "lng": 0.5427298721223979,
                                 "markerIcon": "🏠",
                                 "markerId": "chateauduparc"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/gdAWpkq.png",
+                        "overTitle": "5 chambres",
+                        "title": "Auberge du vieux donjon",
+                        "desc": "19, rue de la Soie, 27800 Brionne",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 2 32 44 80 62",
+                                "href": "tel:+33232448062",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "aubergeduvieuxdonjon@orange.fr",
+                                "href": "mailto:aubergeduvieuxdonjon@orange.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.19436482796374, 
+                                "lng": 0.7207372268675442,
+                                "markerIcon": "🏠",
+                                "markerId": "aubergevieuxdonjon"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/aMsgGea.png",
+                        "overTitle": "12 chambres",
+                        "title": "Le Logis de Brionne",
+                        "desc": "1, Place Saint-Denis, 27800 Brionne",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 2 32 44 81 73",
+                                "href": "tel:+33232448173",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "lelogisdebrionne@orange.fr",
+                                "href": "mailto:lelogisdebrionne@orange.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.19363918388129, 
+                                "lng": 0.7140770524102811,
+                                "markerIcon": "🏠",
+                                "markerId": "logisbrionne"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/tZ04d0e.png",
+                        "overTitle": "50 chambres",
+                        "title": "ACROPOLE HÔTEL",
+                        "desc": "10, Rue de la Grande Malouve, 27300 Bernay",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 2 32 46 06 06",
+                                "href": "tel:+33232460606",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "acropolehotel@wanadoo.fr",
+                                "href": "mailto:acropolehotel@wanadoo.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.hotel-acropole.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.06720162176032, 
+                                "lng": 0.5780641406207622,
+                                "markerIcon": "🏠",
+                                "markerId": "acropolehotel"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/2kcCWie.jpeg",
+                        "overTitle": "23 chambres",
+                        "title": "HOTEL DU LION D'OR",
+                        "desc": "48, Rue du Général de Gaulle, 27300 Bernay",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 2 32 43 12 06",
+                                "href": "tel:+33232431206",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "hotelliondor@orange.fr",
+                                "href": "mailto:hotelliondor@orange.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.hotel-liondor-bernay.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.08921754913192, 
+                                "lng": 0.595080014564035,
+                                "markerIcon": "🏠",
+                                "markerId": "hotelliondor1"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/A9104uctl_1spkemx_1as.jpg",
+                        "overTitle": "",
+                        "title": "AUBERGE DE L'ABBAYE",
+                        "desc": "12, Place Guillaume le Conquérant, 27800 Le Bec-Hellouin",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 2 32 44 86 02",
+                                "href": "tel:+33232448602",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "info@hotelbechellouin.com",
+                                "href": "mailto:info@hotelbechellouin.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.hotelbechellouin.com/",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.231982985748296, 
+                                "lng": 0.7208958133208389,
+                                "markerIcon": "🏠",
+                                "markerId": "aubergeabbaye"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/A9rluuiu_1spken0_1as.jpg",
+                        "overTitle": "9 chambres",
+                        "title": "HOSTELLERIE DU LION D'OR",
+                        "desc": "91, Rue Saint-Nicolas, 27170 Beaumont-le-Roger",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 2 32 46 54 24",
+                                "href": "tel:+33232465424",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "lion-d-or@orange.fr",
+                                "href": "mailto:lion-d-or@orange.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.hostellerie-du-lion-dor.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.07829131074188, 
+                                "lng": 0.7831600999999984,
+                                "markerIcon": "🏠",
+                                "markerId": "hotellerieliondor"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/A91ebq3i0_1spken6_1as.jpg",
+                        "overTitle": "11 chambres",
+                        "title": "LES GÎTES DE SOPHIE",
+                        "desc": "1, allée de la ferme, 27110 Sainte-Opportune-du-Bosc",
+                        "bottomLinks": [
+                            {
+                                "label": "Florence +33 (0) 6 86 65 75 67",
+                                "href": "tel:+33686657567",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Vincent +33 (0) 6 13 04 44 76",
+                                "href": "tel:+33613044476",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "contact@lesgitesdesophie.com",
+                                "href": "mailto:contact@lesgitesdesophie.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.gitesdesophie.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.16098379087052, 
+                                "lng": 0.8394472636135534,
+                                "markerIcon": "🏠",
+                                "markerId": "gitedesophie"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/A945ts9_1spken9_1as.jpg",
+                        "overTitle": "",
+                        "title": "LA FERME EN VILLE",
+                        "desc": "428, Rue de Saint-Nicolas, 27300 Bernay",
+                        "bottomLinks": [
+                            {
+                                "label": "Fabienne +33 (0) 2 32 47 14 03",
+                                "href": "tel:+33232471403",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "fabienne@lafermeenville.com",
+                                "href": "mailto:fabienne@lafermeenville.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.lafermeenville.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.08609599166628, 
+                                "lng": 0.5858654606584386,
+                                "markerIcon": "🏠",
+                                "markerId": "fermeenville"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/A91e7mjy9_1spkenc_1as.jpg",
+                        "overTitle": "",
+                        "title": "LE ROY MOULIN",
+                        "desc": "72, Rue Saint-Vincent, 27290 Glos-sur-Risle",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 6 25 92 42 42",
+                                "href": "tel:+33625924242",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "contact@leroymoulin.com",
+                                "href": "mailto:contact@leroymoulin.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.leroymoulin.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.257169270380174, 
+                                "lng": 0.6895126790499745,
+                                "markerIcon": "🏠",
+                                "markerId": "leroimoulin"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/A917l0zhn_1spkenf_1as.jpg",
+                        "overTitle": "3 chambres double + 1 twin",
+                        "title": "PETIT MANOIR DU BOSC",
+                        "desc": "47, Route du Bec Hellouin, 27890 La Neuville-du-Bosc",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 6 86 79 68 19",
+                                "href": "tel:+33686796819",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "petit-manoir-du-bosc@orange.fr",
+                                "href": "mailto:petit-manoir-du-bosc@orange.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.petit-manoir-du-bosc.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.19529205536931, 
+                                "lng": 0.8073125441424518,
+                                "markerIcon": "🏠",
+                                "markerId": "petitmanoirdubosc"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/A9konhn_1spkeni_1as.jpg",
+                        "overTitle": "1 suite de 5 couchages + 1 chambre double",
+                        "title": "CHEZ MICHELE & GERARD",
+                        "desc": "9, Route De Saint-Léger, 27300 Saint-Léger-de-Rôtes",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 2 32 43 12 44",
+                                "href": "tel:+33232431244",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "michele.don@wanadoo.fr",
+                                "href": "mailto:michele.don@wanadoo.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://chambres-michele.pagesperso-orange.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.10950002844, 
+                                "lng": 0.6426210009445693,
+                                "markerIcon": "🏠",
+                                "markerId": "michelgerard"
+                            }
+                            
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/A91oo2lko_1spkenl_1as.jpg",
+                        "overTitle": "46 chambres",
+                        "title": "HOTEL THE ORIGINALS ACADINE",
+                        "desc": "13, route de Conches, 27110 Le Neubourg",
+                        "bottomLinks": [
+                            {
+                                "label": "+33 (0) 2 32 36 00 36",
+                                "href": "tel:+33232360036",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📞",
+                                "markerId": null
+                            },
+                            {
+                                "label": "hotelacadine@orange.fr",
+                                "href": "mailto:hotelacadine@orange.fr",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📧",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Site de l'hôtel",
+                                "href": "https://www.hotel-acadine-le-neubourg.com",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "👀",
+                                "markerId": null
+                            },
+                            {
+                                "label": null,
+                                "href": null,
+                                "lat": 49.138513968779364, 
+                                "lng": 0.9050565319817461,
+                                "markerIcon": "🏠",
+                                "markerId": "acadine"
                             }
                             
                         ]

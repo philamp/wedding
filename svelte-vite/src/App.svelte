@@ -46,7 +46,10 @@ onMount(() => {
 
 	var els = document.querySelectorAll('a');
 for( let i = 0; i < els.length; i++ ) {
-  els[i].addEventListener( 'click', () => {menuOpened = false; document.querySelector('main').scrollTo(0, 0);})
+  els[i].addEventListener( 'click', () => {menuOpened = false; 
+	document.querySelector('main').scrollTo(0, 0);
+
+})
 }
 	})
 
@@ -551,7 +554,7 @@ for( let i = 0; i < els.length; i++ ) {
 				<li><a href="#/M/program" class:hidelinks={!$connectionStatus}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!----> <!----> <!----> <!----> <!----></svg>
 				  Programme et accès
 				</a></li>
-				<li><a href="#/hotels"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!----> <!----> <!----> <!----> <!----></svg>
+				<li><a href="#/M/hotels"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 mr-2 stroke-current"><!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <!----> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path> <!----> <!----> <!----> <!----> <!----></svg>
 					Hôtels aux environs
 				  </a></li>
 				

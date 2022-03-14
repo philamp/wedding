@@ -16,6 +16,12 @@ import DynMap from '/src/components/DynMap.svelte';
 
   $: pageParam = params.category
 
+  $: if(pageParam){
+      if(document.querySelector('#central-content')){
+      document.querySelector('#central-content').scrollTo(0, 0);
+    }
+  }
+
     </script>
 
 

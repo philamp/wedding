@@ -493,6 +493,21 @@ $: if(htmlLoaded && familyDataLoaded){
    </div> 
   </form>
   
+
+  <div class="alert alert-info my-2 alert-sm">
+	<div class="flex-1">
+	  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+	  </svg> 
+	  <label for="">
+<small>
+	Si le site ne fonctionne pas bien sur votre appareil (quand la mise à jour logicielle remonte à plus de 3 ans), vous pouvez <a href="mailto:phil.gaultier@gmail.com"><span class="underline">répondre par email (phil.gaultier@gmail.com)</span></a>.
+
+</small></label>
+	</div>
+</div>
+
+
 	</div>
   </div> 
 
@@ -528,7 +543,8 @@ $: if(htmlLoaded && familyDataLoaded){
 	  </svg> 
 	  <label for="">
 		{formValues.familyName}  
-		<br/>Vous êtes invité(e)(s) au cocktail {#if formValues.guestLevel >= 2}et au dîner{/if}</label>
+		<br/>Vous êtes invité(e)(s) au cocktail {#if formValues.guestLevel >= 2}et au dîner{/if}
+	</label>
 	</div>
 </div>
 <form on:submit|preventDefault={pushFamilyData}>
@@ -637,7 +653,7 @@ $: if(htmlLoaded && familyDataLoaded){
 	{#if person.attending}
 
   <div class="form-control my-2">
-	<label class="label">
+	<label for="" class="label">
 	  <span class="label-text">Pour {person.firstName} {person.lastName}</span>
 	</label> 
 	<textarea rows="2" class="textarea h-12 textarea-bordered textarea-secondary" placeholder="Exemple : {person.firstName} est allergique à la viande de mammouth" bind:value={person.foodRemarks}></textarea>
@@ -671,18 +687,19 @@ $: if(htmlLoaded && familyDataLoaded){
 	<label class="label" for="emailinput">
 	  <span class="label-text">Adresse e-mail</span>
 	</label> 
-	<input type="text" placeholder="françois@hollande.fr" id="emailinput" class="input input-primary input-bordered" bind:value={formValues.emailAddress} pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+	<input type="text" placeholder="nom@domaine.com" id="emailinput" class="input input-primary input-bordered" bind:value={formValues.emailAddress} pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
   </div> 
   
+  <div class="intl-tel-wrapper">
 	<label class="label" for="phoneinput">
 	  <span class="label-text">Numéro de téléphone</span>
    </label> 
-  
   
   <div class="form-control">
   
 	<input type="tel" id="phoneinput" class="input input-primary input-bordered">
   </div> 
+</div>
   
   <!-- bind:value={formValues.phone}  -->
   
@@ -1011,4 +1028,10 @@ Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
     background-color: rgb(230, 67, 26);
     color: #fff;
   }
+
+.intl-tel-wrapper{
+padding-bottom: 90px;
+padding-top: 50px;
+}
+
   </style>
