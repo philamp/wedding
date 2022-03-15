@@ -79,7 +79,8 @@ for( let i = 0; i < els.length; i++ ) {
 	  <div id="nav" class="inset-x-0 top-0 z-50 w-full transition duration-200 ease-in-out border-b border-base-200 bg-base-100 text-base-content sticky">
 
 		<div class="mx-auto space-x-1 navbar max-w-none h-[64px]"><div class="flex-none"><label for="main-menu" class="btn btn-square btn-ghost drawer-button lg:hidden">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">
+			<small>MENU</small>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="2 2 20 20" class="inline-block w-6 h-6 stroke-current">
 			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></label></div> 
 			<div class="flex items-center flex-none lg:hidden">
 				<a href="/" aria-label="Homepage" class="px-2 flex-0 btn btn-ghost md:px-4 nuxt-link-active">
