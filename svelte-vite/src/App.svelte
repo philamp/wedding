@@ -13,11 +13,13 @@
 	import ProgramAcces from './routes/ProgramAcces.svelte';
 	import { onMount } from 'svelte';
 	import {wrap} from 'svelte-spa-router/wrap';
-	import { storeReady, connectionStatus} from '/src/store.js';
+	import { storeReady, connectionStatus, mapOpened} from '/src/store.js';
 
 	let menuOpened = false; 
 
 	$connectionStatus = false;
+
+	$mapOpened = false;
 
 	$: $storeReady = ready;
 
@@ -46,7 +48,7 @@ onMount(() => {
 
 	var els = document.querySelectorAll('a');
 for( let i = 0; i < els.length; i++ ) {
-  els[i].addEventListener( 'click', () => {menuOpened = false; 
+  els[i].addEventListener( 'click', () => {menuOpened = false; $mapOpened = false;
 	document.querySelector('main').scrollTo(0, 0);
 
 })
@@ -198,7 +200,11 @@ for( let i = 0; i < els.length; i++ ) {
 		
 		<!----> 
 		
-		<label for="my-drawer-2" title="Afficher la carte ↗︎" class="items-center flex-none cursor-pointer lg:hidden p-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" class="inline-block w-6 h-6 fill-current"> <defs>
+		{#if $connectionStatus}
+		<label for="my-drawer-2" title="Afficher la carte ↗︎" class="items-center flex-none cursor-pointer lg:hidden p-2" on:click={() => {if(!document.getElementById("my-drawer-2")){window.location.href = location.protocol + '//' + location.host + "/#/M/program"}}}>
+		
+			
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" class="inline-block w-6 h-6 fill-current"> <defs>
 			<symbol id="h" overflow="visible">
 			 <path d="m18.766-1.125c-0.96875 0.5-1.9805 0.875-3.0312 1.125-1.043 0.25781-2.1367 0.39062-3.2812 0.39062-3.3984 0-6.0898-0.94531-8.0781-2.8438-1.9922-1.9062-2.9844-4.4844-2.9844-7.7344 0-3.2578 0.99219-5.8359 2.9844-7.7344 1.9883-1.9062 4.6797-2.8594 8.0781-2.8594 1.1445 0 2.2383 0.13281 3.2812 0.39062 1.0508 0.25 2.0625 0.625 3.0312 1.125v4.2188c-0.98047-0.65625-1.9453-1.1406-2.8906-1.4531-0.94922-0.3125-1.9492-0.46875-3-0.46875-1.875 0-3.3516 0.60547-4.4219 1.8125-1.0742 1.1992-1.6094 2.8555-1.6094 4.9688 0 2.1055 0.53516 3.7617 1.6094 4.9688 1.0703 1.1992 2.5469 1.7969 4.4219 1.7969 1.0508 0 2.0508-0.14844 3-0.45312 0.94531-0.3125 1.9102-0.80078 2.8906-1.4688z"/>
 			</symbol>
@@ -305,7 +311,7 @@ for( let i = 0; i < els.length; i++ ) {
 			<use x="371.65625" y="672" xlink:href="#a"/>
 			<use x="390.648438" y="672" xlink:href="#m"/>
 			<use x="407.242188" y="672" xlink:href="#b"/>
-		   </g></svg></label>
+		   </g></svg></label>{/if}
 		
 </div>
 	  </div>
@@ -455,13 +461,14 @@ for( let i = 0; i < els.length; i++ ) {
 					  Votre réponse
 					  </a>
 					</li>
-
+{#if $connectionStatus}
 					<li>
 						<a href="/#/M/program" title="">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
 						Programme & accès
 						</a>
 					  </li>
+{/if}
 
 					<li>
 						<a href="/#/M/hotels" title="">

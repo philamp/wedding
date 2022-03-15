@@ -3,7 +3,7 @@
 
 
 import DynMap from '/src/components/DynMap.svelte';
-    import { storeReady } from '/src/store.js';
+    import { storeReady, mapOpened} from '/src/store.js';
 
     
     import { sections } from '/src/poi.json';
@@ -26,7 +26,7 @@ import DynMap from '/src/components/DynMap.svelte';
 
 
 <div id="mapDrawer" class="drawer drawer-end drawer-mobile">
-    <input id="my-drawer-2" type="checkbox" class="drawer-toggle"> 
+    <input id="my-drawer-2" type="checkbox" class="drawer-toggle" bind:checked={$mapOpened}> 
     <div class="drawer-content py-[4rem]">
 
 
