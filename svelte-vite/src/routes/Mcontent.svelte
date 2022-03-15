@@ -30,7 +30,7 @@ import DynMap from '/src/components/DynMap.svelte';
     <div class="drawer-content py-[4rem]">
 
 
-      <div id="central-content">
+      <div id="maps-central-content">
   
   <!--POI CONTENT BEGIN -->
       <UnfoldPoi sectionsProp={sections} {pageParam}/>
