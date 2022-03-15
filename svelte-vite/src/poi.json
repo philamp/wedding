@@ -900,7 +900,7 @@
                                 "href": "https://api.whatsapp.com/send?phone=+33682371092",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "🗪",
+                                "markerIcon": "",
                                 "markerId": null
                             },
                             {
@@ -920,6 +920,38 @@
                         "overTitle": "Logement",
                         "title": "Avant de partir, merci de...",
                         "desc": "Vider les chambres de toute affaire personnelle; descendre les poubelles de salle de bain dans la cuisine du château; Déposer les draps et serviettes au pied du lit",
+                        "bottomLinks": []
+                    }
+                ]
+        },
+        {
+            "sectionTitle" : "Liste de mariage",
+            "sectionPageParam" : "liste-mariage",
+                "pois" : [
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/kdo.jpg",
+                        "overTitle": "",
+                        "title": "Liste de mariage",
+                        "desc": "Merci infiniment pour votre participation.",
+                        "bottomLinks": [
+                            {
+                                "label": "Participer via 'le pot commun'",
+                                "href": "https://www.lepotcommun.fr/les-petites-listes/helene-philippe",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🎁",
+                                "markerId": null
+                            }
+
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/urne.jpg",
+                        "overTitle": "",
+                        "title": "Urne",
+                        "desc": "Pour nous laisser un mot ou participer à la liste de mariage, vous trouverez aussi une urne au château.",
                         "bottomLinks": []
                     }
                 ]
