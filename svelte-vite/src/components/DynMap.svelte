@@ -19,6 +19,7 @@
    let center = {lat: 49.14461090622175, lng: 0.6586278227095459 };
 
    onMount(async () => {
+
        const map = new google.maps.Map(container, {
            zoom,
            center,
@@ -51,19 +52,19 @@
 
             });
 
+
             const fillWindow = () => {
                 infoWindow.close();
-                infoWindow.setContent(`${card.title}<br/><a href="https://www.google.com/maps/dir/?api=1&destination=${bottomLink.lat},${bottomLink.lng}" class="btn btn-secondary btn-xs" title="" target="_blank">Itinéraire dans maps</a>`);
+                infoWindow.setContent(`<h3 class="block mt-1 text-lg leading-tight font-medium text-black">${card.title}</h3><br/><a href="https://www.google.com/maps/dir/?api=1&destination=${bottomLink.lat},${bottomLink.lng}" class="my-1 btn btn-secondary btn-xs" title="" target="_blank">Itinéraire dans maps</a><br/><label for="my-drawer-2" class="my-1 btn btn-secondary btn-xs" onclick="window.location.href = location.protocol + '//' + location.host + '/#/M/${card.section}/${card.mapMarkerId}'">Afficher les détails</label>`);
                 infoWindow.open(map, marker);
 
             }
 
             marker.addListener("click", fillWindow);
 
-            // dont put the event on bottomlink if not present
-              if(document.getElementById("M-"+bottomLink.markerId)){
-                document.getElementById("M-"+bottomLink.markerId).onclick = fillWindow
-              }
+            // dont put the event on bottomlink if not present -> always present
+            document.getElementById("M-"+card.mapMarkerId).onclick = fillWindow
+              
 
             }
   

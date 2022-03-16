@@ -9,6 +9,7 @@
                         "imgSrc": "/static_pictures/chrome_pmWTj2N2kF.png",
                         "overTitle": "Ville d'art et d'histoire",
                         "title": "Bernay",
+                        "mapMarkerId": "bernay",
                         "desc": "Située au cœur de la Normandie, Bernay est labellisée Ville d'art et d'histoire depuis 2011. Elle est la seule commune du département à posséder cette distinction. De  son abbaye du XIe siècle à ses maisons à pans de bois des XVe et XVIe siècles, en passant par l'hôtel de la Gabelle, ses jardins, ses bois sculptés de monstres grimaçants et son musée des Beaux-Arts, Bernay offre des promenades le long de la Charentonne et du Cosnier et propose des circuits découverte.",
                         "bottomLinks": [
                             {
@@ -16,8 +17,7 @@
                                 "href": null,
                                 "lat": 49.08771060430969, 
                                 "lng": 0.5924763103223959,
-                                "markerIcon": "🏠",
-                                "markerId": "bernay"
+                                "markerIcon": "🏠"
                             },
                             {
                                 "label": "En savoir plus",
@@ -34,6 +34,7 @@
                         "imgSrc": "/static_pictures/chrome_X8suQzp2BF.png",
                         "overTitle": "classé parmi les Plus Beaux Villages de France",
                         "title": "Le Bec-Hellouin",
+                        "mapMarkerId": "bechoullin",
                         "desc": "Le village du Bec-Hellouin est classé parmi les Plus Beaux Villages de France.Découvrez un charmant village authentiquement normand dans la vallée du Bec. Les maisons à pans de bois, les ruelles fleuries, la place aux hêtres invitent à la flânerie. En contrebas, découvrez la somptueuse Abbaye Notre-Dame, fondée au XIe siècle. Elle est toujours en activité grâce à une communauté de moines bénédictins.",
                         "bottomLinks": [
                             {
@@ -41,8 +42,8 @@
                                 "href": null,
                                 "lat": 49.2310595940857,
                                 "lng": 0.7227547177620883,
-                                "markerIcon": "🏠",
-                                "markerId": "bechoullin"
+                                "markerIcon": "🏠"
+                                
                             },
                             {
                                 "label": "En savoir plus",
@@ -59,6 +60,7 @@
                         "imgSrc": "/static_pictures/chrome_9Knin8nSWO.png",
                         "overTitle": "arboretum depuis 1802",
                         "title": "Château et Domaine d’Harcourt",
+                        "mapMarkerId": "harcourt",
                         "desc": "Le Château d'Harcourt est l'un des châteaux médiévaux les mieux conservés de Normandie. L’édifice domine un superbe arboretum installé depuis 1802, et considéré comme le plus ancien de France. Ce conservatoire à vocation scientifique et pédagogique, qui offre une synthèse du peuplement arboré des 5 continents, demeure un très agréable lieu de promenade.",
                         "bottomLinks": [
                             {
@@ -66,8 +68,7 @@
                                 "href": null,
                                 "lat": 49.17414578376802, 
                                 "lng": 0.7868203070343227,
-                                "markerIcon": "🏰",
-                                "markerId": "harcourt"
+                                "markerIcon": "🏰"
                             },
                             {
                                 "label": "En savoir plus",
@@ -89,6 +90,7 @@
                     },
                     {
                         "type": "longCard",
+                        "mapMarkerId": "champbataille",
                         "imgSrc": "/static_pictures/chrome_VhsJRA5fO1.png",
                         "overTitle": "somptueux jardins à la française",
                         "title": "Château du Champ de Bataille",
@@ -99,8 +101,7 @@
                                 "href": null,
                                 "lat": 49.16867270697369, 
                                 "lng": 0.8589767935820694,
-                                "markerIcon": "🏰",
-                                "markerId": "champbataille"
+                                "markerIcon": "🏰"
                             },
                             {
                                 "label": "En savoir plus",
@@ -125,6 +126,7 @@
                         "imgSrc": "/static_pictures/chrome_NXZtmPIcco.png",
                         "overTitle": "architecture du début du XVIIe",
                         "title": "Château de Beaumesnil",
+                        "mapMarkerId": "beaumesnil",
                         "desc": "Le château de Beaumesnil est un magnifique exemple d’architecture du début du XVIIe siècle avec ses façades de briques et de pierres richement décorées. Le château, entièrement meublé, abrite également une collection de reliures anciennes dans la bibliothèque. Cet ensemble exceptionnel est entouré de 4 ha de jardins à la française.",
                         "bottomLinks": [
                             {
@@ -132,8 +134,7 @@
                                 "href": null,
                                 "lat": 49.01411054764402, 
                                 "lng": 0.7115150181719295,
-                                "markerIcon": "🏰",
-                                "markerId": "beaumesnil"
+                                "markerIcon": "🏰"
                             },
                             {
                                 "label": "En savoir plus",
@@ -158,6 +159,7 @@
                         "imgSrc": "/static_pictures/pontaudemer.jpg",
                         "overTitle": "cité de tanneurs",
                         "title": "Pont-Audemer",
+                        "mapMarkerId": "pontaudemer",
                         "desc": "Cette ancienne cité de tanneurs possède un centre-ville typique du Moyen-Âge, dont l’urbanisme et l’architecture sont les témoins de son riche passé industriel : maisons à colombages, anciens séchoirs à peaux et hôtels particuliers les pieds dans l’eau, côtoient les ponts de pierre et les canaux.",
                         "bottomLinks": [
                             {
@@ -165,8 +167,7 @@
                                 "href": null,
                                 "lat": 49.357346769822385, 
                                 "lng": 0.5168473604238059,
-                                "markerIcon": "🏠",
-                                "markerId": "pontaudemer"
+                                "markerIcon": "🏠"
                             },
                             {
                                 "label": "En savoir plus",
@@ -183,6 +184,7 @@
                         "imgSrc": "/static_pictures/chrome_btKi4bU1kr.png",
                         "overTitle": "richesse de la faune et la flore",
                         "title": "Marais-Vernier",
+                        "mapMarkerId": "maraisvernier",
                         "desc": "Ancien méandre de la Seine, le Marais Vernier constitue une vaste zone humide de 4500 ha située sur un important couloir de migration des oiseaux. Véritable amphithéâtre naturel, cette micro région exceptionnelle est reconnue au niveau européen pour la richesse de sa faune et sa flore.",
                         "bottomLinks": [
                             {
@@ -190,8 +192,7 @@
                                 "href": null,
                                 "lat": 49.42118380422931, 
                                 "lng": 0.4529302285896662,
-                                "markerIcon": "🌊",
-                                "markerId": "maraisvernier"
+                                "markerIcon": "🌊"
                             },
                             {
                                 "label": "En savoir plus",
@@ -208,6 +209,7 @@
                         "imgSrc": "/static_pictures/chrome_2mKmbl3KpM.png",
                         "overTitle": "ancienne cité romaine",
                         "title": "Evreux",
+                        "mapMarkerId": "evreux",
                         "desc": "La capitale de l'Eure possède un riche passé : ancienne cité romaine, dont les vestiges restent encore bien visibles le long des berges de l'Iton, ville médiévale importante, qualifiée au XVIIIe siècle par Madame de Sévigné de ´plus jolie ville de Normandie´, Evreux offre aujourd'hui un visage particulièrement contrasté. Si de beaux bâtiments anciens subsistent, le cœur du centre-ville, détruit à plus de 80 % pendant la Seconde Guerre mondiale, a été reconstruit dans les années 1950 et 1960. La majestueuse cathédrale, fondée au Xe s., partagea les heurs et les malheurs de la ville, parfois brûlée, souvent remaniée. Elle possède de  remarquables vitraux provenant de dons royaux.",
                         "bottomLinks": [
                             {
@@ -215,8 +217,7 @@
                                 "href": null,
                                 "lat": 49.02745891036962, 
                                 "lng": 1.1516146255797084,
-                                "markerIcon": "🏠",
-                                "markerId": "evreux"
+                                "markerIcon": "🏠"
                             },
                             {
                                 "label": "En savoir plus",
@@ -233,6 +234,7 @@
                         "imgSrc": "/static_pictures/chrome_ll1YbXtLMC.png",
                         "overTitle": "Monet, Courbet, Boudin...",
                         "title": "Honfleur",
+                        "mapMarkerId": "honfleur",
                         "desc": "Ville de pêcheurs habillée d'ardoises et ville des peintres, Honfleur comme nul port ailleurs. Monet, Courbet, Boudin et tant d'autres ont fait voyager les pittoresques quais de Honfleur dans le monde. Premier port de la Côte Fleurie en venant de la capitale, cette ville a attiré le Tout-Paris dès le début du XIXe siècle. Toujours aussi nombreux, les artistes continuent à immortaliser le vieux port, animé en toute saison. De hautes maisons normandes serrées autour du vieux bassin forment un décor qui enchante photographes, peintres et flâneurs.",
                         "bottomLinks": [
                             {
@@ -240,8 +242,7 @@
                                 "href": null,
                                 "lat": 49.420424296513396, 
                                 "lng": 0.23455810831514726,
-                                "markerIcon": "🌊",
-                                "markerId": "honfleur"
+                                "markerIcon": "🌊"
                             },
                             {
                                 "label": "En savoir plus",
@@ -259,6 +260,7 @@
                         "imgSrc": "/static_pictures/chrome_9L7zHomDsA.png",
                         "overTitle": "infesté de parisiens le week-end",
                         "title": "Trouville-sur-mer et Deauville",
+                        "mapMarkerId": "deauvilletrouville",
                         "desc": "Conçue par le Duc de Morny, demi-frère de Napoléon III, Deauville fut créée en 1858 afin d'accueillir la haute société parisienne, avide de bains de mer et de villégiature. Le petit village de Dosville fut métamorphosé en cité balnéaire chic, regorgeant de somptueux manoirs et hôtels, d'un Casino, d'un hippodrome, et d'un golf. Séparée de Deauville par une syllabe et une rivière, la Touques, Trouville a su garder son caractère Second Empire et son charme de petit port de pêche. Au fil des Planches, les demeures à l'architecture typique de la région font toujours forte impression. Depuis le début du XIXe siècle, grâce aux bains de mer, la ville attire de grands peintres, artistes ou écrivains.",
                         "bottomLinks": [
                             {
@@ -266,8 +268,7 @@
                                 "href": null,
                                 "lat": 49.36393935440184, 
                                 "lng": 0.07694419524122773,
-                                "markerIcon": "🌊",
-                                "markerId": "deauvilletrouville"
+                                "markerIcon": "🌊"
                             },
                             {
                                 "label": "En savoir plus",
@@ -285,6 +286,7 @@
                         "imgSrc": "/static_pictures/chrome_7xfWCwo75s.png",
                         "overTitle": "fabuleuse falaise de craie",
                         "title": "Etretat",
+                        "mapMarkerId": "etretat",
                         "desc": "Pour sa fabuleuse falaise de craie, plongeant à pic dans la mer, Étretat offre l'un des plus beaux panoramas de France. Lieu de contemplation pour les artistes, comme Matisse ou encore Monet, on s'y promène de la grande plage de galets, aux hauteurs, peuplées de maisons normandes de style Belle Epoque.",
                         "bottomLinks": [
                             {
@@ -292,8 +294,7 @@
                                 "href": null,
                                 "lat": 49.70777917974438, 
                                 "lng": 0.20561414115700066,
-                                "markerIcon": "🌊",
-                                "markerId": "etretat"
+                                "markerIcon": "🌊"
                             },
                             {
                                 "label": "En savoir plus",
@@ -317,6 +318,7 @@
                         "imgSrc": "/static_pictures/Acrobat_OsaafrQ0av.png",
                         "overTitle": "3 chambres + 2 chambres",
                         "title": "Château du parc",
+                        "mapMarkerId": "chateauduparc",
                         "desc": "Mme Micheline Morice. Le Parc, 27270 Grand-Camp",
                         "bottomLinks": [
                             {
@@ -340,8 +342,7 @@
                                 "href": null,
                                 "lat": 49.05919810746829, 
                                 "lng": 0.5427298721223979,
-                                "markerIcon": "🏠",
-                                "markerId": "chateauduparc"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -351,6 +352,7 @@
                         "imgSrc": "/static_pictures/gdAWpkq.png",
                         "overTitle": "5 chambres",
                         "title": "Auberge du vieux donjon",
+                        "mapMarkerId": "aubergevieuxdonjon",
                         "desc": "19, rue de la Soie, 27800 Brionne",
                         "bottomLinks": [
                             {
@@ -374,8 +376,7 @@
                                 "href": null,
                                 "lat": 49.19436482796374, 
                                 "lng": 0.7207372268675442,
-                                "markerIcon": "🏠",
-                                "markerId": "aubergevieuxdonjon"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -385,6 +386,7 @@
                         "imgSrc": "/static_pictures/aMsgGea.png",
                         "overTitle": "12 chambres",
                         "title": "Le Logis de Brionne",
+                        "mapMarkerId": "logisbrionne",
                         "desc": "1, Place Saint-Denis, 27800 Brionne",
                         "bottomLinks": [
                             {
@@ -408,8 +410,7 @@
                                 "href": null,
                                 "lat": 49.19363918388129, 
                                 "lng": 0.7140770524102811,
-                                "markerIcon": "🏠",
-                                "markerId": "logisbrionne"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -419,6 +420,7 @@
                         "imgSrc": "/static_pictures/tZ04d0e.png",
                         "overTitle": "50 chambres",
                         "title": "ACROPOLE HÔTEL",
+                        "mapMarkerId": "acropolehotel",
                         "desc": "10, Rue de la Grande Malouve, 27300 Bernay",
                         "bottomLinks": [
                             {
@@ -450,8 +452,7 @@
                                 "href": null,
                                 "lat": 49.06720162176032, 
                                 "lng": 0.5780641406207622,
-                                "markerIcon": "🏠",
-                                "markerId": "acropolehotel"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -461,6 +462,7 @@
                         "imgSrc": "/static_pictures/2kcCWie.jpeg",
                         "overTitle": "23 chambres",
                         "title": "HOTEL DU LION D'OR",
+                        "mapMarkerId": "hotelliondor1",
                         "desc": "48, Rue du Général de Gaulle, 27300 Bernay",
                         "bottomLinks": [
                             {
@@ -492,8 +494,7 @@
                                 "href": null,
                                 "lat": 49.08921754913192, 
                                 "lng": 0.595080014564035,
-                                "markerIcon": "🏠",
-                                "markerId": "hotelliondor1"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -503,6 +504,7 @@
                         "imgSrc": "/static_pictures/A9104uctl_1spkemx_1as.jpg",
                         "overTitle": "",
                         "title": "AUBERGE DE L'ABBAYE",
+                        "mapMarkerId": "aubergeabbaye",
                         "desc": "12, Place Guillaume le Conquérant, 27800 Le Bec-Hellouin",
                         "bottomLinks": [
                             {
@@ -534,8 +536,7 @@
                                 "href": null,
                                 "lat": 49.231982985748296, 
                                 "lng": 0.7208958133208389,
-                                "markerIcon": "🏠",
-                                "markerId": "aubergeabbaye"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -545,6 +546,7 @@
                         "imgSrc": "/static_pictures/A9rluuiu_1spken0_1as.jpg",
                         "overTitle": "9 chambres",
                         "title": "HOSTELLERIE DU LION D'OR",
+                        "mapMarkerId": "hotellerieliondor",
                         "desc": "91, Rue Saint-Nicolas, 27170 Beaumont-le-Roger",
                         "bottomLinks": [
                             {
@@ -576,8 +578,7 @@
                                 "href": null,
                                 "lat": 49.07829131074188, 
                                 "lng": 0.7831600999999984,
-                                "markerIcon": "🏠",
-                                "markerId": "hotellerieliondor"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -587,6 +588,7 @@
                         "imgSrc": "/static_pictures/A91ebq3i0_1spken6_1as.jpg",
                         "overTitle": "11 chambres",
                         "title": "LES GÎTES DE SOPHIE",
+                        "mapMarkerId": "gitedesophie",
                         "desc": "1, allée de la ferme, 27110 Sainte-Opportune-du-Bosc",
                         "bottomLinks": [
                             {
@@ -626,8 +628,7 @@
                                 "href": null,
                                 "lat": 49.16098379087052, 
                                 "lng": 0.8394472636135534,
-                                "markerIcon": "🏠",
-                                "markerId": "gitedesophie"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -637,6 +638,7 @@
                         "imgSrc": "/static_pictures/A945ts9_1spken9_1as.jpg",
                         "overTitle": "",
                         "title": "LA FERME EN VILLE",
+                        "mapMarkerId": "fermeenville",
                         "desc": "428, Rue de Saint-Nicolas, 27300 Bernay",
                         "bottomLinks": [
                             {
@@ -668,8 +670,7 @@
                                 "href": null,
                                 "lat": 49.08609599166628, 
                                 "lng": 0.5858654606584386,
-                                "markerIcon": "🏠",
-                                "markerId": "fermeenville"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -679,6 +680,7 @@
                         "imgSrc": "/static_pictures/A91e7mjy9_1spkenc_1as.jpg",
                         "overTitle": "",
                         "title": "LE ROY MOULIN",
+                        "mapMarkerId": "leroimoulin",
                         "desc": "72, Rue Saint-Vincent, 27290 Glos-sur-Risle",
                         "bottomLinks": [
                             {
@@ -710,8 +712,7 @@
                                 "href": null,
                                 "lat": 49.257169270380174, 
                                 "lng": 0.6895126790499745,
-                                "markerIcon": "🏠",
-                                "markerId": "leroimoulin"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -721,6 +722,7 @@
                         "imgSrc": "/static_pictures/A917l0zhn_1spkenf_1as.jpg",
                         "overTitle": "3 chambres double + 1 twin",
                         "title": "PETIT MANOIR DU BOSC",
+                        "mapMarkerId": "petitmanoirdubosc",
                         "desc": "47, Route du Bec Hellouin, 27890 La Neuville-du-Bosc",
                         "bottomLinks": [
                             {
@@ -752,8 +754,7 @@
                                 "href": null,
                                 "lat": 49.19529205536931, 
                                 "lng": 0.8073125441424518,
-                                "markerIcon": "🏠",
-                                "markerId": "petitmanoirdubosc"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -763,6 +764,7 @@
                         "imgSrc": "/static_pictures/A9konhn_1spkeni_1as.jpg",
                         "overTitle": "1 suite de 5 couchages + 1 chambre double",
                         "title": "CHEZ MICHELE & GERARD",
+                        "mapMarkerId": "michelgerard",
                         "desc": "9, Route De Saint-Léger, 27300 Saint-Léger-de-Rôtes",
                         "bottomLinks": [
                             {
@@ -794,8 +796,7 @@
                                 "href": null,
                                 "lat": 49.10950002844, 
                                 "lng": 0.6426210009445693,
-                                "markerIcon": "🏠",
-                                "markerId": "michelgerard"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -805,6 +806,7 @@
                         "imgSrc": "/static_pictures/A91oo2lko_1spkenl_1as.jpg",
                         "overTitle": "46 chambres",
                         "title": "HOTEL THE ORIGINALS ACADINE",
+                        "mapMarkerId": "acadine",
                         "desc": "13, route de Conches, 27110 Le Neubourg",
                         "bottomLinks": [
                             {
@@ -836,8 +838,7 @@
                                 "href": null,
                                 "lat": 49.138513968779364, 
                                 "lng": 0.9050565319817461,
-                                "markerIcon": "🏠",
-                                "markerId": "acadine"
+                                "markerIcon": "🏠"
                             }
                             
                         ]
@@ -853,6 +854,7 @@
                         "imgSrc": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/%C3%89glise_Sainte-Croix_de_Bernay.jpg/1024px-%C3%89glise_Sainte-Croix_de_Bernay.jpg",
                         "overTitle": "MESSE DE MARIAGE À 14H30",
                         "title": "Eglise Sainte-Croix de Bernay",
+                        "mapMarkerId": "eglise",
                         "desc": "Célébrée par le Père Nicolas Lebas curé de la paroisse.",
                         "bottomLinks": [
                             {
@@ -860,8 +862,7 @@
                                 "href": null,
                                 "lat": 49.09136629680224, 
                                 "lng": 0.5988271661269582,
-                                "markerIcon": "⛪",
-                                "markerId": "eglise"
+                                "markerIcon": "⛪"
                             }
                         ]
                     },
@@ -870,6 +871,7 @@
                         "imgSrc": "https://www.1001salles.com/images/provider/9626/1507731735_6403_700920710.jpg",
                         "overTitle": "COCKTAIL à 17H30",
                         "title": "Château de Carsix",
+                        "mapMarkerId": "chateau",
                         "desc": "Réception dans le château de Carsix..",
                         "bottomLinks": [
                             {
@@ -877,8 +879,7 @@
                                 "href": null,
                                 "lat": 49.14143080014507, 
                                 "lng": 0.6677124803025075,
-                                "markerIcon": "🏰",
-                                "markerId": "chateau"
+                                "markerIcon": "🏰"
                             }
                         ]
                     }

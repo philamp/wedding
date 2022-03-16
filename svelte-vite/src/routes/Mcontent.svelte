@@ -8,29 +8,46 @@ import DynMap from '/src/components/DynMap.svelte';
     
     import { sections } from '/src/poi.json';
     import UnfoldPoi from '/src/components/UnfoldPoi.svelte';
+    import { onMount } from 'svelte';
+    import { alert } from '/src/store.js'
     
     	//spa router params
 	export let params = {}
 
+  let htmlLoaded = false;
+
+  onMount(() => {
+
+    htmlLoaded = true;
+  })
+
+
   let pageParam
+
+  let itemParam
+
+  const showChange = (pP) => {
+    $alert = "Changement de page : " + sections[sections.findIndex(arg => arg.sectionPageParam == pageParam)].sectionTitle
+  }
 
   $: pageParam = params.category
 
-  $: if(pageParam){
-      if(document.querySelector('#central-content')){
-      document.querySelector('#central-content').scrollTo(0, 0);
-    }
+  $: itemParam = params.item
+
+  $: if(htmlLoaded && itemParam){
+    setTimeout(() => {document.querySelector('#C-'+itemParam).scrollIntoView();
+    document.querySelector('#map-content-drawer').scrollBy(0,-50);}, 100)
   }
+
+  $: showChange(pageParam)
 
     </script>
 
 
 <div id="mapDrawer" class="drawer drawer-end drawer-mobile">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" bind:checked={$mapOpened}> 
-    <div class="drawer-content py-[4rem]">
+    <div id="map-content-drawer" class="drawer-content py-[4rem]">
 
-
-      <div id="maps-central-content">
   
   <!--POI CONTENT BEGIN -->
       <UnfoldPoi sectionsProp={sections} {pageParam}/>
@@ -38,7 +55,6 @@ import DynMap from '/src/components/DynMap.svelte';
 
 
 
-</div><!--END CENTRAL CONTENT--> 
 
     </div> 
     <div class="drawer-side">

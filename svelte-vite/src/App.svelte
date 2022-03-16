@@ -32,7 +32,7 @@ let routes = {
     '/P/:urlQrCode?': Subscribe,
 	'/hotels': Hotels,
 	'/avisiter': Avisiter,
-	'/M/:category?' : Mcontent,
+	'/M/:category/:item?' : Mcontent,
 	'/programme-acces': ProgramAcces
     
 }
@@ -62,6 +62,7 @@ for( let i = 0; i < els.length; i++ ) {
 		menuOpened = false; 
 		$mapOpened = false;
 		document.querySelector('main').scrollTo(0, 0);
+		if($location.slice(0,3) == "/M/"){document.querySelector('#map-content-drawer').scrollTo(0,0)};
 	}
 
 	async function verifyAuth() {
@@ -225,7 +226,6 @@ for( let i = 0; i < els.length; i++ ) {
 
 
 <!-- PUT PAGE CONTENT HERE-->
-<p>The current page is: {$location}</p>
 <Router {routes} />
 <!-- END PUT PAGE CONTENT HERE !!! spacer below -->
 
@@ -403,7 +403,8 @@ for( let i = 0; i < els.length; i++ ) {
 	}
 	#nav{
 			background-color: #ffffffaa;
-			backdrop-filter: saturate(200%) blur(1ex)
+			backdrop-filter: saturate(200%) blur(1ex);
+			-webkit-backdrop-filter: saturate(200%) blur(1ex)
 		}
 		#highleft{
 			background-color: #ffffff99;
