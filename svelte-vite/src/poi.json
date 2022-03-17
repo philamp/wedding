@@ -6,7 +6,7 @@
                 "pois" : [
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_pmWTj2N2kF.png",
+                        "imgSrc": "/static_pictures/chrome_pmWTj2N2kF.jpg",
                         "overTitle": "Ville d'art et d'histoire",
                         "title": "Bernay",
                         "mapMarkerId": "bernay",
@@ -20,7 +20,7 @@
                                 "markerIcon": "🏠"
                             },
                             {
-                                "label": "En savoir plus",
+                                "label": "Voir sur Wivisites",
                                 "href": "https://www.wivisites.com/search_sites?type=city&address=Bernay,%2027300",
                                 "lat": null, 
                                 "lng": null,
@@ -31,7 +31,7 @@
                     },
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_X8suQzp2BF.png",
+                        "imgSrc": "/static_pictures/chrome_X8suQzp2BF.jpg",
                         "overTitle": "classé parmi les Plus Beaux Villages de France",
                         "title": "Le Bec-Hellouin",
                         "mapMarkerId": "bechoullin",
@@ -46,7 +46,7 @@
                                 
                             },
                             {
-                                "label": "En savoir plus",
+                                "label": "Voir sur Wivisites",
                                 "href": "https://www.wivisites.com/monument_details?site=6ffbc3b9-a699-49d6-bff6-26a6231177b8",
                                 "lat": null, 
                                 "lng": null,
@@ -57,7 +57,7 @@
                     },
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_9Knin8nSWO.png",
+                        "imgSrc": "/static_pictures/chrome_9Knin8nSWO.jpg",
                         "overTitle": "arboretum depuis 1802",
                         "title": "Château et Domaine d’Harcourt",
                         "mapMarkerId": "harcourt",
@@ -71,7 +71,7 @@
                                 "markerIcon": "🏰"
                             },
                             {
-                                "label": "En savoir plus",
+                                "label": "Voir sur Wivisites",
                                 "href": "https://www.wivisites.com/monument_details?site=34ebea9d-3485-428b-9866-b240ea8e9fd1",
                                 "lat": null, 
                                 "lng": null,
@@ -91,7 +91,7 @@
                     {
                         "type": "longCard",
                         "mapMarkerId": "champbataille",
-                        "imgSrc": "/static_pictures/chrome_VhsJRA5fO1.png",
+                        "imgSrc": "/static_pictures/chrome_VhsJRA5fO1.jpg",
                         "overTitle": "somptueux jardins à la française",
                         "title": "Château du Champ de Bataille",
                         "desc": "Édifié au XVIIe siècle pour le maréchal de Créqui, l'imposant château du Champ de Bataille est la propriété de Jacques Garcia, célèbre décorateur et collectionneur d'art, qui entreprit sa restauration dès 1992, ainsi que la création de somptueux jardins à la française. Classés Jardin Remarquable, ces derniers, réalisés à partir d'un croquis attribué à Le Nôtre, restituent toute la splendeur d'antan. Le château abrite une prestigieuse collection de meubles et objets royaux et princiers.",
@@ -104,7 +104,7 @@
                                 "markerIcon": "🏰"
                             },
                             {
-                                "label": "En savoir plus",
+                                "label": "Voir sur Wivisites",
                                 "href": "https://www.wivisites.com/monument_details?site=d0fa71ac-5dcb-487a-bc24-67edd583561e",
                                 "lat": null, 
                                 "lng": null,
@@ -123,7 +123,7 @@
                     },
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_NXZtmPIcco.png",
+                        "imgSrc": "/static_pictures/chrome_NXZtmPIcco.jpg",
                         "overTitle": "architecture du début du XVIIe",
                         "title": "Château de Beaumesnil",
                         "mapMarkerId": "beaumesnil",
@@ -137,7 +137,7 @@
                                 "markerIcon": "🏰"
                             },
                             {
-                                "label": "En savoir plus",
+                                "label": "Voir sur Wivisites",
                                 "href": "https://www.wivisites.com/monument_details?site=254a2529-049b-431c-9f45-9cc94b98fd8d",
                                 "lat": null, 
                                 "lng": null,
@@ -170,7 +170,7 @@
                                 "markerIcon": "🏠"
                             },
                             {
-                                "label": "En savoir plus",
+                                "label": "Voir sur Wivisites",
                                 "href": "https://www.wivisites.com/monument_details?site=6145ccb1-d835-414f-8596-0d93090176b4",
                                 "lat": null, 
                                 "lng": null,
@@ -181,7 +181,7 @@
                     },
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_btKi4bU1kr.png",
+                        "imgSrc": "/static_pictures/chrome_btKi4bU1kr.jpg",
                         "overTitle": "richesse de la faune et la flore",
                         "title": "Marais-Vernier",
                         "mapMarkerId": "maraisvernier",
@@ -206,7 +206,7 @@
                     },
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_2mKmbl3KpM.png",
+                        "imgSrc": "/static_pictures/chrome_2mKmbl3KpM.jpg",
                         "overTitle": "ancienne cité romaine",
                         "title": "Evreux",
                         "mapMarkerId": "evreux",
@@ -231,7 +231,7 @@
                     },
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_ll1YbXtLMC.png",
+                        "imgSrc": "/static_pictures/chrome_ll1YbXtLMC.jpg",
                         "overTitle": "Monet, Courbet, Boudin...",
                         "title": "Honfleur",
                         "mapMarkerId": "honfleur",
@@ -245,7 +245,7 @@
                                 "markerIcon": "🌊"
                             },
                             {
-                                "label": "En savoir plus",
+                                "label": "Voir sur Wivisites",
                                 "href": "https://www.wivisites.com/monument_details?site=c624752b-6294-42db-bcf1-6f48c60b67a2",
                                 "lat": null, 
                                 "lng": null,
@@ -257,7 +257,7 @@
                     ,
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_9L7zHomDsA.png",
+                        "imgSrc": "/static_pictures/chrome_9L7zHomDsA.jpg",
                         "overTitle": "infesté de parisiens le week-end",
                         "title": "Trouville-sur-mer et Deauville",
                         "mapMarkerId": "deauvilletrouville",
@@ -283,7 +283,7 @@
                     ,
                     {
                         "type": "longCard",
-                        "imgSrc": "/static_pictures/chrome_7xfWCwo75s.png",
+                        "imgSrc": "/static_pictures/chrome_7xfWCwo75s.jpg",
                         "overTitle": "fabuleuse falaise de craie",
                         "title": "Etretat",
                         "mapMarkerId": "etretat",
@@ -297,7 +297,7 @@
                                 "markerIcon": "🌊"
                             },
                             {
-                                "label": "En savoir plus",
+                                "label": "Voir sur Wivisites",
                                 "href": "https://www.wivisites.com/monument_details?site=3a0103e3-57f2-4a4a-9b34-208ee5ad2e1e",
                                 "lat": null, 
                                 "lng": null,
@@ -315,7 +315,7 @@
                 "pois" : [
                     {
                         "type": "shortCard",
-                        "imgSrc": "/static_pictures/Acrobat_OsaafrQ0av.png",
+                        "imgSrc": "/static_pictures/Acrobat_OsaafrQ0av.jpg",
                         "overTitle": "3 chambres + 2 chambres",
                         "title": "Château du parc",
                         "mapMarkerId": "chateauduparc",
@@ -349,7 +349,7 @@
                     },
                     {
                         "type": "shortCard",
-                        "imgSrc": "/static_pictures/gdAWpkq.png",
+                        "imgSrc": "/static_pictures/gdAWpkq.jpg",
                         "overTitle": "5 chambres",
                         "title": "Auberge du vieux donjon",
                         "mapMarkerId": "aubergevieuxdonjon",
@@ -383,7 +383,7 @@
                     },
                     {
                         "type": "shortCard",
-                        "imgSrc": "/static_pictures/aMsgGea.png",
+                        "imgSrc": "/static_pictures/aMsgGea.jpg",
                         "overTitle": "12 chambres",
                         "title": "Le Logis de Brionne",
                         "mapMarkerId": "logisbrionne",
@@ -417,7 +417,7 @@
                     },
                     {
                         "type": "shortCard",
-                        "imgSrc": "/static_pictures/tZ04d0e.png",
+                        "imgSrc": "/static_pictures/tZ04d0e.jpg",
                         "overTitle": "50 chambres",
                         "title": "ACROPOLE HÔTEL",
                         "mapMarkerId": "acropolehotel",
@@ -891,7 +891,7 @@
                 "pois" : [
                     {
                         "type": "shortCard",
-                        "imgSrc": "/static_pictures/fabienne_contact.png",
+                        "imgSrc": "/static_pictures/fabienne_contact.jpg",
                         "overTitle": "Wedding planneuse",
                         "title": "Fabienne Calvo",
                         "desc": "Merci de contacter Fabienne Calvo si vous avez un projet de discours, d'animation etc...",
