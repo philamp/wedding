@@ -275,7 +275,8 @@ onMount(() => {
 		}
 
 		loading = false
-		document.querySelector('main').scrollTo(0, 0); // reboot scroll after each response !!! verify browser
+
+		//document.querySelector('main').scrollTo(0, 0); // reboot scroll after each response !!! verify browser
 		}
 	}
 
@@ -426,6 +427,15 @@ $: daysText = formValues.dayOfArrival == "vendredi" ? "2 nuits" : "1 nuit"
 
 $: dateArrivalText = formValues.dayOfArrival == "vendredi" ? "vendredi 19" : "samedi 20"
 
+$: if(currentStep != 7){
+	setTimeout(() => {
+		document.querySelector('#divstep-'+currentStep).scrollIntoView();
+		document.querySelector('main').scrollBy(0,-100)
+	}
+	, 100)
+}
+
+
 
 $: if(currentStep == 5){
 // get tools data
@@ -463,7 +473,7 @@ $: if(htmlLoaded && familyDataLoaded){
 	
 <!-- BEGIN TAB 1 / QR CODE -->
 
-<div tabindex="0" class="collapse border rounded-box bg-base-100 border-base-300 m-2 shadow-lg" class:bg-accent={currentStep > 1} class:collapse-open={currentStep === 1} class:collapse-close={currentStep !== 1} class:cursor-pointer={currentStep > 1} on:click={() => currentStep >= 1 ? currentStep = 1 : currentStep}> 
+<div tabindex="0" id="divstep-1" class="collapse border rounded-box bg-base-100 border-base-300 m-2 shadow-lg" class:bg-accent={currentStep > 1} class:collapse-open={currentStep === 1} class:collapse-close={currentStep !== 1} class:cursor-pointer={currentStep > 1} on:click={() => currentStep >= 1 ? currentStep = 1 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
 	  S'identifier <small>avec le carton d'invitation</small>
 	</div> 
@@ -517,7 +527,7 @@ $: if(htmlLoaded && familyDataLoaded){
 
 
 <!-- BEGIN TAB 2 / ANSWER + PEOPLE V2-->
-<div tabindex="0" class="collapse border rounded-box border-base-300 m-2 collapse-close bg-base-100 shadow-lg" class:bg-accent={currentStep > 2} class:collapse-open={currentStep === 2} class:collapse-close={currentStep !== 2} class:cursor-pointer={currentStep > 2} on:click={() => currentStep >= 2 ? currentStep = 2 : currentStep}> 
+<div tabindex="0" id="divstep-2" class="collapse border rounded-box border-base-300 m-2 collapse-close bg-base-100 shadow-lg" class:bg-accent={currentStep > 2} class:collapse-open={currentStep === 2} class:collapse-close={currentStep !== 2} class:cursor-pointer={currentStep > 2} on:click={() => currentStep >= 2 ? currentStep = 2 : currentStep}> 
 <div class="collapse-title text-xl font-medium">
   Réponse et invités
 </div> 
@@ -638,7 +648,7 @@ $: if(htmlLoaded && familyDataLoaded){
   
   
   
-  <div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 bg-base-100 shadow-lg" class:bg-accent={currentStep > 3} class:collapse-open={currentStep === 3} class:collapse-close={currentStep !== 3} class:cursor-pointer={currentStep > 3} on:click={() => currentStep >= 3 ? currentStep = 3 : currentStep}> 
+  <div tabindex="0" id="divstep-3" class="collapse border rounded-box border-base-300 collapse-close m-2 bg-base-100 shadow-lg" class:bg-accent={currentStep > 3} class:collapse-open={currentStep === 3} class:collapse-close={currentStep !== 3} class:cursor-pointer={currentStep > 3} on:click={() => currentStep >= 3 ? currentStep = 3 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
 	  Allergies et/ou régime
 	</div> 
@@ -676,7 +686,7 @@ $: if(htmlLoaded && familyDataLoaded){
   
 <!-- BEGIN TAB 4 / CONTACT -->
   
-  <div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 4} class:collapse-open={currentStep === 4} class:collapse-close={currentStep !== 4} class:cursor-pointer={currentStep > 4} on:click={() => currentStep >= 4 ? currentStep = 4 : currentStep}> 
+  <div tabindex="0" id="divstep-4" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 4} class:collapse-open={currentStep === 4} class:collapse-close={currentStep !== 4} class:cursor-pointer={currentStep > 4} on:click={() => currentStep >= 4 ? currentStep = 4 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
 	  Contacts <small>pour vous prévenir des aléas éventuels</small>
 	</div> 
@@ -713,7 +723,7 @@ $: if(htmlLoaded && familyDataLoaded){
   
 <!-- BEGIN TAB 5 / TEMPlogement -->
   
-<div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 5} class:collapse-open={currentStep === 5} class:collapse-close={currentStep !== 5} class:cursor-pointer={currentStep > 5} on:click={() => currentStep >= 5 ? currentStep = 5 : currentStep}> 
+<div tabindex="0" id="divstep-5" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 5} class:collapse-open={currentStep === 5} class:collapse-close={currentStep !== 5} class:cursor-pointer={currentStep > 5} on:click={() => currentStep >= 5 ? currentStep = 5 : currentStep}> 
 	<div class="collapse-title text-xl font-medium">
 	  Logement
 	</div> 
@@ -916,7 +926,7 @@ $: if(htmlLoaded && familyDataLoaded){
 <!-- END TAB 5 / LOGEMENT -->
 
 <!-- TAB 6 / RECAP -->
-<div tabindex="0" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 6} class:collapse-open={currentStep === 6} class:collapse-close={currentStep !== 6}> 
+<div tabindex="0" id="divstep-6" class="collapse border rounded-box border-base-300 collapse-close m-2 shadow-lg bg-base-100" class:bg-accent={currentStep > 6} class:collapse-open={currentStep === 6} class:collapse-close={currentStep !== 6}> 
 	<div class="collapse-title text-xl font-medium">
 	  Récapitulatif
 	</div> 
