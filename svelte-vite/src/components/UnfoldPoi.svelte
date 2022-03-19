@@ -3,6 +3,19 @@
 export let sectionsProp = [];
 export let pageParam;
 import Poi from '/src/components/Poi.svelte'
+import { connectionStatus, familyStore } from '/src/store.js';
+
+let booking = false
+let bookingHidden = true
+
+$: if($connectionStatus){
+    if($familyStore.bookingsByFamilyId){
+        booking = $familyStore.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length > 0 ? true : false
+        bookingHidden = !booking
+    }
+}
+
+console.log("page reloadé")
 
 </script>
 
@@ -12,7 +25,9 @@ import Poi from '/src/components/Poi.svelte'
 
 <h2 class="my-4 mx-4 text-2xl font-bold text-primary">{sectionItem.sectionTitle}</h2>
 {#each sectionItem.pois as poiItem, i}
+{#if !(bookingHidden && poiItem.bookingProtected)}
 <Poi poiProp={poiItem}/>
+{/if}
 {/each}
 
 </div>

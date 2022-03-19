@@ -1,5 +1,6 @@
 <script>
 export let poiProp;
+// export let hidden;
 </script>
 
 <div class="max-w-4xl bg-white rounded-xl shadow-md overflow-hidden mx-4 my-4" id="C-{poiProp.mapMarkerId}">

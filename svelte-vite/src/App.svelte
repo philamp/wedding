@@ -8,13 +8,10 @@
 	//routes definition
 	// Components
 	import Subscribe from './routes/Subscribe.svelte';
-	import Hotels from './routes/Hotels.svelte';
-	import Avisiter from './routes/Avisiter.svelte';
 	import Mcontent from '/src/routes/Mcontent.svelte';
-	import ProgramAcces from './routes/ProgramAcces.svelte';
 	import { onMount } from 'svelte';
-	import {wrap} from 'svelte-spa-router/wrap';
-	import { storeReady, connectionStatus, mapOpened} from '/src/store.js';
+	//import {wrap} from 'svelte-spa-router/wrap';
+	import { storeReady, connectionStatus, mapOpened, familyStore} from '/src/store.js';
 	import { menuJson } from '/src/menu.json';
 
 	let menuOpened = false; 
@@ -30,34 +27,27 @@ let routes = {
     // Exact path
 	'/': Subscribe,
     '/P/:urlQrCode?': Subscribe,
-	'/hotels': Hotels,
-	'/avisiter': Avisiter,
-	'/M/:category/:item?' : Mcontent,
-	'/programme-acces': ProgramAcces
-    
+	'/M/:category/:item?' : Mcontent
+	/*,
+	'/dedicace': wrap({
+        asyncComponent: () => import('./routes/Dedicace.svelte')
+    }),
+	'/dedicace2': wrap({
+        asyncComponent: () => import('./routes/Kassdedi.svelte')
+    })*/
 }
 
 // make the routes loaded dynamically !!! ??? https://github.com/ItalyPaleAle/svelte-spa-router/blob/master/Advanced%20Usage.md#route-pre-conditions
 
-// make the navbar disappear on clicking on any A and scroll on top of main
+
 onMount(() => {
 
 	if(document.cookie){
 		verifyAuth()
 		}
-
-
-	/*var els = document.querySelectorAll('a');
-for( let i = 0; i < els.length; i++ ) {
-  els[i].addEventListener( 'click', () => {menuOpened = false; $mapOpened = false;
-	document.querySelector('main').scrollTo(0, 0);
-
-})
-}*/
-
 	})
 
-
+// make the navbar disappear on clicking on any A and scroll on top of main
 	const closePanels = () => {
 		menuOpened = false; 
 		$mapOpened = false;
@@ -76,8 +66,70 @@ for( let i = 0; i < els.length; i++ ) {
 		//set global connectionstatus
 		$connectionStatus = true;
 
+		$familyStore = json.data.allFamilies.nodes[0]
+
 	}
 
+
+
+
+
+/*
+	let formValues = {
+               "familyId": 0,
+               "familyName":"",
+               "cocktailAttending":true,
+               "dinerAttending":false,
+               "emailAddress":"",
+               "phone":"",
+			   "freeBooking": false,
+			   "dayOfArrival": "samedi",
+               "guestLevel":1,
+               "formStep":2,
+               "peopleByFamilyId":{
+                  "nodes":[]
+               },
+               "bookingsByFamilyId":{
+                  "nodes":[
+					  {"bookingState": "nothing"}
+				  ]
+               },
+			   "toolBookingsByFamilyId":{
+                  "nodes":[]
+               }
+            }
+
+			formValues = $familyStore
+
+	let count = 1
+	let debug
+	let clicked = 1
+
+	const testUpdate = (e) => {
+		debug = JSON.stringify(formValues)
+
+	}
+
+$: if(clicked && $connectionStatus && formValues.bookingsByFamilyId.nodes[0].bookingState != "efwef"){
+	count++
+	debug = JSON.stringify($familyStore)
+}
+
+$: testUpdate(formValues.bookingsByFamilyId.nodes[0].bookingState)
+
+*/
+
+/*
+
+{count}
+<br/>
+{debug}
+<br/>
+{formValues.bookingsByFamilyId.nodes[0].bookingState}
+<buttton class="absolute top-0 right-0 rounded-l-none btn btn-primary" on:click={() => {console.log($familyStore); clicked++}}>truc</buttton>
+<br/>
+
+*/
 
 </script>
 
@@ -411,7 +463,6 @@ for( let i = 0; i < els.length; i++ ) {
 			backdrop-filter: blur(1ex)
 		}
 
-		.hidelinks{display:none;}
 
 
   </style>

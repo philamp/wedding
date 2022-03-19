@@ -919,6 +919,7 @@
                         "type": "shortCard",
                         "imgSrc": "/static_pictures/logement.jpg",
                         "overTitle": "Logement",
+                        "bookingProtected": true,
                         "title": "Avant de partir, merci de...",
                         "desc": "Vider les chambres de toute affaire personnelle; descendre les poubelles de salle de bain dans la cuisine du château; Déposer les draps et serviettes au pied du lit",
                         "bottomLinks": []

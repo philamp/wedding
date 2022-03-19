@@ -2,7 +2,7 @@
 import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import init from "/src/birds-animated-small.js";
-	import { connectionStatus, alert, alertFailure } from '/src/store.js';
+	import { connectionStatus, alert, alertFailure, familyStore } from '/src/store.js';
 
 	//spa router params
 	export let params = {}
@@ -92,6 +92,8 @@ onMount(() => {
                   "nodes":[]
                }
             }
+
+	
  
 
 	let loading = false;
@@ -153,6 +155,7 @@ onMount(() => {
 		//set global connectionstatus
 		$connectionStatus = true;
 		formValues = json.data.allFamilies.nodes[0]
+		$familyStore = formValues
 		/*result = JSON.stringify(json)*/ 
 
 		// STEP POSITIONNER : if comprised between >1 & <6, place visotor on the good step if 6 place on 6, anything else is 0 or 1: load 2.
@@ -250,6 +253,8 @@ onMount(() => {
 		}
 
 		actualSentFormValues = {...formValues, formStep: currentStep, dayOfArrival: actualSentDayOfArrival}
+
+		// updates the svelte store
 
 		loading = true
 		const res = await fetch('/api/pushfamilydata', {
