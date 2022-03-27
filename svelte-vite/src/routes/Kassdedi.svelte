@@ -3,6 +3,7 @@
 
 	import { onMount } from 'svelte';
 	import { connectionStatus, formValuesRoot } from '/src/store.js';
+	import {push} from 'svelte-spa-router';
 	import Uppy from '@uppy/core'
 import Dashboard from '@uppy/dashboard'
 import AwsS3 from '@uppy/aws-s3'
@@ -28,7 +29,11 @@ let formValues = {
 
 	onMount(() => {
 
+		document.querySelector('main').scrollTo(0, 0);
+
 		htmlLoaded = true
+
+
 
 	})
 
@@ -258,7 +263,7 @@ $: if(currentStep != 4){
 
 		Photo ou vidéo déja transférée:
 
-		{#if fileType != '.webm' && fileType != '.mp4'}
+		{#if fileType != '.webm' && fileType != '.mp4' && fileType != '.mov'}
 			<img src="https://weddingmedias.s3.eu-west-3.amazonaws.com/{formValues.signingImgUrl}" class="rounded" title="" alt="" />
 			{:else}
 			<!-- svelte-ignore a11y-media-has-caption -->
@@ -268,7 +273,7 @@ $: if(currentStep != 4){
 				<source src="https://weddingmedias.s3.eu-west-3.amazonaws.com/{formValues.signingImgUrl}"
 						type="video/webm">
 						{/if}
-						{#if fileType == '.mp4'}
+						{#if fileType == '.mp4' || fileType == '.mov'}
 				<source src="https://weddingmedias.s3.eu-west-3.amazonaws.com/{formValues.signingImgUrl}"
 						type="video/mp4">
 						{/if}
@@ -345,6 +350,12 @@ $: if(currentStep != 4){
 	</div> 
 	<div class="collapse-content"> 
 		<img alt="" class="rounded" src="https://media.giphy.com/media/3oz8xIsloV7zOmt81G/giphy.gif" />
+
+		<button class="btn btn-primary float-right" on:click={() => {push('/M/program')}}>
+			
+			Aller à la page <strong>&nbsp;Programme et accès</strong>
+		  
+	  </button> 
 		
 
   </div>
