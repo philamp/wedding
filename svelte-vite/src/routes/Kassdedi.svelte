@@ -263,17 +263,17 @@ $: if(currentStep != 4){
 
 		Photo ou vidéo déja transférée:
 
-		{#if fileType != '.webm' && fileType != '.mp4' && fileType != '.mov'}
+		{#if fileType != '.webm' && fileType != '.mp4' && fileType != '.mov' && fileType != '.WEBM' && fileType != '.MP4' && fileType != '.MOV'}
 			<img src="https://weddingmedias.s3.eu-west-3.amazonaws.com/{formValues.signingImgUrl}" class="rounded" title="" alt="" />
 			{:else}
 			<!-- svelte-ignore a11y-media-has-caption -->
 			{#key formValues.signingImgUrl}
 			<video controls>
-				{#if fileType == '.webm'}
+				{#if fileType == '.webm' || fileType == '.WEBM'}
 				<source src="https://weddingmedias.s3.eu-west-3.amazonaws.com/{formValues.signingImgUrl}"
 						type="video/webm">
 						{/if}
-						{#if fileType == '.mp4' || fileType == '.mov'}
+						{#if fileType == '.mp4' || fileType == '.mov' || fileType == '.MP4' || fileType == '.MOV'}
 				<source src="https://weddingmedias.s3.eu-west-3.amazonaws.com/{formValues.signingImgUrl}"
 						type="video/mp4">
 						{/if}
