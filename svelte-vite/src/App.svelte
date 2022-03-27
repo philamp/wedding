@@ -10,25 +10,40 @@
 	import Subscribe from './routes/Subscribe.svelte';
 	import Mcontent from '/src/routes/Mcontent.svelte';
 	import { onMount } from 'svelte';
-	//import {wrap} from 'svelte-spa-router/wrap';
-	import { storeReady, connectionStatus, mapOpened, familyStore} from '/src/store.js';
+	import {wrap} from 'svelte-spa-router/wrap';
+	import { storeReady, connectionStatus, mapOpened, formValuesRoot} from '/src/store.js';
 	import { menuJson } from '/src/menu.json';
 
 	let menuOpened = false; 
 
-	$connectionStatus = false;
+//	$connectionStatus = false;
+
+//	$connectionAttempted
+
 
 	$mapOpened = false;
 
 	$: $storeReady = ready;
+
 
 // Export the route definition object
 let routes = {
     // Exact path
 	'/': Subscribe,
     '/P/:urlQrCode?': Subscribe,
-	'/M/:category/:item?' : Mcontent
+	'/M/:category/:item?' : Mcontent,
+	'/D': wrap({
+        asyncComponent: () => import('./routes/Kassdedi.svelte')
+    })
 	/*,
+	'/V': wrap({
+        asyncComponent: () => import('./routes/VideosDisplay.svelte')
+    })
+	,
+	'/dedicace3': wrap({
+        asyncComponent: () => import('./routes/KassdediS.svelte')
+    })
+	,
 	'/dedicace': wrap({
         asyncComponent: () => import('./routes/Dedicace.svelte')
     }),
@@ -40,12 +55,13 @@ let routes = {
 // make the routes loaded dynamically !!! ??? https://github.com/ItalyPaleAle/svelte-spa-router/blob/master/Advanced%20Usage.md#route-pre-conditions
 
 
-onMount(() => {
 
-	if(document.cookie){
+onMount(async () => {
+	if(document.cookie && !$location.match(/\/P\/(.*)/)){
 		verifyAuth()
-		}
-	})
+	}
+	//$connectionAttempted = true
+})
 
 // make the navbar disappear on clicking on any A and scroll on top of main
 	const closePanels = () => {
@@ -56,7 +72,7 @@ onMount(() => {
 	}
 
 	async function verifyAuth() {
-
+		$connectionStatus = false;
 		const res = await fetch('/api/familydata', {
 			method: 'GET'
 		})
@@ -64,72 +80,12 @@ onMount(() => {
 		const json = await res.json()
 		if(json.error){console.log(json.error);return}
 		//set global connectionstatus
+		$formValuesRoot = json.data.allFamilies.nodes[0]
 		$connectionStatus = true;
-
-		$familyStore = json.data.allFamilies.nodes[0]
-
 	}
 
 
 
-
-
-/*
-	let formValues = {
-               "familyId": 0,
-               "familyName":"",
-               "cocktailAttending":true,
-               "dinerAttending":false,
-               "emailAddress":"",
-               "phone":"",
-			   "freeBooking": false,
-			   "dayOfArrival": "samedi",
-               "guestLevel":1,
-               "formStep":2,
-               "peopleByFamilyId":{
-                  "nodes":[]
-               },
-               "bookingsByFamilyId":{
-                  "nodes":[
-					  {"bookingState": "nothing"}
-				  ]
-               },
-			   "toolBookingsByFamilyId":{
-                  "nodes":[]
-               }
-            }
-
-			formValues = $familyStore
-
-	let count = 1
-	let debug
-	let clicked = 1
-
-	const testUpdate = (e) => {
-		debug = JSON.stringify(formValues)
-
-	}
-
-$: if(clicked && $connectionStatus && formValues.bookingsByFamilyId.nodes[0].bookingState != "efwef"){
-	count++
-	debug = JSON.stringify($familyStore)
-}
-
-$: testUpdate(formValues.bookingsByFamilyId.nodes[0].bookingState)
-
-*/
-
-/*
-
-{count}
-<br/>
-{debug}
-<br/>
-{formValues.bookingsByFamilyId.nodes[0].bookingState}
-<buttton class="absolute top-0 right-0 rounded-l-none btn btn-primary" on:click={() => {console.log($familyStore); clicked++}}>truc</buttton>
-<br/>
-
-*/
 
 </script>
 
@@ -278,7 +234,7 @@ $: testUpdate(formValues.bookingsByFamilyId.nodes[0].bookingState)
 
 
 <!-- PUT PAGE CONTENT HERE-->
-<Router {routes} />
+<Router {routes}/>
 <!-- END PUT PAGE CONTENT HERE !!! spacer below -->
 
 <!-- <div style="height: 800px"></div> -->

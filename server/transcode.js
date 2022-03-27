@@ -1,11 +1,28 @@
 require('dotenv').config();
 
-const express = require('express');
+
+// prealable : pushs de upload avec transcoded 0,1,2
+
+
+
+// select all ((idéee pas bonne = mutation transforme les 0 en 1) renvoie la liste a transcoder
+
+// each element
+  // element passe de 0 à 1
+  // ffmpeg execsync ......
+  // envoi du file n quesiton sur s3 via bash
+  // rm local file
+    // mutaiton pour tel family id ca passe de 1 à 2
+
+
+
+
+
+
 const { postgraphile } = require("postgraphile");
 const { makeQueryRunner } = require("./queryRunner.js");
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const jwt = require("jsonwebtoken");
+
+
 const {S3Client,PutObjectCommand} = require('@aws-sdk/client-s3');
 const {getSignedUrl} = require('@aws-sdk/s3-request-presigner');
 var crypto = require("crypto");
@@ -654,7 +671,6 @@ async function pushFileData(req, res) {
       $signing: String
       $signingOnWeb: Boolean
       $signingOnScreen: Boolean
-      $signingTranscoded: Boolean
     )
     {
       updateFamilyByFamilyId(
@@ -663,7 +679,6 @@ async function pushFileData(req, res) {
             signingImgUrl: $signingImgUrl
             signingOnScreen: $signingOnScreen
             signingOnWeb: $signingOnWeb
-            signingTranscoded: $signingTranscoded
             moderated: $moderated
             signing: $signing
           }
@@ -677,7 +692,6 @@ async function pushFileData(req, res) {
     { 
       familyid: family_id,
       moderated: false,
-      signingTranscoded: false,
       ...fileData
     }
   );

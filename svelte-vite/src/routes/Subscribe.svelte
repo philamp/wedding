@@ -2,53 +2,17 @@
 import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 	import init from "/src/birds-animated-small.js";
-	import { connectionStatus, alert, alertFailure, familyStore } from '/src/store.js';
+	import { connectionStatus, alert, alertFailure, formValuesRoot } from '/src/store.js';
 
 	//spa router params
 	export let params = {}
 
+	//binding from root app for html to work with init values
+	let formValues = $formValuesRoot
+
 	let htmlLoaded = false;
-	let familyDataLoaded = false;
+	//let familyDataLoaded = false;
 	
-
-
-
-//	export let name;
-
-// !!! une rpeonse family attending false implique un booking refusé -->> utiliser les pg trigers
-
-// une personne aux champs nom prenom vide puis supprimer pourrait faire planter l'insertion en base
-
-onMount(() => {
-
- 
-
-	if(params.urlQrCode){
-		QRValueSvelte = params.urlQrCode;
-		authenticate()
-		}else if(document.cookie){
-			familyData()
-		}
-
-
-
-	const triggered = () => {if(!window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput"))){
-		window.intlTelInput(document.getElementById("phoneinput"), {
-			separateDialCode: false,	// any initialisation options go here
-			utilsScript: "/intl-tel/js/utils.js",
-			initialCountry: "fr",
-			onlyCountries: ["fr","us","il","es","it","ch"]
-		});
-
-	}}	
-
-	triggered();
-
-	htmlLoaded = true;
-
-
-})
-
 	let currentStep = 1;
 
 	let displayStep2Popin = false;
@@ -71,50 +35,99 @@ onMount(() => {
 
 	let dateArrivalText = "samedi 20";
 
-	let formValues = {
-               "familyId": 0,
-               "familyName":"",
-               "cocktailAttending":true,
-               "dinerAttending":false,
-               "emailAddress":"",
-               "phone":"",
-			   "freeBooking": false,
-			   "dayOfArrival": "samedi",
-               "guestLevel":1,
-               "formStep":2,
-               "peopleByFamilyId":{
-                  "nodes":[]
-               },
-               "bookingsByFamilyId":{
-                  "nodes":[]
-               },
-			   "toolBookingsByFamilyId":{
-                  "nodes":[]
-               }
-            }
 
-	
  
 
 	let loading = false;
 	let addLoading;
 	let delLoading;
 
+
+//	export let name;
+
+// !!! une rpeonse family attending false implique un booking refusé -->> utiliser les pg trigers !!!
+
+
+// ##### IMPORTANT
+// take data from: 
+
+// (automatic)
+// this.spaparam (then auth + subsidiary familydata + subsidiary prepareform triggered by familydata), 
+// App/cookie (then formValues gets loaded, + subsidiary prepareform triggered by connectionStatus), 
+
+// (user triggered)
+// QRscan (then auth + subsidiary familydata + subsidiary prepareform triggered by familydata), 
+// submit (then auth + subsidiary familydata + subsidiary prepareform triggered by familydata), 
+
+
+
+
+
+
+
+const onConnectionStatusTrueAndHTMLLoaded = (cs,hl) => {
+	if($connectionStatus && htmlLoaded){
+		formValues = $formValuesRoot; prepareForm();
+	}
+}
+
+const triggerTelWidget = () => {if(!window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput"))){
+		window.intlTelInput(document.getElementById("phoneinput"), {
+			separateDialCode: false,	// any initialisation options go here
+			utilsScript: "/intl-tel/js/utils.js",
+			initialCountry: "fr",
+			onlyCountries: ["fr","us","il","es","it","ch"]
+		});
+
+	}}	
+
+//on both criteria met, this is called when data comes from cookie auth and also on page change
+$: onConnectionStatusTrueAndHTMLLoaded($connectionStatus, htmlLoaded);
+
+onMount(() => {
+
+	//auth with cookie is done in app
+
+
+
+
+	//auth with URL
+	if(params.urlQrCode){
+		QRValueSvelte = params.urlQrCode;
+		authenticate() // and then call familydata
+	}
+	
+	/*else if(document.cookie && !$connectionStatus){
+		familyData()
+	}
+	*/
+
+
+	//init html intel tel widget
+	triggerTelWidget();
+
+	htmlLoaded = true;
+
+
+})
+
+	// trigger scanner popin 
 	const triggerQR = () => {
 
 		window.startQRScan();
 
 	};
-
+	//auth with QR scan
 	window.QRreturn = (QRValue) => {
 		QRValueSvelte = QRValue;
-		authenticate()
+		authenticate() // and then call familydata
 	}
 
 
 
-
+	// auth (direct call) from form  and then call familydata
 	async function authenticate() {
+		
 		loading = true
 		const res = await fetch('/api/auth', {
 			method: 'POST',
@@ -132,18 +145,14 @@ onMount(() => {
 
 		if(json.error){console.log(json.error);loading = false;$connectionStatus = false;return}
 		
-
 		familyData()
 
 		/*result = JSON.stringify(json)*/ 
-
-
-
-
 	}
 
 	/*use cookie data*/
 	async function familyData() {
+		$connectionStatus = false;
 		loading = true
 		const res = await fetch('/api/familydata', {
 			method: 'GET'
@@ -151,20 +160,26 @@ onMount(() => {
 		
 		const json = await res.json()
 		loading = false
-		if(json.error){console.log(json.error); return}
+		if(json.error){console.log(json.error);$connectionStatus = false; return}
 		//set global connectionstatus
-		$connectionStatus = true;
-		formValues = json.data.allFamilies.nodes[0]
-		$familyStore = formValues
+		
+		$formValuesRoot = json.data.allFamilies.nodes[0]
+		//$familyStore = formValues
 		/*result = JSON.stringify(json)*/ 
+		$connectionStatus = true;
 
+		//console.log(formValues);
+
+	}
+
+	const prepareForm = () => {
 		// STEP POSITIONNER : if comprised between >1 & <6, place visotor on the good step if 6 place on 6, anything else is 0 or 1: load 2.
 		if(formValues.formStep > 1 && formValues.formStep < 6){currentStep = formValues.formStep + 1}else 
 		if(formValues.formStep == 6){currentStep = formValues.formStep}
 		else{
 			currentStep = 2
 		}
-		familyDataLoaded = true;
+		
 		
 		// sub default vendredi for max-dayed people (not constrained secured server side !!!)
 		if(formValues.dayOfArrival == null){
@@ -174,10 +189,18 @@ onMount(() => {
 			formValues.dayOfArrival = "samedi"
 			}
 		}
+		
 
-		console.log(formValues);
-
+	if(formValues.phone){
+		window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber(formValues.phone);
+	}else{
+		//reset to empty
+		window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber("");
 	}
+	
+
+
+}
 
 
 
@@ -253,6 +276,9 @@ onMount(() => {
 		}
 
 		actualSentFormValues = {...formValues, formStep: currentStep, dayOfArrival: actualSentDayOfArrival}
+
+		//push to store as well
+		$formValuesRoot = actualSentFormValues
 
 		// updates the svelte store
 
@@ -339,7 +365,6 @@ onMount(() => {
 		// add it to the existing formValues tree
 		toolsIntermediateObject.toolBookingId = json.data.makeToolBookingv4.toolBooking.toolBookingId;
 		formValues.toolBookingsByFamilyId.nodes = [...formValues.toolBookingsByFamilyId.nodes, toolsIntermediateObject];
-		console.log(formValues);
 		toolsArray[i].remaining -= 1
 	}
 
@@ -349,24 +374,6 @@ onMount(() => {
 
 	}
 
-	const delOneTool = async (j) => {
-	//deprecated after counter evol !!!
-
-	// construct like it would be from DB
-	// console.log(formValues.toolBookingsByFamilyId);
-
-	
-
-	formValues.toolBookingsByFamilyId.nodes[j].bookingState = "open";
-
-	toolsArray[toolsArray.findIndex(arg => arg.toolId == formValues.toolBookingsByFamilyId.nodes[j].toolByToolId.toolId)].remaining += 1
-	
-	const json = await pushToolBookingsData(formValues.toolBookingsByFamilyId.nodes[j]);
-
-	
-
-		
-	}
 
 	const delOneToolBis = async (g) => {
 
@@ -405,7 +412,6 @@ onMount(() => {
 
 	$: attendingPeopleCount = formValues.peopleByFamilyId.nodes.filter(arg => arg.attending).length
 	$: displayAddButton = (attendingPeopleCount === formValues.peopleByFamilyId.nodes.length) ? false : true
-	$: displayDeleteButton = (attendingPeopleCount <= 1) ? false : true /* n'est plus utilisé !!! */
 
 
 
@@ -454,15 +460,6 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 
 }else{displayDayOfArrival = false}
 
-
-$: if(htmlLoaded && familyDataLoaded){
-	if(formValues.phone){
-		window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber(formValues.phone);
-	}else{
-		//reset to empty
-		window.intlTelInputGlobals.getInstance(document.getElementById("phoneinput")).setNumber("");
-	}
-}
 
 </script>
 
@@ -558,7 +555,7 @@ $: if(htmlLoaded && familyDataLoaded){
 	  </svg> 
 	  <label for="">
 		{formValues.familyName}  
-		<br/>Vous êtes invité(e)(s) au cocktail {#if formValues.guestLevel >= 2}et au dîner{/if}
+		<br/>Vous êtes invité(e)(s) au cocktail {#if formValues.guestLevel >= 2}et au dîner {:else}(et à la soirée quand même !){/if}
 	</label>
 	</div>
 </div>
@@ -846,7 +843,7 @@ $: if(htmlLoaded && familyDataLoaded){
 				
 			{/if}
 
-			{#if formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0}
+			{#if formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 && formValues.dayOfArrival == "vendredi"}
 				<p>Nous vous proposons des petits déjeuners du samedi matin :</p>
 				
 				{#each toolsArray as tool, i}
@@ -945,7 +942,7 @@ $: if(htmlLoaded && familyDataLoaded){
 	  </svg> 
 	  <label for="">
 		{#if formValues.cocktailAttending}
-Vous venez au cocktail {#if formValues.dinerAttending}et au dîner{/if}
+Vous venez au cocktail {#if formValues.dinerAttending}et au dîner{:else}(et vous pouvez revenir pour la soirée){/if}
 		{:else}
 Vous ne pouvez pas venir :(
 		{/if}
@@ -955,7 +952,7 @@ Vous ne pouvez pas venir :(
 
 {#if formValues.cocktailAttending}
 Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
-<img alt="" src="https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif" />
+<img alt="" class="rounded" src="https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif" />
 {:else}
 ...mais vous pourrez voir les photos ulterieurement sur le site :)
 {/if}

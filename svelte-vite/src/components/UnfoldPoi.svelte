@@ -3,19 +3,17 @@
 export let sectionsProp = [];
 export let pageParam;
 import Poi from '/src/components/Poi.svelte'
-import { connectionStatus, familyStore } from '/src/store.js';
+import { connectionStatus, formValuesRoot } from '/src/store.js';
 
 let booking = false
 let bookingHidden = true
 
 $: if($connectionStatus){
-    if($familyStore.bookingsByFamilyId){
-        booking = $familyStore.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length > 0 ? true : false
+    if($formValuesRoot.bookingsByFamilyId){
+        booking = $formValuesRoot.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted" || arg.bookingState == "pending").length > 0 ? true : false
         bookingHidden = !booking
     }
 }
-
-console.log("page reloadé")
 
 </script>
 

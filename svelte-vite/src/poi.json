@@ -842,6 +842,82 @@
                             }
                             
                         ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/215639154.jpg",
+                        "overTitle": "Quand y'en a plus y'en a encore",
+                        "title": "Autres gites",
+                        "mapMarkerId": "autresgites",
+                        "desc": "Autres gites provenant du site gites.fr",
+                        "bottomLinks": [
+                            {
+                                "label": "La Chaumiere",
+                                "href": "https://www.gites.fr/gites_la-chaumiere_saint-leger-de-rotes_h3575838.htm",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🏠",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Le petit Moulinsard",
+                                "href": "https://www.gites.fr/gites_le-petit-moulinsard_bernay_h2882575.htm",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🏠",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Les Roulottes de la Risle",
+                                "href": "https://www.gites.fr/gites_les-roulottes-de-la-risle--cosy-piscine-et-spa_calleville_26238.htm",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🏠",
+                                "markerId": null
+                            }                              
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/3776fe22-9ccd-40a0-a34a-b4b5c67fe888.webp",
+                        "overTitle": "Quand y'en a plus y'en a encore",
+                        "title": "Autres gites Air BnB",
+                        "mapMarkerId": "autresgitesrbnb",
+                        "desc": "Autres gites provenant du site airbnb.fr",
+                        "bottomLinks": [
+                            {
+                                "label": "maison typiquement normande",
+                                "href": "https://www.airbnb.fr/rooms/36754325?source_impression_id=p3_1570539717_8s7",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🏠",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Belle maison normande",
+                                "href": "https://www.airbnb.fr/rooms/23725658?source_impression_id=p3_1570540275_PE",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🏠",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Chaumière",
+                                "href": "https://www.airbnb.fr/rooms/21442204?source_impression_id=p3_1570540319_e8z",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🏠",
+                                "markerId": null
+                            },
+                            {
+                                "label": "La Maisment",
+                                "href": "https://www.airbnb.fr/rooms/18537940?source_impression_id=p3_1570540353_Tfh",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "🏠",
+                                "markerId": null
+                            }                               
+                        ]
                     }
                 ]
         },
