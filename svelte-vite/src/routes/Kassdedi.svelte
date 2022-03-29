@@ -76,7 +76,7 @@ let formValues = {
 		//debug: true, 
 		locale: French,
 		restrictions: {
-  			maxFileSize: 9000000000,
+  			maxFileSize: 900000000,
   			maxNumberOfFiles: 1,
  			 minNumberOfFiles: 1,
   			allowedFileTypes: ['image/*', 'video/*']
@@ -113,7 +113,7 @@ let formValues = {
 		plugins: ['Webcam'],
 		inline: false,
 		target: '#uppyContainer',
-		note: 'Attention la photo ou la video doit faire moins de 100mo'
+		note: 'Attention la photo ou la video doit faire moins de 900mo'
 		})
 
 		objects.uppy.use(AwsS3, {

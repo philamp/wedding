@@ -599,9 +599,9 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 
 <label class="cursor-pointer label">
 <select class="select select-bordered select-sm w-full max-w-xs" bind:value={person.ageRange}>
-  <option>bébé</option> 
-  <option>enfant</option> 
-  <option>adulte</option>
+  <option value="bébé">bébé</option> 
+  <option value="enfant">enfant(-12ans)</option> 
+  <option value="adulte">adulte/ado</option>
 </select> 
 </label>
 
@@ -776,7 +776,7 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 			<fieldset class="flex flex-row flex-wrap border-2 border-base-100 rounded-box shadow-md p-2 my-4 relative">
 
 
-				<legend><strong>Batiment:</strong> {booking.roomByRoomId.buildingName} / <strong>Etage:</strong> {booking.roomByRoomId.etage}</legend>
+				<legend><strong>Batiment:</strong> {booking.roomByRoomId.buildingName} / <strong>Etage:</strong> {booking.roomByRoomId.etage} / <strong>Chambre:</strong> {booking.roomByRoomId.roomNumber}</legend>
 
 				<ul class="list-disc list-inside text-sm">
 					<li>
@@ -892,7 +892,7 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 						<div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
 							<div>
 							  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-							  <span>Attention, le nombre de couchages semble insuffisant, vous pouvez ajouter un ou des lits supplémentaires</span>
+							  <span>Attention, le nombre de couchages semble insuffisant, vous pouvez ajouter des lits ou des chambres supplémentaires</span>
 							</div>
 						  </div>
 						  {/if}
@@ -976,7 +976,7 @@ Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
 						<div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
 							<div>
 							  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-							  <span>Attention, le nombre de couchages semble insuffisant, vous pouvez ajouter un ou des lits supplémentaires en revenant à l'étape précédente</span>
+							  <span>Attention, le nombre de couchages semble insuffisant, vous pouvez ajouter des lits ou des chambres supplémentaires en revenant à l'étape précédente</span>
 							</div>
 						  </div>
 						  {/if}
