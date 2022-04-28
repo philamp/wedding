@@ -28,7 +28,11 @@ CREATE TABLE privateschema.families (
     free_booking boolean, 
     formStep integer DEFAULT 0,
     day_of_arrival varchar(8),
-    moderated boolean
+    moderated boolean,
+    signing_on_screen boolean,
+    signing_on_web boolean,
+    signing_transcoded boolean,
+    posted boolean
 )
 ;
 

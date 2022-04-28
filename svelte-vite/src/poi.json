@@ -349,67 +349,25 @@
                     },
                     {
                         "type": "shortCard",
-                        "imgSrc": "/static_pictures/gdAWpkq.jpg",
-                        "overTitle": "5 chambres",
-                        "title": "Auberge du vieux donjon",
-                        "mapMarkerId": "aubergevieuxdonjon",
-                        "desc": "19, rue de la Soie, 27800 Brionne",
+                        "imgSrc": "/static_pictures/harcourt-04-2011-016-2-590x442.jpg",
+                        "overTitle": "2 chambres",
+                        "title": "Au Vieux Cadran",
+                        "mapMarkerId": "vieuxcadran",
+                        "desc": "Mme Micheline Morice. Le Parc, 27270 Grand-Camp",
                         "bottomLinks": [
                             {
-                                "label": "+33 (0) 2 32 44 80 62",
-                                "href": "tel:+33232448062",
+                                "label": "Site de l'hôtel",
+                                "href": "http://www.auvieuxcadran.fr/",
                                 "lat": null, 
                                 "lng": null,
-                                "markerIcon": "📞",
-                                "markerId": null
-                            },
-                            {
-                                "label": "aubergeduvieuxdonjon@orange.fr",
-                                "href": "mailto:aubergeduvieuxdonjon@orange.fr",
-                                "lat": null, 
-                                "lng": null,
-                                "markerIcon": "📧",
+                                "markerIcon": "👀",
                                 "markerId": null
                             },
                             {
                                 "label": null,
                                 "href": null,
-                                "lat": 49.19436482796374, 
-                                "lng": 0.7207372268675442,
-                                "markerIcon": "🏠"
-                            }
-                            
-                        ]
-                    },
-                    {
-                        "type": "shortCard",
-                        "imgSrc": "/static_pictures/aMsgGea.jpg",
-                        "overTitle": "12 chambres",
-                        "title": "Le Logis de Brionne",
-                        "mapMarkerId": "logisbrionne",
-                        "desc": "1, Place Saint-Denis, 27800 Brionne",
-                        "bottomLinks": [
-                            {
-                                "label": "+33 (0) 2 32 44 81 73",
-                                "href": "tel:+33232448173",
-                                "lat": null, 
-                                "lng": null,
-                                "markerIcon": "📞",
-                                "markerId": null
-                            },
-                            {
-                                "label": "lelogisdebrionne@orange.fr",
-                                "href": "mailto:lelogisdebrionne@orange.fr",
-                                "lat": null, 
-                                "lng": null,
-                                "markerIcon": "📧",
-                                "markerId": null
-                            },
-                            {
-                                "label": null,
-                                "href": null,
-                                "lat": 49.19363918388129, 
-                                "lng": 0.7140770524102811,
+                                "lat": 49.1669422725452, 
+                                "lng": 0.7841903536386912,
                                 "markerIcon": "🏠"
                             }
                             
@@ -591,22 +549,6 @@
                         "mapMarkerId": "gitedesophie",
                         "desc": "1, allée de la ferme, 27110 Sainte-Opportune-du-Bosc",
                         "bottomLinks": [
-                            {
-                                "label": "Florence +33 (0) 6 86 65 75 67",
-                                "href": "tel:+33686657567",
-                                "lat": null, 
-                                "lng": null,
-                                "markerIcon": "📞",
-                                "markerId": null
-                            },
-                            {
-                                "label": "Vincent +33 (0) 6 13 04 44 76",
-                                "href": "tel:+33613044476",
-                                "lat": null, 
-                                "lng": null,
-                                "markerIcon": "📞",
-                                "markerId": null
-                            },
                             {
                                 "label": "contact@lesgitesdesophie.com",
                                 "href": "mailto:contact@lesgitesdesophie.com",
