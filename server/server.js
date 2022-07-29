@@ -136,6 +136,10 @@ catch(e){
             bookingsByFamilyId {
               nodes {
                 roomByRoomId {
+                  geoloc {
+                    x
+                    y
+                  }
                   bedsizes
                   buildingName
                   capacity
@@ -734,7 +738,7 @@ const signS3URL = async (req, res, next) => {
   const command = new PutObjectCommand(s3Params);
 
   try {
-      const signedUrl = await getSignedUrl(s3, command, { expiresIn: 60 });
+      const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
       console.log(signedUrl);
       res.json({ signedUrl, fileType, returnedKey: finalKey})
   } catch (err) {

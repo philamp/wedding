@@ -1,8 +1,10 @@
 <script>
 import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
+	import Login from '/src/components/Login.svelte';
+	import Summup from '/src/components/Summup.svelte';
 	import init from "/src/birds-animated-small.js";
-	import { connectionStatus, alert, alertFailure, formValuesRoot } from '/src/store.js';
+	import { connectionStatus, connectionAttempted, alert, alertFailure, formValuesRoot, loadingRoot } from '/src/store.js';
 
 	//spa router params
 	export let params = {}
@@ -14,6 +16,8 @@ import { fly } from 'svelte/transition';
 	//let familyDataLoaded = false;
 	
 	let currentStep = 1;
+
+	let logincomp;
 
 	let displayStep2Popin = false;
 
@@ -27,18 +31,11 @@ import { fly } from 'svelte/transition';
 
 	let QRValueSvelte;
 
-	let contribution = 0;
-
-	let capacityOptedFor = 0;
-
-	let daysText = "1 nuit";
-
 	let dateArrivalText = "samedi 20";
 
 
- 
 
-	let loading = false;
+
 	let addLoading;
 	let delLoading;
 
@@ -94,7 +91,7 @@ onMount(() => {
 	//auth with URL
 	if(params.urlQrCode){
 		QRValueSvelte = params.urlQrCode;
-		authenticate() // and then call familydata
+		logincomp.auth(QRValueSvelte) // and then call familydata
 	}
 	
 	/*else if(document.cookie && !$connectionStatus){
@@ -120,57 +117,15 @@ onMount(() => {
 	//auth with QR scan
 	window.QRreturn = (QRValue) => {
 		QRValueSvelte = QRValue;
-		authenticate() // and then call familydata
+		logincomp.auth(QRValueSvelte) // and then call familydata
 	}
 
-
+	function auth() {
+		logincomp.auth(QRValueSvelte)
+	}
 
 	// auth (direct call) from form  and then call familydata
-	async function authenticate() {
-		
-		loading = true
-		const res = await fetch('/api/auth', {
-			method: 'POST',
-			body: JSON.stringify({
-				QRValueSvelte,
-			}),
-			headers: {
-    			'Accept': 'application/json',
-    			'Content-Type': 'application/json'
-			}
-		
-		})
-		
-		const json = await res.json()
 
-		if(json.error){console.log(json.error);loading = false;$connectionStatus = false;return}
-		
-		familyData()
-
-		/*result = JSON.stringify(json)*/ 
-	}
-
-	/*use cookie data*/
-	async function familyData() {
-		$connectionStatus = false;
-		loading = true
-		const res = await fetch('/api/familydata', {
-			method: 'GET'
-		})
-		
-		const json = await res.json()
-		loading = false
-		if(json.error){console.log(json.error);$connectionStatus = false; return}
-		//set global connectionstatus
-		
-		$formValuesRoot = json.data.allFamilies.nodes[0]
-		//$familyStore = formValues
-		/*result = JSON.stringify(json)*/ 
-		$connectionStatus = true;
-
-		//console.log(formValues);
-
-	}
 
 	const prepareForm = () => {
 		// STEP POSITIONNER : if comprised between >1 & <6, place visotor on the good step if 6 place on 6, anything else is 0 or 1: load 2.
@@ -282,7 +237,7 @@ onMount(() => {
 
 		// updates the svelte store
 
-		loading = true
+		$loadingRoot = true
 		const res = await fetch('/api/pushfamilydata', {
 			method: 'POST',
 			body: JSON.stringify(actualSentFormValues),
@@ -305,7 +260,7 @@ onMount(() => {
 			$alert = "Merci, étape suivante...";
 		}
 
-		loading = false
+		$loadingRoot = false
 
 		//document.querySelector('main').scrollTo(0, 0); // reboot scroll after each response !!! verify browser
 		}
@@ -315,7 +270,7 @@ onMount(() => {
 
 	const pushToolBookingsData = async (toolsIntermediateObject) => {
 
-		loading = true
+		$loadingRoot = true
 		const res = await fetch('/api/pushToolBookingsData', {
 			method: 'POST',
 			body: JSON.stringify(toolsIntermediateObject),
@@ -327,7 +282,7 @@ onMount(() => {
 		})
 		
 		const json = await res.json()
-		loading = false
+		$loadingRoot = false
 
 
 		return json;
@@ -421,21 +376,6 @@ $: if(currentStep == 7){
 }
 
 
-$: if(currentStep >= 4){
-	let count = 0;
-	let money = 0;
-	for(let i = 0; i < formValues.bookingsByFamilyId.nodes.length; i++ ){
-		if(formValues.bookingsByFamilyId.nodes[i].bookingState == "accepted"){
-			count += formValues.bookingsByFamilyId.nodes[i].roomByRoomId.capacity
-			money += formValues.dayOfArrival == "vendredi" ? formValues.bookingsByFamilyId.nodes[i].roomByRoomId.twoNightPrice : formValues.bookingsByFamilyId.nodes[i].roomByRoomId.oneNightPrice
-		}
-	}
-	contribution = money
-	capacityOptedFor = count;
-}
-
-$: daysText = formValues.dayOfArrival == "vendredi" ? "2 nuits" : "1 nuit"
-
 $: dateArrivalText = formValues.dayOfArrival == "vendredi" ? "vendredi 19" : "samedi 20"
 
 $: if(currentStep != 7){
@@ -463,7 +403,7 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 
 </script>
 
-
+<Login bind:this={logincomp} />
 
 {#if currentStep >= 5}
 <figure id="scene-275138496" style="height: 50px; width: 50px; position: absolute; z-index: 10000"></figure>
@@ -491,7 +431,7 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 	  
   </button> 
   
-  <form on:submit|preventDefault={authenticate}>
+  <form on:submit|preventDefault={auth}>
 
 
 	 <div class="form-control"> 
@@ -500,7 +440,7 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 	</label> 
 	<div class="relative">
 	  <input type="text" id="code-input" placeholder="A1B2C3D4" style="text-transform: uppercase" bind:value={QRValueSvelte} class="w-full pr-16 input input-primary input-bordered" required> 
-	  <button type="submit" class="absolute top-0 right-0 rounded-l-none btn btn-primary" class:loading={loading} value="Valider">Valider</button>
+	  <button type="submit" class="absolute top-0 right-0 rounded-l-none btn btn-primary" class:loading={$loadingRoot} value="Valider">Valider</button>
 	</div>
    </div> 
   </form>
@@ -635,7 +575,7 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
   
 <br/>
 
-<button type="submit" class="btn btn-primary float-right" class:loading={loading}>Valider</button> 
+<button type="submit" class="btn btn-primary float-right" class:loading={$loadingRoot}>Valider</button> 
 
 
   </form>
@@ -679,7 +619,7 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 
   
   
-  <button type="submit" class="btn btn-primary float-right" class:loading={loading}>Valider</button>
+  <button type="submit" class="btn btn-primary float-right" class:loading={$loadingRoot}>Valider</button>
 </form>
   </div>
   </div>
@@ -716,7 +656,7 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
   <!-- bind:value={formValues.phone}  -->
   
   
-  <button type="submit" class="btn btn-primary float-right" class:loading={loading}>Valider</button>
+  <button type="submit" class="btn btn-primary float-right" class:loading={$loadingRoot}>Valider</button>
   </form>
 	</div>
 	</div>
@@ -874,53 +814,12 @@ $ : if( formValues.bookingsByFamilyId.nodes.filter(arg => arg.roomByRoomId.maxDa
 			{/if}
 
 
+			<Summup bind:formValues={formValues} />
 
-
-			{#if formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0}
-			<div class="alert my-2 alert-sm shadow-md bg-base-100">
-				<div class="flex-1">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
-					  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
-					</svg> 
-					<label for="">Avec ces choix :
-						<ul class="list-disc list-inside">
-							<li>Nombre de chambres choisies : <strong>{formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length}</li>
-						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) pour <strong>{daysText}</strong>.
-						</li>
-
-						{#if (capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length) < attendingPeopleCount}
-						<div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
-							<div>
-							  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-							  <span>Attention, le nombre de couchages semble insuffisant, vous pouvez ajouter des lits ou des chambres supplémentaires</span>
-							</div>
-						  </div>
-						  {/if}
-
-						<li>Vous avez pris <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length}</strong> petit(s) déjeuner(s) du samedi.
-						</li>
-						
-							
-							
-							{#if formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length > 0 && !formValues.freeBooking}
-							<li>Le prix pour les petits déjeuners est de <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
-							{/if}
-
-							{#if !formValues.freeBooking}
-							<li>Le prix pour les chambres est de : <strong>{contribution} €</strong></li>
-							<li>Le prix total est de : <strong>{contribution + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
-							{/if}
-
-							<br/>Remarque: nous offrons aux personnes logées sur place un brunch dimanche.
-					
-						</ul>
-						</label>
-				  </div>
-				</div>
-			{/if}
+		
 
   
-  <button type="submit" class="btn btn-primary float-right" class:loading={loading}>Valider</button>
+  <button type="submit" class="btn btn-primary float-right" class:loading={$loadingRoot}>Valider</button>
   </form>
 	</div>
 	</div>
@@ -958,65 +857,11 @@ Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
 {/if}
 
 
-
-
-{#if formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0}
-			<div class="alert my-2 alert-sm shadow-md bg-base-100">
-				<div class="flex-1">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
-					  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
-					</svg> 
-					<label for="">En ce qui concerne le logement :
-						<ul class="list-disc list-inside">
-							<li>Nombre de chambres choisies : <strong>{formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length}</li>
-						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) pour <strong>{daysText}</strong>.
-						</li>
-
-						{#if (capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length) < attendingPeopleCount}
-						<div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
-							<div>
-							  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-							  <span>Attention, le nombre de couchages semble insuffisant, vous pouvez ajouter des lits ou des chambres supplémentaires en revenant à l'étape précédente</span>
-							</div>
-						  </div>
-						  {/if}
-
-						<li>Vous avez pris <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length}</strong> petit(s) déjeuner(s) du samedi.
-						</li>
-						
-							
-							
-							{#if formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length > 0 && !formValues.freeBooking}
-							<li>Le prix pour les petits déjeuners est de <strong>{formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
-							{/if}
-
-							{#if !formValues.freeBooking}
-							<li>Le prix pour les chambres est de : <strong>{contribution} €</strong></li>
-							<li>Le prix total est de : <strong>{contribution + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "food").length * 10} €</strong></li>
-							<div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
-								<div>
-								  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-								  <span>Merci de venir avec la somme en espèces dans une enveloppe sur laquelle vous devez inscrire votre nom et ce numéro de référence: 00{formValues.familyId}</span>
-								</div>
-							  </div>
-							{/if}
-
-							<br/>Remarque: nous offrons aux personnes logées sur place un brunch dimanche.
-							<br/>{#if formValues.dayOfArrival == "vendredi"}
-							Attention les repas du vendredi soir et du samedi midi ne sont pas prévus.
-							{/if}
-					
-						</ul>
-						</label>
-				  </div>
-				</div>
-			{/if}
-
-
+<Summup bind:formValues={formValues} />
 
 		<form on:submit|preventDefault={pushFamilyData}>
   
-  <button type="submit" class="btn btn-primary float-right" class:loading={loading}>Je confirme</button>
+  <button type="submit" class="btn btn-primary float-right" class:loading={$loadingRoot}>Je confirme</button>
   
   </form>
 	</div>
@@ -1036,10 +881,6 @@ Nous serons heureux de vous retrouver {dateArrivalText} août 2022 !
 		top: -12px;
 		right: -1px;
 	}
-	.failure{
-    background-color: rgb(230, 67, 26);
-    color: #fff;
-  }
 
 .intl-tel-wrapper{
 padding-bottom: 90px;

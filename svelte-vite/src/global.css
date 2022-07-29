@@ -6,3 +6,8 @@
 min-height:1500px;
 
 }
+
+.failure{
+    background-color: rgb(230, 67, 26);
+    color: #fff;
+  }

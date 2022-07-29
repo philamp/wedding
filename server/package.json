@@ -6,6 +6,7 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "node-ses": "^3.0.3",
     "postgraphile": "^4.12.5"
   }
 }

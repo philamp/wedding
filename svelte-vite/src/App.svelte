@@ -2,23 +2,23 @@
   import './global.css'
   import Alert from './Alert.svelte'
 	import Router from 'svelte-spa-router';
-	import {location, push} from 'svelte-spa-router';
+	import { location, push } from 'svelte-spa-router';
+	import Login from '/src/components/Login.svelte';
 	export let ready;
 
 	//routes definition
 	// Components
 	import Subscribe from './routes/Subscribe.svelte';
+	import LoginPage from './routes/LoginPage.svelte';
 	import Mcontent from '/src/routes/Mcontent.svelte';
 	import { onMount } from 'svelte';
-	import {wrap} from 'svelte-spa-router/wrap';
-	import { storeReady, connectionStatus, mapOpened, formValuesRoot} from '/src/store.js';
+	import { wrap } from 'svelte-spa-router/wrap';
+	import { storeReady, connectionStatus, mapOpened, formValuesRoot, connectionAttempted} from '/src/store.js';
 	import { menuJson } from '/src/menu.json';
 
 	let menuOpened = false; 
 
-//	$connectionStatus = false;
-
-//	$connectionAttempted
+	let logincomp;
 
 
 	$mapOpened = false;
@@ -31,6 +31,7 @@ let routes = {
     // Exact path
 	'/': Subscribe,
     '/P/:urlQrCode?': Subscribe,
+	'/L/:urlQrCode?/:redirectA?/:redirectB?': LoginPage,
 	'/M/:category/:item?' : Mcontent,
 	'/D': wrap({
         asyncComponent: () => import('./routes/Kassdedi.svelte')
@@ -58,9 +59,9 @@ let routes = {
 
 onMount(async () => {
 	if(document.cookie && !$location.match(/\/P\/(.*)/)){
-		verifyAuth()
-	}
-	//$connectionAttempted = true
+		logincomp.fmData()
+	}else{$connectionAttempted = true}
+	
 })
 
 // make the navbar disappear on clicking on any A and scroll on top of main
@@ -78,6 +79,7 @@ onMount(async () => {
 		})
 		
 		const json = await res.json()
+		$connectionAttempted = true
 		if(json.error){console.log(json.error);return}
 		//set global connectionstatus
 		$formValuesRoot = json.data.allFamilies.nodes[0]
@@ -92,6 +94,9 @@ onMount(async () => {
 <svelte:head>
 	<script defer async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaGgHMLDLVWiOQC0m6F23v3mfccGnvbhM&callback=initMap"></script>
 </svelte:head>
+
+<Login bind:this={logincomp} />
+
 <Alert />
 <div class="drawer drawer-mobile">
 	<input id="main-menu" type="checkbox" class="drawer-toggle" bind:checked={menuOpened}>

@@ -1,7 +1,9 @@
 import { writable } from 'svelte/store';
 export const storeReady = writable();
 export const connectionStatus = writable(false);
+export const connectionAttempted = writable(false);
 export const mapOpened = writable(false);
+export const loadingRoot = writable(false);
 
 export const alert = writable("Bienvenue sur notre site!");
 export const alertFailure = writable("false");
