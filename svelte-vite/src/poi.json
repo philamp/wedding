@@ -309,8 +309,8 @@
                 ]
         },
         {
-            "sectionTitle" : "Hôtels & Gîtes aux environs (recommandés par Fabienne Calvo)",
-            "sectionPageParam" : "hotels",
+            "sectionTitle" : "Logements",
+            "sectionPageParam" : "logements",
                 "pois" : [
                     {
                         "type": "shortCard",

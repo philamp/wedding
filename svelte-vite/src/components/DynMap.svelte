@@ -38,9 +38,9 @@
             position: { lat: bottomLink.lat, lng: bottomLink.lng },
             map,
             title: card.title,
-            zIndex: (card.section == "program" ? 1000 : (card.section == "hotels" ? 100 : 10)),
+            zIndex: (card.section == "program" ? 1000 : (card.section == "logements" ? 100 : 10)),
             label: null,
-            icon: (card.section == "hotels" ? "/icons/hotel_0star.png" : (
+            icon: (card.section == "logements" ? "/icons/hotel_0star.png" : (
               card.section == "avisiter" ? "/icons/castle-2.png" : (
                 bottomLink.markerId == "eglise" ? "/icons/church-2.png" : "/icons/carsix.png"
               )

@@ -61,7 +61,7 @@ import DynMap from '/src/components/DynMap.svelte';
 
     copiedSections.unshift({
 	sectionTitle : "Logement sur le domaine du Château",
-	sectionPageParam : "logement",
+	sectionPageParam : "logements",
 		pois : [
 			{
 				type: "longCard",

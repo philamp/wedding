@@ -23,7 +23,7 @@ $: if($connectionStatus){
 
 {#each sectionsProp as sectionItem}
 
-<div class:hidden={sectionItem.sectionPageParam != pageParam && (sectionItem.sectionPageParam != "logement" || (pageParam == "avisiter" || pageParam == "liste-mariage" || pageParam == "program"))}>
+<div class:hidden={sectionItem.sectionPageParam != pageParam}>
 
 <h2 class="my-4 mx-4 text-2xl font-bold text-primary">{sectionItem.sectionTitle}</h2>
 {#each sectionItem.pois as poiItem, i}
