@@ -6,6 +6,8 @@ let res;
 
 let rawMessage;
 
+let daysText;
+
 // take family datas 10 by 10
 
 async function getFamilyData() {
@@ -117,7 +119,7 @@ async function getFamilyData() {
 
       
 
-    
+    daysText = item.dayOfArrival == "vendredi" ? "vendredi 19 août" : "samedi 20 août"
 
 
     var CRLF = '\r\n'
@@ -133,7 +135,7 @@ async function getFamilyData() {
       '',
       `Bonjour ${firstnames}`,
       '',
-      `Notre mariage arrive bientot ! ${item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? 'Vous avez un logement et vous' : "Vous"} arrivez le 19 aout vous pourrez avoir tous les détails (ainsi que le mode de contribution) sur le site https://www.helenephilippe.ch/#/L/${item.passWord}/M/hotels`,
+      `Notre mariage arrive bientot ! ${item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? 'Vous avez un logement et vous arrivez le '+daysText+':' : ''} vous pourrez avoir tous les détails (ainsi que le mode et montant de contribution) sur le site https://www.helenephilippe.ch/#/L/${item.passWord}/M/logements`,
       '',
       'Hélène & Philippe.',
       '',

@@ -80,16 +80,20 @@ $: daysText = formValues.dayOfArrival == "vendredi" ? "2 nuits" : "1 nuit"
                             <div class="alert alert-success alert-sm shadow-md failure text-sm" role="alert">
 								<div>
 								  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-								  <span>Merci de venir avec la somme en espèces dans une enveloppe sur laquelle vous devez inscrire votre nom et ce numéro de référence: 00{formValues.familyId}</span>
+								  <span>Merci de venir avec la somme en espèces dans une enveloppe sur laquelle vous devez inscrire votre nom et ce numéro de référence: 00{formValues.familyId}. <strong>Vous devez remettre cette enveloppe à Ombeline (une nièce de Philippe), photo ci-dessous:</strong>
+								<img alt="" class="rounded" src="/static_pictures/omb.jpg" width="250" />
+								</span>
 								</div>
 							  </div>
 							{/if}
 
 
 
-							<br/>Remarque: nous offrons aux personnes logées sur place un brunch dimanche.
+							<br/><strong>Remarques:</strong> 
+							<br/>- Nous offrons aux personnes logées sur place un brunch dimanche. 
+							<br/>- Les draps et serviettes sont fournies.
 							<br/>{#if formValues.dayOfArrival == "vendredi"}
-							Attention les repas du vendredi soir et du samedi midi ne sont pas prévus.
+							- Attention les repas du vendredi soir et du samedi midi ne sont pas prévus.
 							{/if}
 					
 						</ul>
