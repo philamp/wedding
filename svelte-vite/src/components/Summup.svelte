@@ -44,7 +44,7 @@ $: daysText = formValues.dayOfArrival == "vendredi" ? "2 nuits" : "1 nuit"
 					<label for="">{compTitle} :
 						<ul class="list-disc list-inside">
 							<li>Nombre de chambres choisies : <strong>{formValues.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length}</li>
-						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) pour <strong>{daysText}</strong>.
+						 <li>Vous logez théoriquement <strong>{capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length}</strong> des {attendingPeopleCount} personne(s) pour <strong>{daysText}</strong> (arrivée le {formValues.dayOfArrival}).
 						</li>
 
 						{#if (capacityOptedFor + formValues.toolBookingsByFamilyId.nodes.filter(arg => arg.bookingState != "open" && arg.toolByToolId.toolType == "bed").length) < attendingPeopleCount}

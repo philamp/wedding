@@ -4,6 +4,8 @@ const { makeQueryRunner } = require("./queryRunner.js");
 
 let res;
 
+let rawMessage;
+
 // take family datas 10 by 10
 
 async function getFamilyData() {
@@ -119,12 +121,35 @@ async function getFamilyData() {
 
 
     var CRLF = '\r\n'
-    , client = ses.createClient({ key: process.env.SES_KEY, secret: process.env.SES_secret});
+
+
+    rawMessage = [
+      'From: "Helene et Philippe" <philippe@mail.helenephilippe.ch>',
+      `To: "${item.familyName}" <phil.gaultier@gmail.com>`,
+      `Reply-to: "Monsieur Gaultier" <phil.gaultier@gmail.com>`,
+      `Subject: Mariage Helene et Philippe / encore dans l'onglet pourri ?`,
+      'Content-Type: text/plain; charset="utf-8"',
+      'MIME-Version: 1.0',
+      '',
+      `Bonjour ${firstnames}`,
+      '',
+      `Notre mariage arrive bientot ! ${item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? 'Vous avez un logement et vous' : "Vous"} arrivez le 19 aout vous pourrez avoir tous les détails (ainsi que le mode de contribution) sur le site https://www.helenephilippe.ch/#/L/${item.passWord}/M/hotels`,
+      '',
+      'Hélène & Philippe.',
+      '',
+      ''
+    ].join(CRLF)
+
+    console.log(rawMessage);
+
+  /*
+    client = ses.createClient({ key: process.env.SES_KEY, secret: process.env.SES_secret});
   
   // Give SES the details and let it construct the message for you.
 
-  //attention ajouter la CONDITION COCKTAIL ATTENDINGTRUE DANS LE GRAPHQL !!!
-  
+  //attention ajouter la CONDITION COCKTAIL ATTENDING TRUE DANS LE GRAPHQL !!!
+
+
   client.sendRawEmail({
      from: 'philippe@mail.helenephilippe.ch'
    , rawMessage: [
@@ -144,9 +169,11 @@ async function getFamilyData() {
       ''
     ].join(CRLF)
   }, function (err, data, res) {
-      console.log(err);
-      console.log(res);
-  });
+      //console.log(err);
+      //console.log(res);
+  }); 
+
+  */
   
   
   })
