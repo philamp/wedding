@@ -2,12 +2,12 @@
 import { connectionStatus, formValuesRoot } from '/src/store.js';
 export let formValues;
 
-let compTitle = "Avec les choix que vous venez d'effectuer"
+let compTitle = "Avec les choix que vous avez effectués"
 
 if(formValues == null){
 formValues = $formValuesRoot
 
-compTitle = "Récapitulatif contribution"
+compTitle = "Récapitulatif logement"
 
 }
 
