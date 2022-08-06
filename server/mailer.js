@@ -19,7 +19,7 @@ async function getFamilyData() {
   
     const result = await runner.query(
       `query MyFamilyQuery {
-        allFamilies(condition: {cocktailAttending: true}, first: 1, offset: 0) {
+        allFamilies(condition: {cocktailAttending: true}, first: 50, offset: 0) {
           nodes {
             passWord
             familyId
