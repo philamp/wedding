@@ -19,7 +19,7 @@ async function getFamilyData() {
   
     const result = await runner.query(
       `query MyFamilyQuery {
-        allFamilies(condition: {}, first: 1, offset: 0) {
+        allFamilies(condition: {cocktailAttending: true}, first: 1, offset: 0) {
           nodes {
             passWord
             familyId
@@ -113,29 +113,33 @@ async function getFamilyData() {
     let firstnames = ""
 
     item.peopleByFamilyId.nodes.forEach((person) => {
-
+      if(person.attending){
       firstnames += person.firstName + ", "
+      }
     })
 
       
 
-    daysText = item.dayOfArrival == "vendredi" ? "vendredi 19 août" : "samedi 20 août"
+    daysText = item.dayOfArrival == "vendredi" ? "la veille, le vendredi 19 août" : "le samedi 20 août"
 
 
     var CRLF = '\r\n'
 
 
     rawMessage = [
-      'From: "Helene et Philippe" <philippe@mail.helenephilippe.ch>',
-      `To: "${item.familyName}" <phil.gaultier@gmail.com>`,
-      `Reply-to: "Monsieur Gaultier" <phil.gaultier@gmail.com>`,
-      `Subject: Mariage Helene et Philippe / encore dans l'onglet pourri ?`,
-      'Content-Type: text/plain; charset="utf-8"',
-      'MIME-Version: 1.0',
+      //'From: "Helene et Philippe" <philippe@mail.helenephilippe.ch>',
+      `To: "${item.familyName}" <${item.emailAddress}>`,
+      //`Reply-to: "Monsieur Gaultier" <phil.gaultier@gmail.com>`,
+      `Subject: Mariage Helene et Philippe le 20 août ${item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? ' / + Logement (Important!)' : ''} `,
+      //'Content-Type: text/plain; charset="utf-8"',
+      //'MIME-Version: 1.0',
       '',
       `Bonjour ${firstnames}`,
       '',
-      `Notre mariage arrive bientot ! ${item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? 'Vous avez un logement et vous arrivez le '+daysText+':' : ''} vous pourrez avoir tous les détails (ainsi que le mode et montant de contribution) sur le site https://www.helenephilippe.ch/#/L/${item.passWord}/M/logements`,
+      `Notre mariage approche très vite ! ${item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? 'Vous avez un(des) logement(s) sur le domaine du château et vous arrivez '+daysText+', vous pourrez avoir tous les détails de ce(s) logement(s) sur le site https://www.helenephilippe.ch/#/L/'+item.passWord+'/M/logements .' : ''}`,
+      `${!item.freeBooking && item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? '(mode et montant de contribution indiqué sur le site)' : ''}`,
+      '',
+      `Rappel des lieux et horaires sur ce lien https://www.helenephilippe.ch/#/L/${item.passWord}/M/program .`,
       '',
       'Hélène & Philippe.',
       '',

@@ -91,7 +91,7 @@ $: daysText = formValues.dayOfArrival == "vendredi" ? "2 nuits" : "1 nuit"
 
 							<br/><strong>Remarques:</strong> 
 							<br/>- Nous offrons aux personnes logées sur place un brunch dimanche. 
-							<br/>- Les draps et serviettes sont fournies.
+							<br/>- Les draps et serviettes sont fournis.
 							<br/>{#if formValues.dayOfArrival == "vendredi"}
 							- Attention les repas du vendredi soir et du samedi midi ne sont pas prévus.
 							{/if}

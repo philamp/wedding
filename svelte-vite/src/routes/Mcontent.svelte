@@ -18,16 +18,6 @@ import DynMap from '/src/components/DynMap.svelte';
 
   let formValues = $formValuesRoot
 
-  let count = 0;
-	let money = 0;
-	for(let i = 0; i < formValues.bookingsByFamilyId.nodes.length; i++ ){
-		if(formValues.bookingsByFamilyId.nodes[i].bookingState == "accepted"){
-			count += formValues.bookingsByFamilyId.nodes[i].roomByRoomId.capacity
-			money += formValues.dayOfArrival == "vendredi" ? formValues.bookingsByFamilyId.nodes[i].roomByRoomId.twoNightPrice : formValues.bookingsByFamilyId.nodes[i].roomByRoomId.oneNightPrice
-		}
-	}
-	let contribution = money
-
   onMount(() => {
 
     htmlLoaded = true;

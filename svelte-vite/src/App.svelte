@@ -58,7 +58,7 @@ let routes = {
 
 
 onMount(async () => {
-	if(document.cookie && !$location.match(/\/P\/(.*)/)){
+	if(document.cookie && (!$location.match(/\/P\/(.*)/) && !$location.match(/\/L\/(.*)\/M\/(.*)/) )){
 		logincomp.fmData()
 	}else{$connectionAttempted = true}
 	
