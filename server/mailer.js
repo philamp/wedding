@@ -136,7 +136,7 @@ async function getFamilyData() {
       '',
       `Bonjour ${firstnames}`,
       '',
-      `Notre mariage approche très vite ! ${item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? 'Vous avez un(des) logement(s) sur le domaine du château et vous arrivez '+daysText+', vous pourrez avoir tous les détails de ce(s) logement(s) sur le site https://www.helenephilippe.ch/#/L/'+item.passWord+'/M/logements .' : ''}`,
+      `Notre mariage approche très vite et nous sommes heureux de vous retrouver pour cette occasion ! ${item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? 'Vous avez un(des) logement(s) sur le domaine du château et vous arrivez '+daysText+', vous pourrez avoir tous les détails de ce(s) logement(s) sur le site https://www.helenephilippe.ch/#/L/'+item.passWord+'/M/logements .' : ''}`,
       `${!item.freeBooking && item.bookingsByFamilyId.nodes.filter(arg => arg.bookingState == "accepted").length > 0 ? '(mode et montant de contribution indiqué sur le site)' : ''}`,
       '',
       `Rappel des lieux et horaires sur ce lien https://www.helenephilippe.ch/#/L/${item.passWord}/M/program .`,

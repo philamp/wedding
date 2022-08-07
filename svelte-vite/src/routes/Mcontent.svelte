@@ -71,7 +71,7 @@ import DynMap from '/src/components/DynMap.svelte';
 
     copiedSections[0].pois[0].bottomLinks[copiedSections[0].pois[0].bottomLinks.length] = {
 					mapMarkerId: "rmid-"+bknode.roomId,
-					label: bknode.roomByRoomId.buildingName+" / Étage-"+bknode.roomByRoomId.etage+" / Chambre-"+bknode.roomByRoomId.roomNumber,
+					label: bknode.roomByRoomId.buildingName+" / Étage "+bknode.roomByRoomId.etage+" / Chambre "+bknode.roomByRoomId.roomNumber,
 					href: null,
 					lat: bknode.roomByRoomId.geoloc != null ? bknode.roomByRoomId.geoloc.x : 49.14143080014507, 
 					lng: bknode.roomByRoomId.geoloc != null ? bknode.roomByRoomId.geoloc.y : 0.6677124803025075,
