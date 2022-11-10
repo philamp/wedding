@@ -1,5 +1,9 @@
 # wedding
-A wedding site with guest subscription.
+A wedding site with:
+- guest subscription
+- interactive map with spotted guestrooms (to help guest find their rooms)
+- Digital guestbook with possibility to upload webcam video, video file or picture 
+- 3D animation at the end of the form submission
 
 Be careful the code is very messy with little organization: I'm not a professional developer.
 SvelteJS, PostgreSQL, tailwind (with daisyUI) allowed me to develop this very quickly and the result was amazing in term of reliability, compatibility, responsiveness and performance (with little effort). SvelteJS is especially easy to learn.
