@@ -1,7 +1,7 @@
 # wedding
 A responsive wedding site with:
-- Guest subscription (including intltel library for the telephonme input field)
-- Very responsive responsive card listings for the content (planning, hotel, touristic spots...) (content is stored in very simple json file)
+- Guest subscription (including intltel library for the telephone input field)
+- Very responsive cards listings for the content (planning, hotel, touristic spots...) (content is stored in very simple json file)
 - Interactive map with spots :
     - dynamically bounded to the content cards
     - dynamically bounded to guestroom listing and details (to help guests find their rooms and pay the right price at location)
