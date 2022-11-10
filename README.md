@@ -1,7 +1,7 @@
 # wedding
 A wedding site with:
 - guest subscription
-- interactive map with spotted guestrooms (to help guest find their rooms)
+- interactive map with spotted guestrooms (to help guests find their rooms)
 - Digital guestbook with possibility to upload webcam video, video file or picture 
 - 3D animation at the end of the form submission
 
@@ -14,6 +14,7 @@ If you're looking for a wedding planning software you can take a look at https:/
 - PostgreSQL
 - nginx
 - n
+- Amazon S3 subscription
 
 ## Build
 You can find a git hook script deploy in the folder deploy_scripts
