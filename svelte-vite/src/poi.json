@@ -989,6 +989,56 @@
                         "bottomLinks": []
                     }
                 ]
+        },
+        {
+            "sectionTitle" : "Photos & Vidéos",
+            "sectionPageParam" : "photos",
+                "pois" : [
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/3uhYTZFgUK.jpg",
+                        "overTitle": "",
+                        "title": "Photos du mariage",
+                        "desc": "Merci infiniment pour votre participation",
+                        "bottomLinks": [
+                            {
+                                "label": "Photos de la photographe",
+                                "href": "https://photos.app.goo.gl/TnHhSvdt7jF8bRHZ7",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📸",
+                                "markerId": null
+                            },
+                            {
+                                "label": "Photos pêle-mêle",
+                                "href": "https://photos.app.goo.gl/qviCnwHhFtnUC3ZA6",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📷",
+                                "markerId": null
+                            }
+
+                        ]
+                    },
+                    {
+                        "type": "shortCard",
+                        "imgSrc": "/static_pictures/8EB5oRPXrO.jpg",
+                        "overTitle": "",
+                        "title": "Vidéo de la pièce montée",
+                        "desc": "Zut! on a plus le temps d'attérir !",
+                        "bottomLinks": [
+                            {
+                                "label": "Aller sur la vidéo youtube",
+                                "href": "https://youtu.be/HhhVff12UjQ",
+                                "lat": null, 
+                                "lng": null,
+                                "markerIcon": "📹",
+                                "markerId": null
+                            }
+
+                        ]
+                    }
+                ]
         }
 
 
