@@ -4,7 +4,7 @@ A responsive wedding site with:
 - Very responsive cards listings for the content (planning, hotel, touristic spots...) (content is stored in very simple json file)
 - Interactive map with spots :
     - dynamically bounded to the content cards
-    - dynamically bounded to guestroom listing and details (to help guests find their rooms and pay the right price at location)
+    - dynamically bounded to guestroom listing and details (to help guests find their rooms and pay the right price (regular cash payment))
 - Digital guestbook with possibility to upload webcam video, video file or picture 
 - 3D animation at the end of the form submission
 
